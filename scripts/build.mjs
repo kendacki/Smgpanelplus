@@ -2,6 +2,8 @@ import { spawnSync } from "node:child_process";
 
 process.env.DATABASE_URL ||= "file:./dev.db";
 process.env.AUTH_SECRET ||= "smg-panel-dev-secret-change-in-production-min-32-chars";
+process.env.NEXT_PUBLIC_APP_URL ||= "https://smgpanelplus.com";
+process.env.NEXT_PUBLIC_APP_NAME ||= "SMG Panel";
 
 function run(command) {
   const result = spawnSync(command, {

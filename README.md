@@ -44,6 +44,13 @@ The demo user starts with ₦50,000. Use **Add Funds → Demo Credit** for insta
 
 Copy `.env.example` and set a long `AUTH_SECRET` before production.
 
+Production site: [https://smgpanelplus.com](https://smgpanelplus.com)
+
+```
+NEXT_PUBLIC_APP_URL="https://smgpanelplus.com"
+AUTH_SECRET="your-long-random-secret"
+```
+
 For PostgreSQL:
 
 ```
