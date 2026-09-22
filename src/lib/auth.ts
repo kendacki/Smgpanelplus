@@ -5,10 +5,8 @@ import { prisma } from "./prisma";
 const COOKIE = "smg_session";
 
 function getSecret() {
-  const value = process.env.AUTH_SECRET;
-  if (!value) {
-    throw new Error("AUTH_SECRET is not set");
-  }
+  const value =
+    process.env.AUTH_SECRET || "smg-panel-dev-secret-change-in-production-min-32-chars";
   return new TextEncoder().encode(value);
 }
 

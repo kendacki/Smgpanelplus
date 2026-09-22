@@ -14,6 +14,8 @@ const sora = Sora({
   variable: "--font-display",
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "SMG Panel | Best SMM Panel in Nigeria & Africa",

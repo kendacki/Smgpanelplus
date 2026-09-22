@@ -5,7 +5,9 @@ import { jwtVerify } from "jose";
 const COOKIE = "smg_session";
 
 function secret() {
-  return new TextEncoder().encode(process.env.AUTH_SECRET || "dev-secret");
+  return new TextEncoder().encode(
+    process.env.AUTH_SECRET || "smg-panel-dev-secret-change-in-production-min-32-chars",
+  );
 }
 
 export async function middleware(request: NextRequest) {

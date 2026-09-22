@@ -1,7 +1,15 @@
+import type { CurrencyCode } from "./currency";
+
 export const APP_NAME = "SMG Panel";
 export const APP_TAGLINE = "Private-grade social media growth for Africa";
 
-export const PAYMENT_METHODS = [
+export const PAYMENT_METHODS: {
+  id: string;
+  name: string;
+  description: string;
+  currencies: CurrencyCode[];
+  instant: boolean;
+}[] = [
   {
     id: "paystack",
     name: "Paystack / Card",
@@ -51,7 +59,7 @@ export const PAYMENT_METHODS = [
     currencies: ["NGN", "USD", "GHS", "KES"],
     instant: true,
   },
-] as const;
+];
 
 export const ORDER_STATUSES = [
   "PENDING",
