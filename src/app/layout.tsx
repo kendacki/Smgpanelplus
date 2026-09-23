@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description:
       "Trusted SMM panel for Nigeria, Ghana and Kenya. Followers, likes, views and reseller API.",
   },
-  icons: { icon: "/logo.jpg" },
+  icons: { icon: "/logo.png" },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

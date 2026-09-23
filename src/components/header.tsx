@@ -27,10 +27,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/8 bg-black/80 backdrop-blur-xl">
-      <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
-        <div className="relative z-20 h-16 w-[min(18rem,42vw)] shrink-0">
-          <Logo size="header" className="absolute left-0 top-1/2 -translate-y-1/2" />
-        </div>
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
+        <Logo size="header" />
         <nav className="hidden items-center gap-6 text-sm text-white/80 lg:flex">
           <Link href="/services" className="hover:text-white">
             Services

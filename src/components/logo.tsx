@@ -14,18 +14,18 @@ export function Logo({
   const header = size === "header";
 
   return (
-    <Link href="/" className={cn("flex items-center gap-2", className)}>
+    <Link href="/" className={cn("flex shrink-0 items-center", className)}>
       <Image
-        src="/logo.jpg"
+        src="/logo.png"
         alt="SMG Panel"
-        width={header ? 720 : compact ? 360 : 480}
-        height={header ? 220 : compact ? 110 : 148}
+        width={header ? 280 : compact ? 200 : 320}
+        height={header ? 74 : compact ? 52 : 84}
         className={
           header
-            ? "h-48 w-auto object-contain md:h-56"
+            ? "h-12 w-auto object-contain object-left md:h-14"
             : compact
-              ? "h-24 w-auto object-contain md:h-28"
-              : "h-28 w-auto object-contain md:h-32"
+              ? "h-9 w-auto object-contain md:h-10"
+              : "h-16 w-auto object-contain md:h-20"
         }
         priority
       />
