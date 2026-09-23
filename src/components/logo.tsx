@@ -8,9 +8,9 @@ export function Logo({ className, compact = false }: { className?: string; compa
       <Image
         src="/logo.jpg"
         alt="SMG Panel"
-        width={compact ? 260 : 360}
-        height={compact ? 80 : 110}
-        className={compact ? "h-16 w-auto object-contain md:h-20" : "h-20 w-auto object-contain md:h-24"}
+        width={compact ? 360 : 480}
+        height={compact ? 110 : 148}
+        className={compact ? "h-24 w-auto object-contain md:h-28" : "h-28 w-auto object-contain md:h-32"}
         priority
       />
     </Link>
