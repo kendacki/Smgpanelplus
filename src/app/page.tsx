@@ -64,13 +64,6 @@ export default async function HomePage() {
                 <Button variant="outline">Browse services</Button>
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/70">
-              {["Local payments", "Reseller API", "No password required"].map((item) => (
-                <span key={item} className="inline-flex items-center gap-2">
-                  <Check className="h-4 w-4 text-smg" /> {item}
-                </span>
-              ))}
-            </div>
           </div>
           <div className="relative mx-auto h-[420px] w-full max-w-md overflow-hidden sm:h-[520px] lg:h-[640px] lg:max-w-none">
             <div className="absolute inset-x-10 bottom-28 h-36 rounded-full bg-smg/25 blur-3xl" />
