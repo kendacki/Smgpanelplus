@@ -50,6 +50,66 @@ export function HeroArt() {
   );
 }
 
+export function Flag3D({ country }: { country: "Nigeria" | "Ghana" | "Kenya" }) {
+  const id = country.toLowerCase();
+  return (
+    <svg viewBox="0 0 140 110" className="h-20 w-24 shrink-0 flag-3d" fill="none">
+      <defs>
+        <filter id={`flag-shadow-${id}`} x="-20%" y="-10%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="8" stdDeviation="5" floodColor="#000" floodOpacity="0.55" />
+        </filter>
+        <clipPath id={`flag-clip-${id}`}>
+          <path d="M32 14c18 3 36-4 54-1 14 2 28 8 36 7v46c-10 3-24-2-38-4-18-3-36 5-52 2V14Z" />
+        </clipPath>
+      </defs>
+      <ellipse cx="78" cy="98" rx="42" ry="7" fill="#000" opacity="0.35" />
+      <rect x="24" y="8" width="7" height="88" rx="3" fill="#c9cdd3" />
+      <rect x="25" y="8" width="3" height="88" rx="1" fill="#f4f6f8" opacity="0.7" />
+      <g filter={`url(#flag-shadow-${id})`} clipPath={`url(#flag-clip-${id})`}>
+        {country === "Nigeria" && (
+          <>
+            <rect x="32" y="10" width="92" height="60" fill="#008751" />
+            <rect x="58" y="10" width="32" height="60" fill="#fff" />
+            <rect x="90" y="10" width="34" height="60" fill="#008751" />
+            <path d="M32 14c18 3 36-4 54-1" stroke="#fff" strokeOpacity="0.18" />
+          </>
+        )}
+        {country === "Ghana" && (
+          <>
+            <rect x="32" y="10" width="92" height="20" fill="#CE1126" />
+            <rect x="32" y="30" width="92" height="20" fill="#FCD116" />
+            <rect x="32" y="50" width="92" height="20" fill="#006B3F" />
+            <path d="M77 33l4.2 12.8h13.5l-11 8 4.2 12.8L77 59.6l-10.9 7.9 4.2-12.8-11-8h13.5Z" fill="#111" />
+          </>
+        )}
+        {country === "Kenya" && (
+          <>
+            <rect x="32" y="10" width="92" height="12" fill="#000" />
+            <rect x="32" y="22" width="92" height="5" fill="#fff" />
+            <rect x="32" y="27" width="92" height="26" fill="#BB0000" />
+            <rect x="32" y="53" width="92" height="5" fill="#fff" />
+            <rect x="32" y="58" width="92" height="12" fill="#006600" />
+            <ellipse cx="78" cy="40" rx="11" ry="16" fill="#9a5b1a" stroke="#c9a227" strokeWidth="2" />
+            <path d="M78 26v28M70 40h16" stroke="#c9a227" strokeWidth="1.6" />
+            <path d="M73 32c4 3 6 3 10 0M73 48c4-3 6-3 10 0" stroke="#111" strokeWidth="1.4" />
+          </>
+        )}
+      </g>
+      <path
+        d="M122 20c4 8 6 18 4 28-2 10-1 18 4 24"
+        stroke="#ff6a00"
+        strokeOpacity="0.0"
+      />
+      <path
+        d="M32 14c18 3 36-4 54-1 14 2 28 8 36 7v46c-10 3-24-2-38-4-18-3-36 5-52 2V14Z"
+        stroke="#fff"
+        strokeOpacity="0.12"
+        strokeWidth="1.2"
+      />
+    </svg>
+  );
+}
+
 export function IsoCube({
   title,
   accent = "#ff6a00",

@@ -3,7 +3,7 @@ import { Check, Shield, Wallet, Zap } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
 import { SignInForm } from "@/components/sign-in-form";
-import { GlobeArt, HeroArt, IsoCube, PlatformMark } from "@/components/illustrations";
+import { GlobeArt, HeroArt, IsoCube, PlatformMark, Flag3D } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -94,15 +94,15 @@ export default async function HomePage() {
       <section className="border-y border-white/8 bg-panel/80">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-3 md:px-6">
           {[
-            ["Nigeria", "Paystack, Flutterwave and bank transfer in NGN."],
-            ["Ghana", "MoMo and cards with prices in GHS."],
-            ["Kenya", "M-Pesa and Airtel-friendly KES checkout."],
-          ].map(([title, body]) => (
-            <div key={title} className="flex items-start gap-4 rounded-3xl border border-white/8 bg-black/30 p-5">
-              <IsoCube title={title} />
+            { title: "Nigeria" as const, body: "Paystack, Flutterwave and bank transfer in NGN." },
+            { title: "Ghana" as const, body: "MoMo and cards with prices in GHS." },
+            { title: "Kenya" as const, body: "M-Pesa and Airtel-friendly KES checkout." },
+          ].map((item) => (
+            <div key={item.title} className="perspective-scene flex items-center gap-4 rounded-3xl border border-white/8 bg-black/30 p-5">
+              <Flag3D country={item.title} />
               <div>
-                <h3 className="font-display text-xl">{title}</h3>
-                <p className="mt-1 text-sm text-white/55">{body}</p>
+                <h3 className="font-display text-xl">{item.title}</h3>
+                <p className="mt-1 text-sm text-white/55">{item.body}</p>
               </div>
             </div>
           ))}
