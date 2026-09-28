@@ -42,10 +42,10 @@ export default async function HomePage() {
 
   return (
     <SiteShell>
-      <section className="relative overflow-hidden">
+      <section className="relative -mt-16 overflow-hidden">
         <div className="mesh absolute inset-0 opacity-30" />
-        <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 pt-8 md:px-6 lg:grid-cols-2 lg:pt-6 lg:pb-0">
-          <div className="pt-10 md:pt-16 lg:pt-24">
+        <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 md:px-6 lg:grid-cols-2 lg:pb-0">
+          <div className="pt-28 md:pt-32 lg:pt-40">
             <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
               Grow your audience across <span className="gradient-text">Africa</span>
             </h1>
@@ -62,14 +62,14 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative mx-auto h-[420px] w-full max-w-md overflow-hidden sm:h-[520px] lg:h-[640px] lg:max-w-none">
+          <div className="relative mx-auto h-[460px] w-full max-w-md overflow-hidden sm:h-[560px] lg:h-[700px] lg:max-w-none">
             <Image
               src="/hero-portrait.png"
               alt="SMG Panel"
               width={736}
               height={981}
               priority
-              className="absolute inset-x-0 -bottom-6 mx-auto h-[108%] w-auto max-w-none object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)]"
+              className="absolute inset-x-0 top-0 mx-auto h-[108%] w-auto max-w-none object-contain object-top [mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)]"
             />
           </div>
         </div>
