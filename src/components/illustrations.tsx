@@ -207,3 +207,106 @@ export function GlobeArt() {
     </svg>
   );
 }
+
+export function VisibilityArt() {
+  return (
+    <div className="relative mx-auto h-[340px] w-full max-w-lg sm:h-[420px] perspective-scene">
+      <div className="orb left-6 top-8 h-28 w-28 bg-smg/30" />
+      <div className="orb right-4 top-0 h-20 w-20 bg-gold/25" />
+      <div className="orb bottom-8 left-20 h-16 w-16 bg-smg/20" />
+      <svg viewBox="0 0 480 420" className="relative z-10 h-full w-full" fill="none">
+        <defs>
+          <linearGradient id="vis-stroke" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#ffc46b" />
+            <stop offset="55%" stopColor="#ff6a00" />
+            <stop offset="100%" stopColor="#c2410c" />
+          </linearGradient>
+          <linearGradient id="vis-body" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#2a2a34" />
+            <stop offset="100%" stopColor="#0b0b10" />
+          </linearGradient>
+          <linearGradient id="vis-glass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.02" />
+          </linearGradient>
+          <linearGradient id="vis-chart" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#ff6a00" stopOpacity="0" />
+            <stop offset="100%" stopColor="#ff6a00" stopOpacity="0.45" />
+          </linearGradient>
+          <filter id="vis-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="22" stdDeviation="16" floodColor="#ff6a00" floodOpacity="0.32" />
+          </filter>
+          <clipPath id="vis-screen">
+            <rect x="168" y="62" width="144" height="248" rx="18" />
+          </clipPath>
+        </defs>
+
+        <ellipse cx="240" cy="392" rx="118" ry="16" fill="#000" opacity="0.5" />
+
+        <g filter="url(#vis-glow)" className="floaty">
+          <rect x="154" y="42" width="172" height="292" rx="36" fill="url(#vis-body)" stroke="url(#vis-stroke)" strokeWidth="2" />
+          <rect x="168" y="62" width="144" height="248" rx="18" fill="#08080c" />
+          <rect x="168" y="62" width="144" height="248" rx="18" fill="url(#vis-glass)" />
+          <g clipPath="url(#vis-screen)">
+            <rect x="180" y="76" width="52" height="8" rx="4" fill="url(#vis-stroke)" />
+            <rect x="180" y="92" width="88" height="6" rx="3" fill="#2a2a34" />
+            <rect x="180" y="112" width="120" height="72" rx="14" fill="#12121a" />
+            <circle cx="216" cy="148" r="18" fill="#1a1a24" stroke="#ff8c1a" strokeWidth="2" />
+            <path d="M212 140v16l14-8-14-8Z" fill="url(#vis-stroke)" />
+            <rect x="244" y="128" width="44" height="7" rx="3.5" fill="#2c2c36" />
+            <rect x="244" y="142" width="32" height="6" rx="3" fill="#2c2c36" />
+            <path d="M180 248h120V196H180Z" fill="url(#vis-chart)" />
+            <path
+              d="M180 236c18-6 28-28 44-32 18-4 24 10 40 6 14-4 24-22 36-28"
+              stroke="url(#vis-stroke)"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            <circle cx="300" cy="182" r="5" fill="#ffc46b" />
+            <rect x="184" y="262" width="18" height="28" rx="5" fill="#1c1c24" />
+            <rect x="208" y="250" width="18" height="40" rx="5" fill="#2a2118" />
+            <rect x="232" y="242" width="18" height="48" rx="5" fill="#ff6a00" opacity="0.85" />
+            <rect x="256" y="228" width="18" height="62" rx="5" fill="url(#vis-stroke)" />
+            <rect x="280" y="218" width="18" height="72" rx="5" fill="#ffc46b" />
+          </g>
+          <circle cx="240" cy="322" r="8" stroke="#ff6a00" strokeWidth="2" />
+        </g>
+
+        <g className="floaty-slow">
+          <rect x="36" y="112" width="88" height="88" rx="24" fill="#121218" stroke="#ff8c1a" strokeWidth="1.6" />
+          <path
+            d="M52 156c10-18 26-28 28-28s18 10 28 28c-10 18-26 28-28 28s-18-10-28-28Z"
+            stroke="url(#vis-stroke)"
+            strokeWidth="3"
+          />
+          <circle cx="80" cy="156" r="8" fill="url(#vis-stroke)" />
+        </g>
+
+        <g className="floaty">
+          <circle cx="400" cy="96" r="38" fill="url(#vis-stroke)" />
+          <path
+            d="M400 118c-22-16-28-30-28-40 0-12 10-18 20-18 8 0 12 4 8 12 4-8 8-12 16-12 10 0 20 6 20 18 0 10-6 24-28 40Z"
+            fill="#1a0a00"
+          />
+        </g>
+
+        <g className="floaty-slow">
+          <rect x="368" y="228" width="86" height="86" rx="24" fill="#121218" stroke="#ffc46b" strokeWidth="1.8" />
+          <path d="M396 248h30l-12 18h16L392 298l10-22h-18z" fill="url(#vis-stroke)" />
+        </g>
+
+        <g className="floaty">
+          <rect x="46" y="248" width="64" height="64" rx="18" fill="#101018" stroke="#dd2a7b" strokeWidth="1.6" />
+          <rect x="62" y="264" width="32" height="32" rx="10" stroke="#fff" strokeWidth="2.4" />
+          <circle cx="78" cy="280" r="8" stroke="#fff" strokeWidth="2.4" />
+          <circle cx="90" cy="268" r="2.5" fill="#fff" />
+        </g>
+
+        <g className="floaty-slow">
+          <rect x="388" y="156" width="56" height="40" rx="12" fill="#cc0000" />
+          <path d="M408 168v16l14-8-14-8Z" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+  );
+}

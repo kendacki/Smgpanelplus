@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Check, Shield, Wallet, Zap } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
-import { GlobeArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
+import { VisibilityArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -154,7 +154,7 @@ export default async function HomePage() {
             </ul>
           </div>
           <div className="flex justify-center">
-            <GlobeArt />
+            <VisibilityArt />
           </div>
         </div>
       </section>
