@@ -44,8 +44,8 @@ export default async function HomePage() {
     <SiteShell>
       <section className="relative overflow-hidden">
         <div className="mesh absolute inset-0 opacity-30" />
-        <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 pt-4 md:px-6 lg:grid-cols-2 lg:pt-2 lg:pb-0">
-          <div>
+        <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 pt-8 md:px-6 lg:grid-cols-2 lg:pt-6 lg:pb-0">
+          <div className="pt-10 md:pt-16 lg:pt-24">
             <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
               Grow your audience across <span className="gradient-text">Africa</span>
             </h1>
