@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Check, Shield, Wallet, Zap } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
-import { SignInForm } from "@/components/sign-in-form";
-import { GlobeArt, HeroArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
+import { GlobeArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -44,7 +44,7 @@ export default async function HomePage() {
     <SiteShell>
       <section className="relative overflow-hidden">
         <div className="mesh absolute inset-0 opacity-30" />
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 md:px-6 lg:grid-cols-2 lg:py-20">
+        <div className="mx-auto grid max-w-7xl items-end gap-6 px-4 pt-14 md:px-6 lg:grid-cols-2 lg:pt-10 lg:pb-0">
           <div>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-smg/30 bg-smg/10 px-3 py-1 text-xs font-semibold text-orange-200">
               SMM panel for Nigeria, Ghana & Kenya
@@ -71,22 +71,17 @@ export default async function HomePage() {
                 </span>
               ))}
             </div>
-            <div className="mt-10 hidden max-w-sm lg:block">
-              <HeroArt />
-            </div>
           </div>
-          <div>
-            <Card className="mx-auto max-w-md orange-ring">
-              <h2 className="font-display text-2xl font-semibold">Sign in</h2>
-              <p className="mb-6 mt-1 text-sm text-white/55">Continue to your wallet and orders.</p>
-              <SignInForm compact />
-              <p className="mt-4 text-center text-sm text-white/50">
-                New here?{" "}
-                <Link href="/register" className="text-smg">
-                  Create an account
-                </Link>
-              </p>
-            </Card>
+          <div className="relative mx-auto h-[420px] w-full max-w-md overflow-hidden sm:h-[520px] lg:h-[640px] lg:max-w-none">
+            <div className="absolute inset-x-10 bottom-28 h-36 rounded-full bg-smg/25 blur-3xl" />
+            <Image
+              src="/hero-portrait.png"
+              alt="SMG Panel"
+              width={736}
+              height={981}
+              priority
+              className="absolute inset-x-0 -bottom-6 mx-auto h-[108%] w-auto max-w-none object-contain object-bottom drop-shadow-[0_24px_50px_rgba(255,106,0,0.22)] [mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)]"
+            />
           </div>
         </div>
       </section>
