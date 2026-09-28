@@ -63,14 +63,13 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="relative mx-auto h-[420px] w-full max-w-md overflow-hidden sm:h-[520px] lg:h-[640px] lg:max-w-none">
-            <div className="absolute inset-x-10 bottom-28 h-36 rounded-full bg-smg/25 blur-3xl" />
             <Image
               src="/hero-portrait.png"
               alt="SMG Panel"
               width={736}
               height={981}
               priority
-              className="absolute inset-x-0 -bottom-6 mx-auto h-[108%] w-auto max-w-none object-contain object-bottom drop-shadow-[0_24px_50px_rgba(255,106,0,0.22)] [mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)]"
+              className="absolute inset-x-0 -bottom-6 mx-auto h-[108%] w-auto max-w-none object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_68%,transparent_100%)]"
             />
           </div>
         </div>
