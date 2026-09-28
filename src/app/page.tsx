@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Check, Shield, Wallet, Zap } from "lucide-react";
+import { Check } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
-import { VisibilityArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
+import { VisibilityArt, PlatformMark, Flag3D, ProductArt, FeatureArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -178,13 +178,13 @@ export default async function HomePage() {
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { icon: Zap, title: "Fast start", body: "Most view and like services begin within minutes." },
-            { icon: Shield, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
-            { icon: Wallet, title: "Local checkout", body: "Fund once, spend across every platform." },
+            { kind: "fast" as const, title: "Fast start", body: "Most view and like services begin within minutes." },
+            { kind: "private" as const, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
+            { kind: "checkout" as const, title: "Local checkout", body: "Fund once, spend across every platform." },
           ].map((item) => (
             <Card key={item.title} className="lift">
-              <item.icon className="h-7 w-7 text-smg" />
-              <h3 className="mt-4 text-xl font-semibold">{item.title}</h3>
+              <FeatureArt kind={item.kind} />
+              <h3 className="mt-1 text-xl font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm text-white/60">{item.body}</p>
             </Card>
           ))}

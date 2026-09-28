@@ -310,3 +310,71 @@ export function VisibilityArt() {
     </div>
   );
 }
+
+export function FeatureArt({ kind }: { kind: "fast" | "private" | "checkout" }) {
+  return (
+    <svg viewBox="0 0 220 140" className="mb-1 h-28 w-full tilt-3d" fill="none">
+      <defs>
+        <linearGradient id={`fa-${kind}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffc46b" />
+          <stop offset="55%" stopColor="#ff6a00" />
+          <stop offset="100%" stopColor="#c2410c" />
+        </linearGradient>
+        <linearGradient id={`fb-${kind}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a2a34" />
+          <stop offset="100%" stopColor="#0c0c12" />
+        </linearGradient>
+        <linearGradient id={`ftop-${kind}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffd89a" />
+          <stop offset="100%" stopColor="#ff6a00" />
+        </linearGradient>
+        <filter id={`fs-${kind}`} x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="0" dy="10" stdDeviation="8" floodColor="#ff6a00" floodOpacity="0.28" />
+        </filter>
+      </defs>
+      <ellipse cx="110" cy="126" rx="72" ry="8" fill="#000" opacity="0.38" />
+
+      {kind === "fast" && (
+        <g filter={`url(#fs-${kind})`}>
+          <path d="M40 96 92 70l88 16v36L92 106 40 96Z" fill="#101018" />
+          <path d="M40 96 92 70l88 16-52 26Z" fill={`url(#ftop-${kind})`} opacity="0.35" />
+          <path d="M92 70l88 16v36L92 106Z" fill="#ff6a00" opacity="0.18" />
+          <path d="M118 22 148 62h-22l18 42-52-48h24L118 22Z" fill={`url(#fa-${kind})`} />
+          <path d="M118 22 128 24 156 62h-8L148 62 118 22Z" fill="#ffd89a" opacity="0.55" />
+          <path d="M144 62h-18l16 38 8-10-6-28Z" fill="#9a3100" opacity="0.55" />
+          <path d="M44 54h28M38 66h22M50 78h18" stroke="#ffc46b" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+          <circle cx="176" cy="40" r="16" fill="#121218" stroke="#ffc46b" strokeWidth="1.6" />
+          <path d="M176 32v8l6 4" stroke="#ff6a00" strokeWidth="2.4" strokeLinecap="round" />
+        </g>
+      )}
+
+      {kind === "private" && (
+        <g filter={`url(#fs-${kind})`}>
+          <path d="M78 28 142 48v42c0 22-28 38-54 48-26-10-54-26-54-48V48Z" fill={`url(#fb-${kind})`} stroke={`url(#fa-${kind})`} strokeWidth="1.8" />
+          <path d="M78 28 142 48 110 62 46 42Z" fill={`url(#ftop-${kind})`} opacity="0.9" />
+          <path d="M142 48v42c0 22-28 38-54 48V62Z" fill="#ff6a00" opacity="0.28" />
+          <path d="M46 42 110 62v76c-26-10-54-26-54-48V42Z" fill="#000" opacity="0.28" />
+          <rect x="92" y="68" width="36" height="28" rx="6" fill="#101018" stroke="#ffc46b" strokeWidth="1.5" />
+          <path d="M100 68v-8a10 10 0 0 1 20 0v8" stroke="#ffc46b" strokeWidth="2.4" />
+          <circle cx="110" cy="82" r="3.5" fill={`url(#fa-${kind})`} />
+        </g>
+      )}
+
+      {kind === "checkout" && (
+        <g filter={`url(#fs-${kind})`}>
+          <path d="M52 78 110 52l78 22v38L110 138 52 116Z" fill={`url(#fb-${kind})`} stroke={`url(#fa-${kind})`} strokeWidth="1.6" />
+          <path d="M52 78 110 52l78 22-58 26Z" fill={`url(#ftop-${kind})`} opacity="0.55" />
+          <path d="M110 74l78 22v38L110 138Z" fill="#ff6a00" opacity="0.22" />
+          <path d="M68 70 118 48l36 10-50 24Z" fill="#1a1a24" stroke="#ffc46b" strokeWidth="1.2" />
+          <path d="M74 64 122 44l32 9-48 22Z" fill="#14141c" stroke="#ff8c1a" strokeWidth="1.2" />
+          <path d="M80 58 128 40l28 8-46 20Z" fill={`url(#fa-${kind})`} />
+          <ellipse cx="86" cy="98" rx="14" ry="10" fill={`url(#fa-${kind})`} />
+          <ellipse cx="86" cy="96" rx="14" ry="10" fill="#ffd89a" opacity="0.35" />
+          <path d="M86 90v12M80 96h12" stroke="#1a0a00" strokeWidth="1.6" />
+          <rect x="118" y="92" width="42" height="10" rx="5" fill="#2a2a34" />
+          <rect x="118" y="106" width="28" height="8" rx="4" fill="#ff6a00" opacity="0.8" />
+        </g>
+      )}
+    </svg>
+  );
+}
