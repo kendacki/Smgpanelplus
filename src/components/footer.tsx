@@ -8,8 +8,8 @@ export function Footer() {
         <div className="md:col-span-2">
           <Logo />
           <p className="mt-4 max-w-sm text-sm text-white/55">
-            SMG Panel is the affordable SMM panel for African creators, brands and resellers.
-            Fast delivery, local payments, and a full API.
+            African SMM growth for creators, brands and resellers. Local payments, fast delivery,
+            full API.
           </p>
         </div>
         <div>

@@ -1,130 +1,89 @@
 import Link from "next/link";
-import {
-  Check,
-  Cpu,
-  Headphones,
-  Lock,
-  PanelsTopLeft,
-  Rocket,
-  Shield,
-  Smartphone,
-  Star,
-  Timer,
-  Wallet,
-  Zap,
-} from "lucide-react";
+import { Check, Shield, Wallet, Zap } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
 import { SignInForm } from "@/components/sign-in-form";
+import { GlobeArt, HeroArt, IsoCube, PlatformMark } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
 const steps = [
-  { n: "1", title: "Register", body: "Sign up with your email and create an account to get started." },
-  { n: "2", title: "Add Funds", body: "Top up your wallet with Paystack, M-Pesa, MoMo, bank or USDT." },
-  { n: "3", title: "Select Service", body: "Browse Instagram, TikTok, YouTube, Facebook and more." },
-  { n: "4", title: "Paste Account Link", body: "Submit the URL required for the service. Check the example first." },
-  { n: "5", title: "Submit", body: "Complete your request and we process it for fast results." },
+  { n: "1", title: "Create an account", body: "Sign up in under a minute." },
+  { n: "2", title: "Fund your wallet", body: "Pay with cards, bank, M-Pesa or MoMo." },
+  { n: "3", title: "Pick a service", body: "Followers, likes, views or comments." },
+  { n: "4", title: "Paste the link", body: "We start delivery from the dashboard." },
 ];
 
 const reviews = [
   {
     name: "Kunle",
     place: "Lagos",
-    quote:
-      "As a business owner I wanted local buyers. SMG's Nigerian comment service gave my page more local engagement, and now I get more inquiries.",
-  },
-  {
-    name: "Efua",
-    place: "Cape Coast",
-    quote:
-      "My Telegram posts were falling flat. SMG Panel sparked real conversations and the comments started rolling in.",
+    quote: "Local comments made my shop page feel alive. Inquiries went up the same week.",
   },
   {
     name: "Amani",
     place: "Nairobi",
-    quote:
-      "Going live on TikTok used to feel like talking to myself. Live comments made my streams feel alive. This is the sauce.",
+    quote: "TikTok lives used to be quiet. SMG comments made the room feel full.",
   },
   {
-    name: "Akosua Styles",
+    name: "Akosua",
     place: "Accra",
-    quote: "I run a thrift page in Accra. SMG Panel helped me gain real followers in under two weeks.",
+    quote: "My thrift page gained real momentum in two weeks. Pricing was honest.",
   },
 ];
 
 export default async function HomePage() {
-  const [orderCount, userCount, cheapest, faqs, posts] = await Promise.all([
+  const [orderCount, userCount, cheapest, faqs] = await Promise.all([
     prisma.order.count(),
     prisma.user.count(),
     prisma.service.findFirst({ orderBy: { rate: "asc" } }),
     prisma.faq.findMany({ orderBy: { sortOrder: "asc" }, take: 4 }),
-    prisma.blogPost.findMany({ where: { published: true }, orderBy: { createdAt: "desc" }, take: 3 }),
   ]);
 
   return (
     <SiteShell>
       <section className="relative overflow-hidden">
-        <div className="mesh absolute inset-0 opacity-40" />
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 md:px-6 lg:grid-cols-2 lg:py-24">
+        <div className="mesh absolute inset-0 opacity-30" />
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 md:px-6 lg:grid-cols-2 lg:py-20">
           <div>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-smg/30 bg-smg/10 px-3 py-1 text-xs font-semibold text-orange-200">
-              Top SMM Panel in Nigeria & Africa
+              SMM panel for Nigeria, Ghana & Kenya
             </p>
-            <h1 className="font-display text-4xl font-semibold leading-tight md:text-6xl">
-              Want To Boost Your <span className="gradient-text">SOCIAL MEDIA</span> all round Africa with Ease?
+            <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
+              Grow your audience across <span className="gradient-text">Africa</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/65">
-              You&apos;ve found a trusted, legit and affordable SMM panel built for influencers, brands and
-              businesses. Get authentic followers, likes and engagement — fast.
+              Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in NGN, GHS or
+              KES — then track every order in one dashboard.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href="/register">
-                <Button className="px-8 py-3 text-base">Get Started</Button>
+                <Button className="px-8 py-3 text-base">Start growing</Button>
               </Link>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="flex text-smg">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-current" />
-                  ))}
-                </div>
-                <span className="text-white/70">Excellent 4.8 / 5</span>
-              </div>
+              <Link href="/services">
+                <Button variant="outline">Browse services</Button>
+              </Link>
             </div>
-            <div className="mt-8 flex flex-wrap gap-4 text-sm text-white/75">
-              <span className="inline-flex items-center gap-2">
-                <Check className="h-4 w-4 text-smg" /> Child Panel for resellers
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Check className="h-4 w-4 text-smg" /> Cheapest panel in Africa
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Check className="h-4 w-4 text-smg" /> Fully integrated API
-              </span>
+            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/70">
+              {["Local payments", "Reseller API", "No password required"].map((item) => (
+                <span key={item} className="inline-flex items-center gap-2">
+                  <Check className="h-4 w-4 text-smg" /> {item}
+                </span>
+              ))}
+            </div>
+            <div className="mt-10 hidden max-w-sm lg:block">
+              <HeroArt />
             </div>
           </div>
-
-          <div className="relative">
-            <div className="floaty orange-ring absolute -left-6 top-10 hidden h-64 w-40 rounded-[2.2rem] border border-white/10 bg-gradient-to-b from-[#1a1a1a] to-black p-3 lg:block">
-              <div className="h-full rounded-[1.6rem] bg-[#0b0b0b] p-3">
-                <div className="smg-gradient mb-3 h-2 w-16 rounded-full" />
-                <div className="space-y-2">
-                  <div className="h-16 rounded-2xl bg-white/5" />
-                  <div className="h-8 rounded-xl bg-white/5" />
-                  <div className="h-8 rounded-xl bg-white/5" />
-                </div>
-              </div>
-            </div>
-            <Card className="relative z-10 ml-auto max-w-md orange-ring">
-              <h2 className="font-display text-2xl font-semibold">SIGN IN</h2>
-              <p className="mb-6 mt-1 text-sm text-white/55">
-                Access your account and take control of your social media growth
-              </p>
+          <div>
+            <Card className="mx-auto max-w-md orange-ring">
+              <h2 className="font-display text-2xl font-semibold">Sign in</h2>
+              <p className="mb-6 mt-1 text-sm text-white/55">Continue to your wallet and orders.</p>
               <SignInForm compact />
               <p className="mt-4 text-center text-sm text-white/50">
-                Don&apos;t have an account?{" "}
+                New here?{" "}
                 <Link href="/register" className="text-smg">
-                  Sign up
+                  Create an account
                 </Link>
               </p>
             </Card>
@@ -132,156 +91,128 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-white/8 bg-[#0a0a0a]">
+      <section className="border-y border-white/8 bg-panel/80">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-3 md:px-6">
           {[
-            {
-              title: "How to use SMG Panel in Kenya",
-              body: "Switch currency to KES, add funds with M-Pesa, then place orders from the dashboard.",
-              href: "/register",
-            },
-            {
-              title: "How to use SMG Panel in Ghana",
-              body: "Switch currency to GHS and top up with MoMo. Prices update instantly.",
-              href: "/register",
-            },
-            {
-              title: "How to use SMG Panel in Nigeria",
-              body: "Pay with Paystack, Flutterwave or bank transfer in NGN. Start from ₦20 / 1K views.",
-              href: "/register",
-            },
-          ].map((item) => (
-            <Card key={item.title}>
-              <h3 className="font-display text-xl">{item.title}</h3>
-              <p className="mt-2 text-sm text-white/60">{item.body}</p>
-              <Link href={item.href} className="mt-4 inline-block text-sm text-smg">
-                Sign Up →
-              </Link>
-            </Card>
+            ["Nigeria", "Paystack, Flutterwave and bank transfer in NGN."],
+            ["Ghana", "MoMo and cards with prices in GHS."],
+            ["Kenya", "M-Pesa and Airtel-friendly KES checkout."],
+          ].map(([title, body]) => (
+            <div key={title} className="flex items-start gap-4 rounded-3xl border border-white/8 bg-black/30 p-5">
+              <IsoCube title={title} />
+              <div>
+                <h3 className="font-display text-xl">{title}</h3>
+                <p className="mt-1 text-sm text-white/55">{body}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <p className="text-center text-xs tracking-[0.3em] text-smg">EXPLORE OUR SERVICES</p>
-        <h2 className="mx-auto mt-3 max-w-3xl text-center font-display text-3xl font-semibold md:text-5xl">
-          Fast, affordable and reliable growth for the top SMM panel in Africa
+        <p className="text-center text-xs tracking-[0.28em] text-smg">WHAT YOU CAN RUN</p>
+        <h2 className="mx-auto mt-3 max-w-2xl text-center font-display text-3xl font-semibold md:text-5xl">
+          One panel for orders, bulk work and resale
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
             {
-              icon: Zap,
-              title: "Single Order",
-              body: "Need a quick boost? Place targeted likes, followers or views in a few clicks.",
+              title: "Single order",
+              body: "Boost one post or profile in a few clicks.",
               href: "/dashboard",
+              accent: "#ff6a00",
             },
             {
-              icon: Rocket,
-              title: "Mass Order",
-              body: "Managing multiple campaigns? Paste bulk lines and run them like a pro.",
+              title: "Mass order",
+              body: "Paste many links and launch campaigns together.",
               href: "/dashboard/mass-order",
+              accent: "#ff8c1a",
             },
             {
-              icon: PanelsTopLeft,
-              title: "Child Panel",
-              body: "Dreaming of your own SMM panel? Resell SMG services with your own brand.",
+              title: "Child panel",
+              body: "Resell SMG under your brand with the API.",
               href: "/child-panel",
+              accent: "#ffc46b",
             },
           ].map((item) => (
-            <Card key={item.title} className="hover:orange-ring transition">
-              <item.icon className="h-10 w-10 text-smg" />
-              <h3 className="mt-4 font-display text-2xl">{item.title}</h3>
-              <p className="mt-2 text-sm text-white/60">{item.body}</p>
-              <Link href={item.href} className="mt-5 inline-flex text-sm font-medium text-smg">
-                {item.title} →
-              </Link>
-            </Card>
+            <Link key={item.title} href={item.href}>
+              <Card className="lift h-full">
+                <IsoCube title={item.title} accent={item.accent} />
+                <h3 className="mt-2 font-display text-2xl">{item.title}</h3>
+                <p className="mt-2 text-sm text-white/60">{item.body}</p>
+                <p className="mt-5 text-sm font-medium text-smg">Open →</p>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-[#1a0d00] to-black">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 md:grid-cols-2 md:px-6">
+      <section className="bg-gradient-to-br from-[#1a0e04] via-black to-[#0b0b10]">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 md:grid-cols-2 md:px-6">
           <div>
-            <p className="text-smg">Get authentic African engagement</p>
-            <h2 className="mt-2 font-display text-4xl font-semibold">
-              Let&apos;s help you grow your visibility the smart way
-            </h2>
+            <p className="text-smg">Built for African creators</p>
+            <h2 className="mt-2 font-display text-4xl font-semibold">Visibility without the guesswork</h2>
             <p className="mt-4 text-white/65">
-              Even when your content is fire, growth can feel impossible without the right push. Your reels
-              are stuck, you post daily with few likes, your videos are lit but the page is not moving.
+              Put distribution behind content that already works. SMG is for shops, musicians and
+              pages that need reach — not noise.
             </p>
             <ul className="mt-6 space-y-3 text-white/80">
               {[
-                "Nigerian, Ghanaian and Kenyan audience packages",
-                "Affordable boosts with MoMo, M-Pesa and cards",
-                "TikTok, Instagram, Facebook, YouTube and Telegram",
+                "Packages aimed at Nigerian, Ghanaian and Kenyan audiences",
+                "Instagram, TikTok, YouTube, Facebook, Telegram and Spotify",
+                "We never ask for your social password",
               ].map((line) => (
                 <li key={line} className="flex gap-2">
-                  <Check className="mt-0.5 h-5 w-5 text-smg" /> {line}
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-smg" /> {line}
                 </li>
               ))}
             </ul>
-            <Link href="/register" className="mt-8 inline-block">
-              <Button>Get Started Now</Button>
-            </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              ["Ghanaian Audiences", "Real engagement from people who understand the content"],
-              ["Affordable Packages", "MoMo-friendly pricing that respects African budgets"],
-              ["Multi-Platform", "IG, TikTok, Facebook, YouTube, Telegram, Spotify"],
-              ["Trusted Service", "Used by creators, stores and resellers across Africa"],
-            ].map(([title, body]) => (
-              <div key={title} className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <h3 className="font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-white/55">{body}</p>
-              </div>
-            ))}
+          <div className="flex justify-center">
+            <GlobeArt />
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <h2 className="text-center font-display text-4xl font-semibold">Why you should choose us</h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 rounded-3xl border border-smg/25 bg-smg/10 p-8 text-center md:grid-cols-3">
+          <div>
+            <p className="font-display text-4xl font-semibold text-smg">
+              {cheapest ? formatMoney(cheapest.rate, "NGN") : "₦20"}/1K
+            </p>
+            <p className="text-sm text-white/60">From</p>
+          </div>
+          <div>
+            <p className="font-display text-4xl font-semibold">{(12000 + orderCount).toLocaleString()}+</p>
+            <p className="text-sm text-white/60">Orders processed</p>
+          </div>
+          <div>
+            <p className="font-display text-4xl font-semibold">{(1800 + userCount).toLocaleString()}+</p>
+            <p className="text-sm text-white/60">Active users</p>
+          </div>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { icon: Timer, title: "On-Time Delivery", body: "Right place, right time. We start orders quickly and keep you updated in the dashboard." },
-            { icon: Lock, title: "Secure & Private", body: "SSL, hashed passwords and httpOnly sessions. We never ask for your social password." },
-            { icon: Headphones, title: "24/7 Helpline", body: "Tickets and support for order or service questions, day or night." },
+            { icon: Zap, title: "Fast start", body: "Most view and like services begin within minutes." },
+            { icon: Shield, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
+            { icon: Wallet, title: "Local checkout", body: "Fund once, spend across every platform." },
           ].map((item) => (
-            <Card key={item.title}>
-              <item.icon className="h-8 w-8 text-smg" />
+            <Card key={item.title} className="lift">
+              <item.icon className="h-7 w-7 text-smg" />
               <h3 className="mt-4 text-xl font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm text-white/60">{item.body}</p>
             </Card>
           ))}
         </div>
-        <div className="mt-12 grid gap-4 rounded-3xl border border-smg/30 bg-smg/10 p-8 text-center md:grid-cols-3">
-          <div>
-            <p className="font-display text-4xl font-semibold text-smg">
-              {cheapest ? formatMoney(cheapest.rate, "NGN") : "₦20"}/1K
-            </p>
-            <p className="text-sm text-white/60">Starting price</p>
-          </div>
-          <div>
-            <p className="font-display text-4xl font-semibold">{(7753367 + orderCount).toLocaleString()}</p>
-            <p className="text-sm text-white/60">Orders counting</p>
-          </div>
-          <div>
-            <p className="font-display text-4xl font-semibold">{(286547 + userCount).toLocaleString()}</p>
-            <p className="text-sm text-white/60">Active users</p>
-          </div>
-        </div>
       </section>
 
-      <section className="bg-[#0a0a0a] py-20">
+      <section className="bg-panel py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <p className="text-center text-xs tracking-[0.3em] text-smg">HOW TO GET STARTED</p>
-          <h2 className="mt-3 text-center font-display text-4xl">Five easy steps and you are good to go</h2>
-          <div className="mt-12 grid gap-4 md:grid-cols-5">
+          <p className="text-center text-xs tracking-[0.28em] text-smg">HOW IT WORKS</p>
+          <h2 className="mt-3 text-center font-display text-4xl">Four steps. Then we deliver.</h2>
+          <div className="mt-12 grid gap-4 md:grid-cols-4">
             {steps.map((step) => (
-              <div key={step.n} className="rounded-3xl border border-white/10 p-5">
+              <div key={step.n} className="rounded-3xl border border-white/10 bg-black/20 p-5">
                 <div className="smg-gradient mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full font-bold text-black">
                   {step.n}
                 </div>
@@ -294,50 +225,31 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <p className="text-center text-xs tracking-[0.3em] text-smg">WHAT&apos;S TRENDING</p>
-        <h2 className="mt-3 text-center font-display text-4xl">Top services for instant growth</h2>
+        <h2 className="text-center font-display text-4xl">Popular services</h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            ["IG Followers", "Boost credibility with high-quality Instagram followers — fast and refill-ready.", "/services?cat=instagram"],
-            ["TikTok Likes", "Go viral faster. More likes so your content can shine on For You pages.", "/services?cat=tiktok"],
-            ["Twitter Followers", "Build influence on X with quality followers and make your voice heard.", "/services?cat=twitter"],
-          ].map(([title, body, href]) => (
-            <Card key={title} className="flex flex-col">
-              <h3 className="font-display text-2xl">{title}</h3>
-              <p className="mt-2 flex-1 text-sm text-white/60">{body}</p>
-              <Link href={href} className="mt-6">
-                <Button variant="outline">Explore Service</Button>
+            { kind: "instagram" as const, title: "Instagram followers", href: "/services?cat=instagram" },
+            { kind: "tiktok" as const, title: "TikTok likes", href: "/services?cat=tiktok" },
+            { kind: "x" as const, title: "X / Twitter followers", href: "/services?cat=twitter" },
+          ].map((item) => (
+            <Card key={item.title} className="lift flex flex-col items-start">
+              <PlatformMark kind={item.kind} />
+              <h3 className="mt-4 font-display text-2xl">{item.title}</h3>
+              <Link href={item.href} className="mt-5">
+                <Button variant="outline">View rates</Button>
               </Link>
             </Card>
           ))}
         </div>
       </section>
 
-      <section className="bg-[#0a0a0a] py-20">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <h2 className="font-display text-4xl">Our blog</h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {posts.map((post) => (
-              <Link key={post.id} href={`/blog/${post.slug}`}>
-                <Card className="h-full hover:orange-ring">
-                  <p className="text-xs text-smg">{post.createdAt.toDateString()}</p>
-                  <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
-                  <p className="mt-2 text-sm text-white/55">{post.excerpt}</p>
-                  <p className="mt-4 text-sm text-smg">Read more →</p>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <h2 className="text-center font-display text-4xl">Reviews from happy customers</h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+      <section className="mx-auto max-w-7xl px-4 pb-8 md:px-6">
+        <h2 className="text-center font-display text-4xl">What customers say</h2>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {reviews.map((review) => (
             <Card key={review.name}>
               <p className="text-white/75">&ldquo;{review.quote}&rdquo;</p>
-              <div className="mt-4 flex items-center gap-3">
+              <div className="mt-5 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full smg-gradient font-bold text-black">
                   {review.name[0]}
                 </div>
@@ -351,9 +263,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pb-10 md:px-6">
+      <section className="mx-auto max-w-3xl px-4 py-16 md:px-6">
         <h2 className="text-center font-display text-4xl">FAQ</h2>
-        <div className="mt-8 space-y-4">
+        <div className="mt-8 space-y-3">
           {faqs.map((faq) => (
             <details key={faq.id} className="glass rounded-2xl px-5 py-4">
               <summary className="cursor-pointer font-medium">{faq.question}</summary>
@@ -365,30 +277,16 @@ export default async function HomePage() {
 
       <section className="px-4 pb-20 md:px-6">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] smg-gradient p-[1px]">
-          <div className="rounded-[2rem] bg-black px-8 py-14 text-center">
-            <h2 className="font-display text-4xl md:text-5xl">Post smarter. Engage bigger. Grow faster.</h2>
-            <p className="mt-3 text-white/60">Sign up now and watch your social media skyrocket.</p>
+          <div className="rounded-[2rem] bg-ink px-8 py-14 text-center">
+            <h2 className="font-display text-4xl md:text-5xl">Ready when your content is.</h2>
+            <p className="mt-3 text-white/60">Create an account, fund the wallet, place the order.</p>
             <div className="mt-8 flex justify-center gap-4">
               <Link href="/register">
-                <Button>Get Started</Button>
+                <Button>Create account</Button>
               </Link>
               <Link href="/services">
-                <Button variant="outline">See Services</Button>
+                <Button variant="outline">See prices</Button>
               </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/55">
-              <span className="inline-flex items-center gap-2">
-                <Smartphone className="h-4 w-4 text-smg" /> M-Pesa & MoMo
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Wallet className="h-4 w-4 text-smg" /> Cards & bank transfer
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Cpu className="h-4 w-4 text-smg" /> Reseller API
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Shield className="h-4 w-4 text-smg" /> SSL secure
-              </span>
             </div>
           </div>
         </div>

@@ -12,9 +12,9 @@ export default function LoginPage() {
       <div className="mx-auto grid min-h-[80vh] max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:px-6">
         <div>
           <Logo />
-          <h1 className="mt-8 font-display text-4xl font-semibold">Access your SMG account</h1>
+          <h1 className="mt-8 font-display text-4xl font-semibold">Welcome back</h1>
           <p className="mt-3 text-white/60">
-            Take control of your social media growth. Demo login: <b>demo</b> / <b>Password123!</b>
+            Sign in to place orders and fund your wallet.
           </p>
         </div>
         <Card className="orange-ring">

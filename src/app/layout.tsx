@@ -20,19 +20,18 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} | Best SMM Panel in Nigeria & Africa`,
+    default: `${SITE_NAME} | SMM Panel for Nigeria, Ghana & Kenya`,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "SMG Panel is a trusted, affordable SMM panel for Nigeria, Ghana and Kenya. Buy Instagram followers, TikTok likes, YouTube views and more with local payments.",
+    "Grow Instagram, TikTok and YouTube with SMG Panel. Local payments in NGN, GHS and KES.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} | Best SMM Panel in Nigeria & Africa`,
-    description:
-      "Trusted SMM panel for Nigeria, Ghana and Kenya. Followers, likes, views and reseller API.",
+    title: `${SITE_NAME} | SMM Panel for Nigeria, Ghana & Kenya`,
+    description: "Followers, likes and views with local African payments and a reseller API.",
   },
   icons: { icon: "/logo.png" },
 };

@@ -52,8 +52,11 @@ export function Header() {
           <Link href="/blog" className="hover:text-white">
             Blog
           </Link>
+          <Link href="/faq" className="hover:text-white">
+            FAQ
+          </Link>
           <Link href="/child-panel" className="hover:text-white">
-            Child Panel
+            Resellers
           </Link>
           <Link href="/api-docs" className="hover:text-white">
             API
@@ -86,8 +89,14 @@ export function Header() {
           <Link href="/blog" onClick={() => setOpen(false)} className="block">
             Blog
           </Link>
+          <Link href="/faq" onClick={() => setOpen(false)} className="block">
+            FAQ
+          </Link>
           <Link href="/child-panel" onClick={() => setOpen(false)} className="block">
-            Child Panel
+            Resellers
+          </Link>
+          <Link href="/api-docs" onClick={() => setOpen(false)} className="block">
+            API
           </Link>
           <CurrencySelect value={currency} onChange={setCurrency} fullWidth />
           <div className="flex gap-2">

@@ -46,9 +46,9 @@ export default function RegisterPage() {
       <div className="mx-auto grid min-h-[80vh] max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:px-6">
         <div>
           <p className="text-smg">Create account</p>
-          <h1 className="mt-3 font-display text-4xl font-semibold">Start growing with SMG Panel</h1>
+          <h1 className="mt-3 font-display text-4xl font-semibold">Create your SMG account</h1>
           <p className="mt-3 text-white/60">
-            Wallet, API, mass orders and child panels — all in one African SMM panel.
+            Wallet, orders and a reseller API — priced for Africa.
           </p>
         </div>
         <Card className="orange-ring">
