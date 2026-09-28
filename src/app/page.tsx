@@ -3,7 +3,7 @@ import { Check, Shield, Wallet, Zap } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
 import { SignInForm } from "@/components/sign-in-form";
-import { GlobeArt, HeroArt, IsoCube, PlatformMark, Flag3D } from "@/components/illustrations";
+import { GlobeArt, HeroArt, PlatformMark, Flag3D, ProductArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -120,24 +120,24 @@ export default async function HomePage() {
               title: "Single order",
               body: "Boost one post or profile in a few clicks.",
               href: "/dashboard",
-              accent: "#ff6a00",
+              kind: "single" as const,
             },
             {
               title: "Mass order",
               body: "Paste many links and launch campaigns together.",
               href: "/dashboard/mass-order",
-              accent: "#ff8c1a",
+              kind: "mass" as const,
             },
             {
               title: "Child panel",
               body: "Resell SMG under your brand with the API.",
               href: "/child-panel",
-              accent: "#ffc46b",
+              kind: "panel" as const,
             },
           ].map((item) => (
             <Link key={item.title} href={item.href}>
               <Card className="lift h-full">
-                <IsoCube title={item.title} accent={item.accent} />
+                <ProductArt kind={item.kind} />
                 <h3 className="mt-2 font-display text-2xl">{item.title}</h3>
                 <p className="mt-2 text-sm text-white/60">{item.body}</p>
                 <p className="mt-5 text-sm font-medium text-smg">Open →</p>

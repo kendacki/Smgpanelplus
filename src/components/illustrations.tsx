@@ -110,6 +110,72 @@ export function Flag3D({ country }: { country: "Nigeria" | "Ghana" | "Kenya" }) 
   );
 }
 
+export function ProductArt({ kind }: { kind: "single" | "mass" | "panel" }) {
+  return (
+    <svg viewBox="0 0 220 140" className="mb-2 h-28 w-full tilt-3d" fill="none">
+      <defs>
+        <linearGradient id={`pa-${kind}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffc46b" />
+          <stop offset="55%" stopColor="#ff6a00" />
+          <stop offset="100%" stopColor="#c2410c" />
+        </linearGradient>
+        <linearGradient id={`pb-${kind}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a2a34" />
+          <stop offset="100%" stopColor="#0c0c12" />
+        </linearGradient>
+        <filter id={`ps-${kind}`} x="-15%" y="-15%" width="130%" height="140%">
+          <feDropShadow dx="0" dy="10" stdDeviation="8" floodColor="#ff6a00" floodOpacity="0.22" />
+        </filter>
+      </defs>
+      <ellipse cx="110" cy="126" rx="70" ry="8" fill="#000" opacity="0.35" />
+
+      {kind === "single" && (
+        <g filter={`url(#ps-${kind})`}>
+          <rect x="48" y="22" width="110" height="88" rx="18" fill={`url(#pb-${kind})`} stroke={`url(#pa-${kind})`} strokeWidth="1.6" />
+          <rect x="62" y="36" width="54" height="8" rx="4" fill={`url(#pa-${kind})`} />
+          <rect x="62" y="52" width="82" height="28" rx="10" fill="#16161e" />
+          <circle cx="76" cy="66" r="8" fill={`url(#pa-${kind})`} />
+          <rect x="90" y="60" width="42" height="6" rx="3" fill="#2c2c36" />
+          <rect x="90" y="70" width="28" height="6" rx="3" fill="#2c2c36" />
+          <rect x="62" y="88" width="36" height="10" rx="5" fill={`url(#pa-${kind})`} />
+          <path d="M148 86l28 10-10 6 8 18-12-4-8 14-6-44Z" fill={`url(#pa-${kind})`} />
+          <path d="M154 96l8 3" stroke="#1a0a00" strokeWidth="2" />
+        </g>
+      )}
+
+      {kind === "mass" && (
+        <g filter={`url(#ps-${kind})`}>
+          <rect x="86" y="18" width="92" height="62" rx="14" fill="#14141c" stroke="#ffc46b" strokeWidth="1.4" transform="rotate(8 132 49)" />
+          <rect x="70" y="28" width="92" height="62" rx="14" fill="#181820" stroke="#ff8c1a" strokeWidth="1.4" transform="rotate(3 116 59)" />
+          <rect x="42" y="36" width="100" height="68" rx="16" fill={`url(#pb-${kind})`} stroke={`url(#pa-${kind})`} strokeWidth="1.6" />
+          <rect x="56" y="50" width="72" height="7" rx="3.5" fill={`url(#pa-${kind})`} />
+          <rect x="56" y="64" width="64" height="6" rx="3" fill="#2a2a34" />
+          <rect x="56" y="76" width="52" height="6" rx="3" fill="#2a2a34" />
+          <rect x="56" y="88" width="28" height="6" rx="3" fill="#2a2a34" />
+          <circle cx="168" cy="42" r="16" fill={`url(#pa-${kind})`} />
+          <path d="M163 42h10M168 37v10" stroke="#1a0a00" strokeWidth="2.4" strokeLinecap="round" />
+        </g>
+      )}
+
+      {kind === "panel" && (
+        <g filter={`url(#ps-${kind})`}>
+          <rect x="36" y="28" width="118" height="78" rx="16" fill={`url(#pb-${kind})`} stroke={`url(#pa-${kind})`} strokeWidth="1.6" />
+          <rect x="48" y="40" width="28" height="54" rx="8" fill="#12121a" />
+          <rect x="52" y="46" width="20" height="5" rx="2.5" fill={`url(#pa-${kind})`} />
+          <rect x="52" y="56" width="16" height="4" rx="2" fill="#2c2c36" />
+          <rect x="52" y="64" width="16" height="4" rx="2" fill="#2c2c36" />
+          <rect x="86" y="40" width="56" height="24" rx="8" fill="#16161e" />
+          <rect x="86" y="70" width="26" height="24" rx="8" fill="#16161e" />
+          <rect x="116" y="70" width="26" height="24" rx="8" fill="#16161e" />
+          <rect x="138" y="18" width="52" height="42" rx="12" fill="#101018" stroke="#ffc46b" strokeWidth="1.5" />
+          <circle cx="164" cy="39" r="8" fill={`url(#pa-${kind})`} />
+          <path d="M154 86c18-6 28-18 32-34" stroke="#ff8c1a" strokeWidth="2" strokeDasharray="3 3" />
+        </g>
+      )}
+    </svg>
+  );
+}
+
 export function IsoCube({
   title,
   accent = "#ff6a00",
