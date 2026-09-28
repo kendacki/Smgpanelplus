@@ -378,3 +378,83 @@ export function FeatureArt({ kind }: { kind: "fast" | "private" | "checkout" }) 
     </svg>
   );
 }
+
+export function ResellerArt({ kind }: { kind: "brand" | "api" | "money" }) {
+  return (
+    <svg viewBox="0 0 220 140" className="mb-1 h-28 w-full tilt-3d" fill="none">
+      <defs>
+        <linearGradient id={`ra-${kind}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffc46b" />
+          <stop offset="55%" stopColor="#ff6a00" />
+          <stop offset="100%" stopColor="#c2410c" />
+        </linearGradient>
+        <linearGradient id={`rb-${kind}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a2a34" />
+          <stop offset="100%" stopColor="#0c0c12" />
+        </linearGradient>
+        <linearGradient id={`rtop-${kind}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffd89a" />
+          <stop offset="100%" stopColor="#ff6a00" />
+        </linearGradient>
+        <filter id={`rs-${kind}`} x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="0" dy="10" stdDeviation="8" floodColor="#ff6a00" floodOpacity="0.26" />
+        </filter>
+      </defs>
+      <ellipse cx="110" cy="126" rx="72" ry="8" fill="#000" opacity="0.38" />
+
+      {kind === "brand" && (
+        <g filter={`url(#rs-${kind})`}>
+          <path d="M48 78 110 52l72 24v40L110 140 48 118Z" fill={`url(#rb-${kind})`} stroke={`url(#ra-${kind})`} strokeWidth="1.6" />
+          <path d="M48 78 110 52l72 24-62 26Z" fill={`url(#rtop-${kind})`} opacity="0.4" />
+          <path d="M110 76l72 24v40L110 140Z" fill="#ff6a00" opacity="0.2" />
+          <rect x="72" y="86" width="28" height="28" rx="8" fill="#12121a" stroke="#ffc46b" strokeWidth="1.3" />
+          <rect x="108" y="86" width="44" height="12" rx="4" fill="#16161e" />
+          <rect x="108" y="102" width="32" height="8" rx="4" fill="#2a2a34" />
+          <path d="M92 22h36l8 12H84l8-12Z" fill={`url(#ra-${kind})`} />
+          <path d="M100 34v18h20V34" stroke="#ffc46b" strokeWidth="3" />
+          <circle cx="110" cy="22" r="14" fill="#101018" stroke="#ffd89a" strokeWidth="1.8" />
+          <path d="M110 14l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L110 26.4 105 29.2l1.2-5.6-4.2-3.8 5.6-.6Z" fill={`url(#ra-${kind})`} />
+        </g>
+      )}
+
+      {kind === "api" && (
+        <g filter={`url(#rs-${kind})`}>
+          <rect x="38" y="28" width="144" height="86" rx="18" fill={`url(#rb-${kind})`} stroke={`url(#ra-${kind})`} strokeWidth="1.6" />
+          <circle cx="56" cy="44" r="4" fill="#ff6a00" />
+          <circle cx="68" cy="44" r="4" fill="#ffc46b" />
+          <circle cx="80" cy="44" r="4" fill="#2a2a34" />
+          <rect x="52" y="58" width="72" height="7" rx="3.5" fill={`url(#ra-${kind})`} />
+          <rect x="52" y="70" width="96" height="6" rx="3" fill="#2a2a34" />
+          <rect x="52" y="82" width="54" height="6" rx="3" fill="#2a2a34" />
+          <rect x="52" y="94" width="80" height="6" rx="3" fill="#1c1c24" />
+          <g>
+            <circle cx="176" cy="36" r="18" fill="#121218" stroke="#ffc46b" strokeWidth="1.6" />
+            <path d="M168 36h16M176 28v16" stroke="#ff6a00" strokeWidth="2.2" strokeLinecap="round" />
+          </g>
+          <path d="M158 54c10 8 14 18 16 28" stroke="#ff8c1a" strokeWidth="2" strokeDasharray="3 3" />
+          <rect x="154" y="84" width="36" height="22" rx="8" fill="#101018" stroke="#ff8c1a" strokeWidth="1.4" />
+          <path d="M164 91h16M164 98h10" stroke="#ffc46b" strokeWidth="2" strokeLinecap="round" />
+        </g>
+      )}
+
+      {kind === "money" && (
+        <g filter={`url(#rs-${kind})`}>
+          <ellipse cx="86" cy="86" rx="28" ry="16" fill="#0b3d2a" />
+          <ellipse cx="86" cy="80" rx="28" ry="16" fill="#008751" />
+          <ellipse cx="86" cy="76" rx="28" ry="16" fill="#00a35e" />
+          <rect x="80" y="70" width="12" height="14" rx="2" fill="#fff" opacity="0.9" />
+          <ellipse cx="138" cy="72" rx="26" ry="15" fill="#8a1600" />
+          <ellipse cx="138" cy="66" rx="26" ry="15" fill="#CE1126" />
+          <ellipse cx="138" cy="62" rx="26" ry="15" fill="#FCD116" />
+          <path d="M138 54l3.2 7.4h7.8l-6.3 4.6 2.4 7.4-7.1-4.6-7.1 4.6 2.4-7.4-6.3-4.6h7.8Z" fill="#111" />
+          <ellipse cx="168" cy="96" rx="24" ry="14" fill="#004400" />
+          <ellipse cx="168" cy="90" rx="24" ry="14" fill="#BB0000" />
+          <ellipse cx="168" cy="86" rx="24" ry="14" fill="#111" />
+          <ellipse cx="168" cy="86" rx="7" ry="10" stroke="#FCD116" strokeWidth="1.6" />
+          <rect x="36" y="48" width="64" height="36" rx="8" fill={`url(#rb-${kind})`} stroke={`url(#ra-${kind})`} strokeWidth="1.4" transform="rotate(-18 68 66)" />
+          <rect x="44" y="56" width="36" height="6" rx="3" fill={`url(#ra-${kind})`} transform="rotate(-18 62 59)" />
+        </g>
+      )}
+    </svg>
+  );
+}

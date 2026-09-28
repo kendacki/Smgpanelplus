@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
-import { IsoCube } from "@/components/illustrations";
+import { ResellerArt } from "@/components/illustrations";
 
 export const metadata = { title: "Child Panel" };
 
@@ -16,14 +16,26 @@ export default function ChildPanelPage() {
         </p>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            ["Your brand", "Your logo and pricing. SMG delivers the orders."],
-            ["API first", "Standard add, status, services and balance calls."],
-            ["Local money", "Your users pay in NGN, GHS or KES."],
-          ].map(([title, body]) => (
-            <Card key={title} className="lift">
-              <IsoCube title={title} />
-              <h3 className="mt-2 text-xl font-semibold">{title}</h3>
-              <p className="mt-2 text-sm text-white/60">{body}</p>
+            {
+              kind: "brand" as const,
+              title: "Your brand",
+              body: "Your logo and pricing. SMG delivers the orders.",
+            },
+            {
+              kind: "api" as const,
+              title: "API first",
+              body: "Standard add, status, services and balance calls.",
+            },
+            {
+              kind: "money" as const,
+              title: "Local money",
+              body: "Your users pay in NGN, GHS or KES.",
+            },
+          ].map((item) => (
+            <Card key={item.title} className="lift">
+              <ResellerArt kind={item.kind} />
+              <h3 className="mt-1 text-xl font-semibold">{item.title}</h3>
+              <p className="mt-2 text-sm text-white/60">{item.body}</p>
             </Card>
           ))}
         </div>
