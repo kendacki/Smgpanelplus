@@ -1,19 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Lock, User } from "lucide-react";
+import { Lock, Mail, User } from "lucide-react";
 import { Alert, Button, Spinner } from "./ui";
 import { AuthField } from "./auth-field";
 import { useApp } from "./providers";
 
-export function SignInForm() {
+export function SignUpForm() {
   const router = useRouter();
   const { setSession } = useApp();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(true);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,14 +21,18 @@ export function SignInForm() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, remember }),
+        body: JSON.stringify({ username, email, password }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Unable to sign in");
+        setError(data.error || "Unable to register");
+        return;
+      }
+      if (data.needsConfirmation) {
+        router.push("/login?checkEmail=1");
         return;
       }
       setSession(data.user);
@@ -48,37 +51,34 @@ export function SignInForm() {
       <AuthField
         icon={<User className="h-4 w-4" />}
         autoComplete="username"
-        placeholder="Username or email"
+        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        required
+        minLength={3}
+      />
+      <AuthField
+        icon={<Mail className="h-4 w-4" />}
+        type="email"
+        autoComplete="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <AuthField
         icon={<Lock className="h-4 w-4" />}
         type="password"
-        autoComplete="current-password"
-        placeholder="Password"
+        autoComplete="new-password"
+        placeholder="Password (min 8 characters)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
+        minLength={8}
       />
-      <div className="flex items-center justify-between pt-0.5 text-xs">
-        <label className="flex items-center gap-2 text-white/60">
-          <input
-            type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
-            className="accent-orange-500"
-          />
-          Remember me
-        </label>
-        <Link href="/forgot-password" className="text-smg hover:underline">
-          Forgot password?
-        </Link>
-      </div>
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button type="submit" className="mt-1 w-full" disabled={loading}>
         {loading ? <Spinner /> : null}
-        Sign in
+        Create account
       </Button>
     </form>
   );

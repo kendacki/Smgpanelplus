@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { SiteShell } from "@/components/site-shell";
-import { Alert, Button, Card, Input } from "@/components/ui";
+import Link from "next/link";
+import { Mail } from "lucide-react";
+import { AuthShell } from "@/components/auth-shell";
+import { AuthField } from "@/components/auth-field";
+import { Alert, Button, Spinner } from "@/components/ui";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -34,34 +37,32 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <SiteShell>
-      <div className="mx-auto max-w-lg px-4 py-24">
-        <Card>
-          <h1 className="font-display text-3xl">Forgot password</h1>
-          <p className="mt-2 text-sm text-white/55">
-            Enter your email and we will send a Supabase reset link.
-          </p>
-          {sent ? (
-            <div className="mt-6">
-              <Alert tone="success">If that email is registered, reset instructions are on the way.</Alert>
-            </div>
-          ) : (
-            <form className="mt-6 space-y-4" onSubmit={onSubmit}>
-              {error ? <Alert>{error}</Alert> : null}
-              <Input
-                type="email"
-                required
-                placeholder="you@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Button type="submit" className="w-full" disabled={loading}>
-                Send reset link
-              </Button>
-            </form>
-          )}
-        </Card>
-      </div>
-    </SiteShell>
+    <AuthShell title="Reset password" subtitle="We’ll email a reset link if that account exists." tab="forgot">
+      {sent ? (
+        <Alert tone="success">If that email is registered, reset instructions are on the way.</Alert>
+      ) : (
+        <form className="space-y-3" onSubmit={onSubmit}>
+          {error ? <Alert>{error}</Alert> : null}
+          <AuthField
+            icon={<Mail className="h-4 w-4" />}
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? <Spinner /> : null}
+            Send reset link
+          </Button>
+        </form>
+      )}
+      <p className="mt-4 text-center text-sm text-white/50">
+        <Link href="/login" className="text-smg hover:underline">
+          Back to sign in
+        </Link>
+      </p>
+    </AuthShell>
   );
 }
