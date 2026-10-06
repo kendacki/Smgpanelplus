@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { requireUser, signSession } from "@/lib/auth";
+import { requireUser } from "@/lib/auth";
 import { profileSchema } from "@/lib/validations";
 import { generateApiKey } from "@/lib/utils";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function PATCH(request: Request) {
   const user = await requireUser();
@@ -26,36 +26,41 @@ export async function PATCH(request: Request) {
     );
   }
 
-  let passwordHash = user.passwordHash;
+  const supabase = await createSupabaseServerClient();
   if (parsed.data.newPassword) {
     if (!parsed.data.currentPassword) {
       return NextResponse.json({ error: "Current password is required" }, { status: 400 });
     }
-    const ok = await bcrypt.compare(parsed.data.currentPassword, user.passwordHash);
-    if (!ok) {
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: parsed.data.currentPassword,
+    });
+    if (verifyError) {
       return NextResponse.json({ error: "Current password is incorrect" }, { status: 400 });
     }
     if (parsed.data.newPassword.length < 8) {
       return NextResponse.json({ error: "New password is too short" }, { status: 400 });
     }
-    passwordHash = await bcrypt.hash(parsed.data.newPassword, 12);
+    const { error } = await supabase.auth.updateUser({ password: parsed.data.newPassword });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+  }
+
+  const email = parsed.data.email.toLowerCase();
+  if (email !== user.email) {
+    const { error } = await supabase.auth.updateUser({ email });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
   }
 
   const updated = await prisma.user.update({
     where: { id: user.id },
     data: {
-      email: parsed.data.email.toLowerCase(),
-      currency: parsed.data.currency,
-      passwordHash,
+      email,
+      currency: "USDT",
     },
-  });
-
-  await signSession({
-    id: updated.id,
-    username: updated.username,
-    email: updated.email,
-    role: updated.role,
-    currency: updated.currency,
   });
 
   return NextResponse.json({
@@ -63,7 +68,7 @@ export async function PATCH(request: Request) {
       id: updated.id,
       username: updated.username,
       email: updated.email,
-      currency: updated.currency,
+      currency: "USDT",
     },
   });
 }

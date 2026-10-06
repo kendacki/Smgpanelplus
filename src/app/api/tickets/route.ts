@@ -43,6 +43,7 @@ export async function POST(request: Request) {
         create: {
           userId: user.id,
           message: parsed.data.message,
+          fileUrl: parsed.data.fileUrl || null,
         },
       },
     },

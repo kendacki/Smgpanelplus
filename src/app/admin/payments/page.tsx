@@ -54,7 +54,7 @@ export default function AdminPaymentsPage() {
               <tr key={p.id} className="border-t border-white/8">
                 <td className="px-3 py-3">{p.user.username}</td>
                 <td className="px-3 py-3">{p.method}</td>
-                <td className="px-3 py-3">{formatMoney(p.amount, "NGN")}</td>
+                <td className="px-3 py-3">{formatMoney(p.amount)}</td>
                 <td className="px-3 py-3">{p.status}</td>
                 <td className="px-3 py-3">
                   {p.status === "PENDING" ? (

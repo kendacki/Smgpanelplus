@@ -20,6 +20,8 @@ export const orderSchema = z.object({
   serviceId: z.string().min(1, "Select a service"),
   link: z.string().url("Enter a valid URL"),
   quantity: z.coerce.number().int().positive("Quantity must be greater than 0"),
+  runs: z.coerce.number().int().positive().optional(),
+  interval: z.coerce.number().int().positive().optional(),
 });
 
 export const massOrderSchema = z.object({
@@ -29,21 +31,23 @@ export const massOrderSchema = z.object({
 export const paymentSchema = z.object({
   amount: z.coerce.number().positive("Enter a valid amount"),
   method: z.string().min(1),
-  currency: z.enum(["NGN", "USD", "GHS", "KES"]),
+  currency: z.literal("USDT").default("USDT"),
 });
 
 export const ticketSchema = z.object({
   subject: z.string().min(4, "Subject is too short"),
   message: z.string().min(10, "Message is too short"),
+  fileUrl: z.string().url().optional().or(z.literal("")),
 });
 
 export const ticketReplySchema = z.object({
   message: z.string().min(2, "Message is too short"),
+  fileUrl: z.string().url().optional().or(z.literal("")),
 });
 
 export const profileSchema = z.object({
   email: z.string().email(),
-  currency: z.enum(["NGN", "USD", "GHS", "KES"]),
+  currency: z.literal("USDT").optional(),
   currentPassword: z.string().optional(),
   newPassword: z.string().optional(),
 });

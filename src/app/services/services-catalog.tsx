@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { EmptyState } from "@/components/ui";
-import { useApp } from "@/components/providers";
 import { formatMoney } from "@/lib/currency";
 
 type Service = {
@@ -27,7 +26,6 @@ type Category = {
 
 export function ServicesCatalog() {
   const params = useSearchParams();
-  const { currency } = useApp();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const selected = params.get("cat") || "all";
@@ -47,7 +45,7 @@ export function ServicesCatalog() {
   return (
     <>
       <p className="mt-2 max-w-2xl text-white/60">
-        Prices shown in {currency}. Rates are per 1,000. Sign in to place an order.
+        Prices shown in USDT. Rates are per 1,000. Sign in to place an order.
       </p>
       <div className="mt-8 flex flex-wrap gap-2">
         <Link
@@ -96,7 +94,7 @@ export function ServicesCatalog() {
                           <p className="font-medium">{s.name}</p>
                           <p className="text-xs text-white/45">{s.description}</p>
                         </td>
-                        <td className="px-4 py-4 text-smg">{formatMoney(s.rate, currency)}</td>
+                        <td className="px-4 py-4 text-smg">{formatMoney(s.rate)}</td>
                         <td className="px-4 py-4">
                           {s.min} / {s.max.toLocaleString()}
                         </td>

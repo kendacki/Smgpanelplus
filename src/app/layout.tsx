@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Grow Instagram, TikTok and YouTube with SMG Panel. Local payments in NGN, GHS and KES.",
+    "Grow Instagram, TikTok and YouTube with SMG Panel. Fund in USDT and track every order.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
     title: `${SITE_NAME} | SMM Panel for Nigeria, Ghana & Kenya`,
-    description: "Followers, likes and views with local African payments and a reseller API.",
+    description: "Followers, likes and views with USDT checkout and a reseller API.",
   },
   icons: { icon: "/logo.png" },
 };

@@ -43,7 +43,7 @@ export default function AdminUsersPage() {
           <thead className="bg-white/5 text-white/50">
             <tr>
               <th className="px-3 py-3">User</th>
-              <th className="px-3 py-3">Balance (NGN)</th>
+              <th className="px-3 py-3">Balance (USDT)</th>
               <th className="px-3 py-3">Orders</th>
               <th className="px-3 py-3">Status</th>
               <th className="px-3 py-3">Actions</th>

@@ -38,6 +38,7 @@ export async function POST(
       ticketId: id,
       userId: user.id,
       message: parsed.data.message,
+      fileUrl: parsed.data.fileUrl || null,
     },
   });
 

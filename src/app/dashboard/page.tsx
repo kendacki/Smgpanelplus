@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, Input, Select, Spinner } from "@/components/ui";
-import { useApp } from "@/components/providers";
 import { formatMoney } from "@/lib/currency";
 
 type Service = {
@@ -19,7 +18,6 @@ type Service = {
 type Category = { id: string; name: string; services: Service[] };
 
 export default function NewOrderPage() {
-  const { currency } = useApp();
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -109,7 +107,7 @@ export default function NewOrderPage() {
               <Select value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
                 {services.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.name} — {formatMoney(s.rate, currency)}/1K
+                    {s.name} — {formatMoney(s.rate)}/1K
                   </option>
                 ))}
               </Select>
@@ -134,7 +132,7 @@ export default function NewOrderPage() {
               />
             </div>
             <div className="rounded-2xl bg-white/5 px-4 py-3 text-sm">
-              Charge: <span className="text-smg">{formatMoney(charge, currency)}</span>
+              Charge: <span className="text-smg">{formatMoney(charge)}</span>
             </div>
             <Button type="submit" disabled={loading || !service}>
               {loading ? <Spinner /> : null} Submit order
@@ -152,7 +150,7 @@ export default function NewOrderPage() {
               Min {service.min.toLocaleString()} / Max {service.max.toLocaleString()}
             </p>
             <p>{service.refill ? "30-day refill included" : "No refill"}</p>
-            <p>Rate: {formatMoney(service.rate, currency)} / 1,000</p>
+            <p>Rate: {formatMoney(service.rate)} / 1,000</p>
           </div>
         ) : (
           <p className="mt-4 text-sm text-white/50">Choose a service to see details.</p>

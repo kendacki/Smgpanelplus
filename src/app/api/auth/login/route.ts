@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validations";
-import { signSession } from "@/lib/auth";
+import { ensurePanelUser } from "@/lib/auth";
+import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({ error: "Supabase auth is not configured" }, { status: 503 });
+    }
+
     const body = await request.json();
     const parsed = loginSchema.safeParse(body);
     if (!parsed.success) {
@@ -16,30 +20,28 @@ export async function POST(request: Request) {
     }
 
     const identity = parsed.data.username.toLowerCase();
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ username: identity }, { email: identity }],
-      },
+    const panelUser = await prisma.user.findFirst({
+      where: { OR: [{ username: identity }, { email: identity }] },
     });
-
-    if (!user || !(await bcrypt.compare(parsed.data.password, user.passwordHash))) {
+    const email = identity.includes("@") ? identity : panelUser?.email;
+    if (!email) {
       return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
     }
 
-    if (user.status !== "active") {
-      return NextResponse.json({ error: "Account is disabled" }, { status: 403 });
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: parsed.data.password,
+    });
+    if (error || !data.user) {
+      return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
     }
 
-    await signSession(
-      {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        currency: user.currency,
-      },
-      parsed.data.remember,
-    );
+    const user = await ensurePanelUser(data.user);
+    if (!user || user.status !== "active") {
+      await supabase.auth.signOut();
+      return NextResponse.json({ error: "Account is disabled" }, { status: 403 });
+    }
 
     return NextResponse.json({
       user: {
@@ -47,7 +49,7 @@ export async function POST(request: Request) {
         username: user.username,
         email: user.email,
         role: user.role,
-        currency: user.currency,
+        currency: "USDT",
         balance: user.balance,
       },
     });

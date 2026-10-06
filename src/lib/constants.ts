@@ -1,4 +1,5 @@
 import type { CurrencyCode } from "./currency";
+import { PANEL_CURRENCY } from "./currency";
 
 export const APP_NAME = "SMG Panel";
 export const APP_TAGLINE = "Private-grade social media growth for Africa";
@@ -11,52 +12,17 @@ export const PAYMENT_METHODS: {
   instant: boolean;
 }[] = [
   {
-    id: "paystack",
-    name: "Paystack / Card",
-    description: "Visa, Mastercard and local cards",
-    currencies: ["NGN", "USD", "GHS"],
-    instant: true,
-  },
-  {
-    id: "flutterwave",
-    name: "Flutterwave",
-    description: "Cards, bank and mobile money",
-    currencies: ["NGN", "USD", "GHS", "KES"],
-    instant: true,
-  },
-  {
-    id: "mpesa",
-    name: "M-Pesa",
-    description: "Kenya mobile money",
-    currencies: ["KES"],
-    instant: false,
-  },
-  {
-    id: "momo",
-    name: "MoMo",
-    description: "Ghana Mobile Money",
-    currencies: ["GHS"],
-    instant: false,
-  },
-  {
-    id: "bank",
-    name: "Bank Transfer",
-    description: "Nigerian bank transfer with auto-reference",
-    currencies: ["NGN"],
-    instant: false,
-  },
-  {
     id: "crypto",
-    name: "USDT",
-    description: "USDT (TRC20) manual confirmation",
-    currencies: ["USD"],
+    name: "USDT (TRC20)",
+    description: "Send USDT on TRON. Admin confirms the deposit, then your wallet is credited.",
+    currencies: [PANEL_CURRENCY],
     instant: false,
   },
   {
     id: "demo",
     name: "Demo Credit",
-    description: "Instant wallet credit for testing the panel",
-    currencies: ["NGN", "USD", "GHS", "KES"],
+    description: "Instant USDT credit for testing the panel",
+    currencies: [PANEL_CURRENCY],
     instant: true,
   },
 ];

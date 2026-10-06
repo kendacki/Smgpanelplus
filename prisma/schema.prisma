@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,10 +11,12 @@ model User {
   id           String   @id @default(cuid())
   username     String   @unique
   email        String   @unique
+  supabaseId   String?  @unique
+  avatarUrl    String?
   passwordHash String
   role         String   @default("USER")
   balance      Float    @default(0)
-  currency     String   @default("NGN")
+  currency     String   @default("USDT")
   apiKey       String?  @unique
   status       String   @default("active")
   createdAt    DateTime @default(now())
@@ -35,36 +37,43 @@ model Category {
 }
 
 model Service {
-  id          String   @id @default(cuid())
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-  name        String
-  description String
-  type        String   @default("Default")
-  rate        Float
-  min         Int
-  max         Int
-  refill      Boolean  @default(false)
-  dripfeed    Boolean  @default(false)
-  averageTime String   @default("0-1 hours")
-  status      String   @default("active")
-  orders      Order[]
+  id                String   @id @default(cuid())
+  categoryId        String
+  category          Category @relation(fields: [categoryId], references: [id])
+  name              String
+  description       String
+  type              String   @default("Default")
+  rate              Float
+  min               Int
+  max               Int
+  refill            Boolean  @default(false)
+  dripfeed          Boolean  @default(false)
+  cancel            Boolean  @default(false)
+  averageTime       String   @default("0-24 hours")
+  status            String   @default("active")
+  providerServiceId Int?     @unique
+  providerRate      Float    @default(0)
+  orders            Order[]
 }
 
 model Order {
-  id         String   @id @default(cuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
-  serviceId  String
-  service    Service  @relation(fields: [serviceId], references: [id])
-  link       String
-  quantity   Int
-  charge     Float
-  startCount Int      @default(0)
-  remains    Int      @default(0)
-  status     String   @default("PENDING")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  serviceId       String
+  service         Service  @relation(fields: [serviceId], references: [id])
+  link            String
+  quantity        Int
+  charge          Float
+  startCount      Int      @default(0)
+  remains         Int      @default(0)
+  status          String   @default("PENDING")
+  providerOrderId String?
+  providerRefillId String?
+  runs            Int?
+  interval        Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Payment {
@@ -98,6 +107,7 @@ model TicketReply {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   message   String
+  fileUrl   String?
   createdAt DateTime @default(now())
 }
 

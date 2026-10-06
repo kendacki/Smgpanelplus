@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Badge, EmptyState } from "@/components/ui";
-import { useApp } from "@/components/providers";
+import { Badge, Button, EmptyState } from "@/components/ui";
 import { orderStatusLabel } from "@/lib/utils";
 import { formatMoney } from "@/lib/currency";
 
@@ -13,7 +12,7 @@ type Order = {
   charge: number;
   status: string;
   createdAt: string;
-  service: { name: string };
+  service: { name: string; refill: boolean; cancel: boolean };
 };
 
 function tone(status: string) {
@@ -24,16 +23,23 @@ function tone(status: string) {
 }
 
 export default function OrdersPage() {
-  const { currency } = useApp();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
+  async function load() {
+    const res = await fetch("/api/orders");
+    const data = await res.json();
+    setOrders(data.orders || []);
+  }
+
   useEffect(() => {
-    fetch("/api/orders")
-      .then((r) => r.json())
-      .then((d) => setOrders(d.orders || []))
-      .finally(() => setLoading(false));
+    load().finally(() => setLoading(false));
   }, []);
+
+  async function act(id: string, action: "refill" | "cancel") {
+    await fetch(`/api/orders/${id}/${action}`, { method: "POST" });
+    await load();
+  }
 
   return (
     <div>
@@ -56,6 +62,7 @@ export default function OrdersPage() {
                 <th className="px-4 py-3">Qty</th>
                 <th className="px-4 py-3">Charge</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -65,9 +72,31 @@ export default function OrdersPage() {
                   <td className="px-4 py-3">{order.service.name}</td>
                   <td className="max-w-[220px] truncate px-4 py-3 text-white/60">{order.link}</td>
                   <td className="px-4 py-3">{order.quantity.toLocaleString()}</td>
-                  <td className="px-4 py-3">{formatMoney(order.charge, currency)}</td>
+                  <td className="px-4 py-3">{formatMoney(order.charge)}</td>
                   <td className="px-4 py-3">
                     <Badge tone={tone(order.status)}>{orderStatusLabel(order.status)}</Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {order.service.refill ? (
+                        <Button
+                          variant="ghost"
+                          className="rounded-lg px-2 py-1 text-xs"
+                          onClick={() => act(order.id, "refill")}
+                        >
+                          Refill
+                        </Button>
+                      ) : null}
+                      {order.service.cancel && !["COMPLETED", "CANCELED", "REFUND"].includes(order.status) ? (
+                        <Button
+                          variant="ghost"
+                          className="rounded-lg px-2 py-1 text-xs"
+                          onClick={() => act(order.id, "cancel")}
+                        >
+                          Cancel
+                        </Button>
+                      ) : null}
+                    </div>
                   </td>
                 </tr>
               ))}

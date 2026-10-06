@@ -1,31 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
-
-const COOKIE = "smg_session";
-
-function secret() {
-  return new TextEncoder().encode(
-    process.env.AUTH_SECRET || "smg-panel-dev-secret-change-in-production-min-32-chars",
-  );
-}
+import { updateSupabaseSession } from "@/lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get(COOKIE)?.value;
-  let role: string | null = null;
-
-  if (token) {
-    try {
-      const { payload } = await jwtVerify(token, secret());
-      role = String(payload.role ?? "");
-    } catch {
-      role = null;
-    }
-  }
-
-  const isAuthed = Boolean(role);
-  const isAdmin = role === "ADMIN";
+  const { response, user } = await updateSupabaseSession(request);
+  const isAuthed = Boolean(user);
+  const isAdmin = user?.role === "ADMIN";
 
   if (pathname.startsWith("/dashboard") && !isAuthed) {
     const url = request.nextUrl.clone();
@@ -50,9 +31,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

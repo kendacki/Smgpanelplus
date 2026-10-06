@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
-import { signSession } from "@/lib/auth";
-import { generateApiKey } from "@/lib/utils";
+import { ensurePanelUser } from "@/lib/auth";
+import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({ error: "Supabase auth is not configured" }, { status: 503 });
+    }
+
     const body = await request.json();
     const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
@@ -23,35 +26,45 @@ export async function POST(request: Request) {
       where: { OR: [{ username }, { email }] },
     });
     if (exists) {
-      return NextResponse.json(
-        { error: "Username or email already in use" },
-        { status: 409 },
-      );
+      return NextResponse.json({ error: "Username or email already in use" }, { status: 409 });
     }
 
-    const user = await prisma.user.create({
-      data: {
-        username,
-        email,
-        passwordHash: await bcrypt.hash(parsed.data.password, 12),
-        apiKey: generateApiKey(),
+    const supabase = await createSupabaseServerClient();
+    const origin = new URL(request.url).origin;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: parsed.data.password,
+      options: {
+        data: { username },
+        emailRedirectTo: `${origin}/auth/callback`,
       },
     });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    if (!data.user) {
+      return NextResponse.json({ error: "Unable to register" }, { status: 500 });
+    }
 
-    await signSession({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      currency: user.currency,
+    const user = await ensurePanelUser({
+      ...data.user,
+      email: data.user.email || email,
+      user_metadata: { ...data.user.user_metadata, username },
     });
+
+    if (!data.session) {
+      return NextResponse.json({
+        needsConfirmation: true,
+        message: "Check your email to confirm the account, then sign in.",
+      });
+    }
 
     return NextResponse.json({
       user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
+        id: user?.id,
+        username: user?.username,
+        email: user?.email,
+        role: user?.role,
       },
     });
   } catch {

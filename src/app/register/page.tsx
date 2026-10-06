@@ -31,6 +31,11 @@ export default function RegisterPage() {
         setError(data.error || "Unable to register");
         return;
       }
+      if (data.needsConfirmation) {
+        setError("");
+        router.push("/login?checkEmail=1");
+        return;
+      }
       setSession(data.user);
       router.push("/dashboard");
       router.refresh();

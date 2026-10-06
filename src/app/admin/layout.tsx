@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowLeft, CreditCard, LayoutDashboard, ListOrdered, Users } from "lucide-react";
+import { ArrowLeft, CreditCard, LayoutDashboard, ListOrdered, Package, Users } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: ListOrdered },
+  { href: "/admin/services", label: "Provider", icon: Package },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
 ];

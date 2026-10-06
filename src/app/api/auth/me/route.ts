@@ -13,9 +13,10 @@ export async function GET() {
       username: user.username,
       email: user.email,
       role: user.role,
-      currency: user.currency,
+      currency: "USDT",
       balance: user.balance,
       apiKey: user.apiKey,
+      avatarUrl: user.avatarUrl,
     },
   });
 }

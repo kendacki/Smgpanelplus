@@ -1,8 +1,47 @@
-import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { generateApiKey } from "../src/lib/utils";
+import { createSupabaseAdminClient } from "../src/lib/supabase/admin";
+import { isSupabaseConfigured } from "../src/lib/supabase/env";
 
 const prisma = new PrismaClient();
+
+function usdtRate(legacyNgn: number) {
+  return Number((legacyNgn / 1550).toFixed(4));
+}
+
+async function upsertAuthUser(input: {
+  email: string;
+  password: string;
+  username: string;
+  role: "ADMIN" | "USER";
+}) {
+  if (!isSupabaseConfigured() || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return null;
+  }
+  const admin = createSupabaseAdminClient();
+  const { data } = await admin.auth.admin.listUsers({ perPage: 200 });
+  const existing = data.users.find((user) => user.email === input.email);
+  if (existing) {
+    await admin.auth.admin.updateUserById(existing.id, {
+      password: input.password,
+      email_confirm: true,
+      user_metadata: { username: input.username },
+      app_metadata: { role: input.role },
+    });
+    return existing.id;
+  }
+  const created = await admin.auth.admin.createUser({
+    email: input.email,
+    password: input.password,
+    email_confirm: true,
+    user_metadata: { username: input.username },
+    app_metadata: { role: input.role },
+  });
+  if (created.error || !created.data.user) {
+    throw created.error || new Error("Could not create Supabase user");
+  }
+  return created.data.user.id;
+}
 
 async function main() {
   await prisma.ticketReply.deleteMany();
@@ -16,8 +55,20 @@ async function main() {
   await prisma.faq.deleteMany();
   await prisma.user.deleteMany();
 
-  const passwordHash = await bcrypt.hash("Password123!", 12);
-  const adminHash = await bcrypt.hash("Admin123!", 12);
+  const passwordHash = "supabase-auth";
+  const adminHash = "supabase-auth";
+  const adminSupabaseId = await upsertAuthUser({
+    email: "admin@smgpanel.com",
+    password: "Admin123!",
+    username: "admin",
+    role: "ADMIN",
+  });
+  const demoSupabaseId = await upsertAuthUser({
+    email: "demo@smgpanel.com",
+    password: "Password123!",
+    username: "demo",
+    role: "USER",
+  });
 
   await prisma.user.create({
     data: {
@@ -26,8 +77,9 @@ async function main() {
       passwordHash: adminHash,
       role: "ADMIN",
       balance: 0,
-      currency: "NGN",
+      currency: "USDT",
       apiKey: generateApiKey(),
+      supabaseId: adminSupabaseId,
     },
   });
 
@@ -37,9 +89,10 @@ async function main() {
       email: "demo@smgpanel.com",
       passwordHash,
       role: "USER",
-      balance: 50000,
-      currency: "NGN",
+      balance: 50,
+      currency: "USDT",
       apiKey: generateApiKey(),
+      supabaseId: demoSupabaseId,
     },
   });
 
@@ -62,7 +115,7 @@ async function main() {
       categoryId: bySlug.instagram,
       name: "Instagram Followers [Nigeria] — High Quality",
       description: "Nigerian-looking profiles. Refill 30 days. Start 0-1 hour.",
-      rate: 1800,
+      rate: usdtRate(1800),
       min: 50,
       max: 20000,
       refill: true,
@@ -72,7 +125,7 @@ async function main() {
       categoryId: bySlug.instagram,
       name: "Instagram Followers [Africa Mix] — Fast",
       description: "African mix followers with fast start. No refill.",
-      rate: 950,
+      rate: usdtRate(950),
       min: 100,
       max: 100000,
       refill: false,
@@ -82,7 +135,7 @@ async function main() {
       categoryId: bySlug.instagram,
       name: "Instagram Likes [Real] — Instant",
       description: "High quality likes for posts and reels.",
-      rate: 220,
+      rate: usdtRate(220),
       min: 20,
       max: 50000,
       refill: true,
@@ -92,7 +145,7 @@ async function main() {
       categoryId: bySlug.instagram,
       name: "Instagram Reel Views — Recommended",
       description: "Boost reel reach with fast views.",
-      rate: 45,
+      rate: usdtRate(45),
       min: 500,
       max: 1000000,
       refill: false,
@@ -103,7 +156,7 @@ async function main() {
       name: "Instagram Comments [Custom Nigerian]",
       description: "Custom comments with Nigerian slang. Provide list.",
       type: "Custom Comments",
-      rate: 8500,
+      rate: usdtRate(8500),
       min: 5,
       max: 500,
       refill: false,
@@ -113,7 +166,7 @@ async function main() {
       categoryId: bySlug.instagram,
       name: "Instagram Story Views",
       description: "Story views from active looking accounts.",
-      rate: 80,
+      rate: usdtRate(80),
       min: 100,
       max: 20000,
       refill: false,
@@ -123,7 +176,7 @@ async function main() {
       categoryId: bySlug.tiktok,
       name: "TikTok Followers [Real] — HQ",
       description: "High quality TikTok followers. Refill 30 days.",
-      rate: 2100,
+      rate: usdtRate(2100),
       min: 50,
       max: 50000,
       refill: true,
@@ -133,7 +186,7 @@ async function main() {
       categoryId: bySlug.tiktok,
       name: "TikTok Likes — Instant",
       description: "Cheap and fast TikTok likes.",
-      rate: 180,
+      rate: usdtRate(180),
       min: 50,
       max: 200000,
       refill: true,
@@ -143,7 +196,7 @@ async function main() {
       categoryId: bySlug.tiktok,
       name: "TikTok Views — For You Page boost",
       description: "Views that help content get more distribution.",
-      rate: 20,
+      rate: usdtRate(20),
       min: 1000,
       max: 5000000,
       refill: false,
@@ -153,7 +206,7 @@ async function main() {
       categoryId: bySlug.tiktok,
       name: "TikTok Shares + Saves Combo",
       description: "Shares and saves to improve ranking signals.",
-      rate: 650,
+      rate: usdtRate(650),
       min: 50,
       max: 20000,
       refill: false,
@@ -164,7 +217,7 @@ async function main() {
       name: "TikTok Live Comments [Custom]",
       description: "Custom live comments during your stream.",
       type: "Custom Comments",
-      rate: 12000,
+      rate: usdtRate(12000),
       min: 10,
       max: 300,
       refill: false,
@@ -174,7 +227,7 @@ async function main() {
       categoryId: bySlug.twitter,
       name: "Twitter / X Followers [HQ]",
       description: "High quality followers with refill.",
-      rate: 2400,
+      rate: usdtRate(2400),
       min: 50,
       max: 25000,
       refill: true,
@@ -184,7 +237,7 @@ async function main() {
       categoryId: bySlug.twitter,
       name: "Twitter / X Likes",
       description: "Fast likes for tweets.",
-      rate: 300,
+      rate: usdtRate(300),
       min: 20,
       max: 20000,
       refill: false,
@@ -194,7 +247,7 @@ async function main() {
       categoryId: bySlug.twitter,
       name: "Twitter / X Retweets",
       description: "Retweets from mixed quality accounts.",
-      rate: 700,
+      rate: usdtRate(700),
       min: 10,
       max: 5000,
       refill: false,
@@ -204,7 +257,7 @@ async function main() {
       categoryId: bySlug.facebook,
       name: "Facebook Page Likes [Nigeria]",
       description: "Page likes with Nigerian audience targeting.",
-      rate: 1600,
+      rate: usdtRate(1600),
       min: 100,
       max: 30000,
       refill: true,
@@ -214,7 +267,7 @@ async function main() {
       categoryId: bySlug.facebook,
       name: "Facebook Post Likes",
       description: "Likes for posts, reels and videos.",
-      rate: 280,
+      rate: usdtRate(280),
       min: 20,
       max: 20000,
       refill: false,
@@ -224,7 +277,7 @@ async function main() {
       categoryId: bySlug.facebook,
       name: "Facebook Video Views",
       description: "Video views for organic-looking reach.",
-      rate: 55,
+      rate: usdtRate(55),
       min: 500,
       max: 500000,
       refill: false,
@@ -234,7 +287,7 @@ async function main() {
       categoryId: bySlug.youtube,
       name: "YouTube Subscribers [HQ]",
       description: "High quality subscribers. Drop-safe refill 30 days.",
-      rate: 6500,
+      rate: usdtRate(6500),
       min: 50,
       max: 10000,
       refill: true,
@@ -244,7 +297,7 @@ async function main() {
       categoryId: bySlug.youtube,
       name: "YouTube Views [Speed 10k/day]",
       description: "Safe speed views. Use public video URL.",
-      rate: 350,
+      rate: usdtRate(350),
       min: 1000,
       max: 500000,
       refill: true,
@@ -254,7 +307,7 @@ async function main() {
       categoryId: bySlug.youtube,
       name: "YouTube Likes",
       description: "Likes for videos and shorts.",
-      rate: 900,
+      rate: usdtRate(900),
       min: 20,
       max: 20000,
       refill: false,
@@ -264,7 +317,7 @@ async function main() {
       categoryId: bySlug.telegram,
       name: "Telegram Members [HQ]",
       description: "Members for public groups and channels.",
-      rate: 1100,
+      rate: usdtRate(1100),
       min: 50,
       max: 50000,
       refill: true,
@@ -274,7 +327,7 @@ async function main() {
       categoryId: bySlug.telegram,
       name: "Telegram Post Views",
       description: "Channel post views.",
-      rate: 35,
+      rate: usdtRate(35),
       min: 500,
       max: 1000000,
       refill: false,
@@ -285,7 +338,7 @@ async function main() {
       name: "Telegram Comments [Custom]",
       description: "Custom comments on channel posts.",
       type: "Custom Comments",
-      rate: 7800,
+      rate: usdtRate(7800),
       min: 5,
       max: 200,
       refill: false,
@@ -295,7 +348,7 @@ async function main() {
       categoryId: bySlug.spotify,
       name: "Spotify Plays [Safe]",
       description: "Plays from premium-looking accounts.",
-      rate: 400,
+      rate: usdtRate(400),
       min: 1000,
       max: 100000,
       refill: false,
@@ -305,7 +358,7 @@ async function main() {
       categoryId: bySlug.spotify,
       name: "Spotify Followers",
       description: "Artist or playlist followers.",
-      rate: 1500,
+      rate: usdtRate(1500),
       min: 50,
       max: 20000,
       refill: true,
@@ -377,7 +430,7 @@ If you use growth services, use them on authentic posts. Buying comments that cl
       {
         question: "What payment methods do you support?",
         answer:
-          "Paystack, Flutterwave, bank transfer, M-Pesa, MoMo, USDT, and demo credit for testing. Currency can be NGN, USD, GHS or KES.",
+          "USDT on TRC20. Demo credit is available for testing. Wallet, rates, and API balances are USDT only.",
         sortOrder: 3,
       },
       {

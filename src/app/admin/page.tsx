@@ -33,7 +33,7 @@ export default function AdminHome() {
           ["Users", stats?.users],
           ["Orders", stats?.orders],
           ["Payments", stats?.payments],
-          ["Revenue", stats ? formatMoney(stats.revenue, "NGN") : "—"],
+          ["Revenue", stats ? formatMoney(stats.revenue) : "—"],
         ].map(([label, value]) => (
           <Card key={String(label)}>
             <p className="text-xs uppercase tracking-wider text-white/40">{label}</p>
@@ -57,7 +57,7 @@ export default function AdminHome() {
               <tr key={o.id} className="border-t border-white/8">
                 <td className="px-4 py-3">{o.user.username}</td>
                 <td className="px-4 py-3">{o.service.name}</td>
-                <td className="px-4 py-3">{formatMoney(o.charge, "NGN")}</td>
+                <td className="px-4 py-3">{formatMoney(o.charge)}</td>
                 <td className="px-4 py-3">{o.status}</td>
               </tr>
             ))}

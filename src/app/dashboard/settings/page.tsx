@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Alert, Button, Card, Input, Select, Spinner } from "@/components/ui";
-import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
-import { useApp } from "@/components/providers";
+import { Alert, Button, Card, Input, Spinner } from "@/components/ui";
+import { PANEL_CURRENCY } from "@/lib/currency";
 
 export default function SettingsPage() {
-  const { setCurrency } = useApp();
   const [email, setEmail] = useState("");
-  const [currency, setLocalCurrency] = useState<CurrencyCode>("NGN");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -20,7 +18,7 @@ export default function SettingsPage() {
       .then((r) => r.json())
       .then((d) => {
         setEmail(d.user?.email || "");
-        setLocalCurrency((d.user?.currency || "NGN") as CurrencyCode);
+        setAvatarUrl(d.user?.avatarUrl || "");
       });
   }, []);
 
@@ -35,7 +33,7 @@ export default function SettingsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          currency,
+          currency: PANEL_CURRENCY,
           currentPassword: currentPassword || undefined,
           newPassword: newPassword || undefined,
         }),
@@ -45,7 +43,6 @@ export default function SettingsPage() {
         setError(data.error || "Update failed");
         return;
       }
-      setCurrency(currency);
       setMessage("Settings saved");
       setCurrentPassword("");
       setNewPassword("");
@@ -61,17 +58,27 @@ export default function SettingsPage() {
         <form onSubmit={save} className="space-y-4">
           {error ? <Alert>{error}</Alert> : null}
           {message ? <Alert tone="success">{message}</Alert> : null}
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="Avatar" className="h-16 w-16 rounded-full object-cover" />
+          ) : null}
+          <input
+            type="file"
+            accept="image/*"
+            className="text-sm text-white/70"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const form = new FormData();
+              form.set("file", file);
+              form.set("kind", "avatar");
+              const res = await fetch("/api/uploads", { method: "POST", body: form });
+              const data = await res.json();
+              if (res.ok) setAvatarUrl(data.url);
+              else setError(data.error || "Upload failed");
+            }}
+          />
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Select
-            value={currency}
-            onChange={(e) => setLocalCurrency(e.target.value as CurrencyCode)}
-          >
-            {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.flag} {c.code}
-              </option>
-            ))}
-          </Select>
+          <p className="text-sm text-white/50">Wallet currency is USDT only.</p>
           <Input
             type="password"
             placeholder="Current password (only if changing)"

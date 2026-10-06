@@ -7,7 +7,6 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./logo";
 import { Button } from "./ui";
 import { useApp } from "./providers";
-import { CurrencySelect } from "./currency-select";
 
 const trending = [
   { href: "/services?cat=instagram", label: "Buy Instagram Followers" },
@@ -16,7 +15,7 @@ const trending = [
 ];
 
 export function Header() {
-  const { session, currency, setCurrency } = useApp();
+  const { session } = useApp();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -63,7 +62,9 @@ export function Header() {
           </Link>
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
-          <CurrencySelect value={currency} onChange={setCurrency} />
+          <span className="rounded-full border border-white/10 bg-black px-3 py-2 text-xs text-white/80">
+            USDT
+          </span>
           {session ? (
             <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
           ) : (
@@ -98,7 +99,6 @@ export function Header() {
           <Link href="/api-docs" onClick={() => setOpen(false)} className="block">
             API
           </Link>
-          <CurrencySelect value={currency} onChange={setCurrency} fullWidth />
           <div className="flex gap-2">
             <Link href="/login" className="flex-1">
               <Button variant="outline" className="w-full">

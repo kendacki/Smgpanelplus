@@ -8,7 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <Logo />
           <p className="mt-4 max-w-sm text-sm text-white/55">
-            African SMM growth for creators, brands and resellers. Local payments, fast delivery,
+            African SMM growth for creators, brands and resellers. USDT checkout, fast delivery,
             full API.
           </p>
         </div>

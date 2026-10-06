@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { massOrderSchema } from "@/lib/validations";
+import { placePanelOrder } from "@/lib/fulfill";
 
 export async function POST(request: Request) {
   const user = await requireUser();
@@ -60,12 +61,6 @@ export async function POST(request: Request) {
       continue;
     }
 
-    const charge = (service.rate / 1000) * quantity;
-    if (balance < charge) {
-      errors.push({ line: index + 1, message: "Insufficient balance" });
-      continue;
-    }
-
     try {
       new URL(link);
     } catch {
@@ -73,25 +68,22 @@ export async function POST(request: Request) {
       continue;
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.user.update({
-        where: { id: user.id },
-        data: { balance: { decrement: charge } },
-      });
-      const order = await tx.order.create({
-        data: {
-          userId: user.id,
-          serviceId: service.id,
-          link,
-          quantity,
-          charge,
-          remains: quantity,
-          status: "PENDING",
-        },
+    try {
+      const order = await placePanelOrder({
+        userId: user.id,
+        balance,
+        service,
+        link,
+        quantity,
       });
       created.push(order.id);
-    });
-    balance -= charge;
+      balance -= order.charge;
+    } catch (error) {
+      errors.push({
+        line: index + 1,
+        message: error instanceof Error ? error.message : "Order failed",
+      });
+    }
   }
 
   return NextResponse.json({ created, errors, remainingBalance: balance });

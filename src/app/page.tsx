@@ -9,7 +9,7 @@ import { formatMoney } from "@/lib/currency";
 
 const steps = [
   { n: "1", title: "Create an account", body: "Sign up in under a minute." },
-  { n: "2", title: "Fund your wallet", body: "Pay with cards, bank, M-Pesa or MoMo." },
+  { n: "2", title: "Fund your wallet", body: "Pay with USDT (TRC20)." },
   { n: "3", title: "Pick a service", body: "Followers, likes, views or comments." },
   { n: "4", title: "Paste the link", body: "We start delivery from the dashboard." },
 ];
@@ -50,8 +50,8 @@ export default async function HomePage() {
               Grow your audience across <span className="gradient-text">Africa</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/65">
-              Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in NGN, GHS or
-              KES — then track every order in one dashboard.
+              Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in USDT —
+              then track every order in one dashboard.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href="/register">
@@ -78,9 +78,9 @@ export default async function HomePage() {
       <section className="border-y border-white/8 bg-panel/80">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-3 md:px-6">
           {[
-            { title: "Nigeria" as const, body: "Paystack, Flutterwave and bank transfer in NGN." },
-            { title: "Ghana" as const, body: "MoMo and cards with prices in GHS." },
-            { title: "Kenya" as const, body: "M-Pesa and Airtel-friendly KES checkout." },
+            { title: "Nigeria" as const, body: "Creators and shops across Nigeria. Checkout in USDT." },
+            { title: "Ghana" as const, body: "Ghanaian pages and brands. Same USDT wallet." },
+            { title: "Kenya" as const, body: "Kenyan creators and resellers. Fund with USDT." },
           ].map((item) => (
             <div key={item.title} className="perspective-scene flex items-center gap-4 rounded-3xl border border-white/8 bg-black/30 p-5">
               <Flag3D country={item.title} />
@@ -162,7 +162,7 @@ export default async function HomePage() {
         <div className="grid gap-4 rounded-3xl border border-smg/25 bg-smg/10 p-8 text-center md:grid-cols-3">
           <div>
             <p className="font-display text-4xl font-semibold text-smg">
-              {cheapest ? formatMoney(cheapest.rate, "NGN") : "₦20"}/1K
+              {cheapest ? formatMoney(cheapest.rate) : "0.03 USDT"}/1K
             </p>
             <p className="text-sm text-white/60">From</p>
           </div>
@@ -179,7 +179,7 @@ export default async function HomePage() {
           {[
             { kind: "fast" as const, title: "Fast start", body: "Most view and like services begin within minutes." },
             { kind: "private" as const, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
-            { kind: "checkout" as const, title: "Local checkout", body: "Fund once, spend across every platform." },
+            { kind: "checkout" as const, title: "USDT checkout", body: "Fund once in USDT, spend across every platform." },
           ].map((item) => (
             <Card key={item.title} className="lift">
               <FeatureArt kind={item.kind} />

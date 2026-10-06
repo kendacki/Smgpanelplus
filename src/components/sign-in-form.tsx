@@ -43,8 +43,8 @@ export function SignInForm({ compact = false }: { compact?: boolean }) {
     <form onSubmit={onSubmit} className="space-y-4">
       {error ? <Alert>{error}</Alert> : null}
       <div>
-        <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/50">Username</label>
-        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="demo" />
+          <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/50">Username or email</label>
+        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="demo or you@email.com" />
       </div>
       <div>
         <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/50">Password</label>

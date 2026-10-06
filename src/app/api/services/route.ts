@@ -12,5 +12,7 @@ export async function GET() {
     },
   });
 
-  return NextResponse.json({ categories });
+  return NextResponse.json({
+    categories: categories.filter((category) => category.services.length > 0),
+  });
 }

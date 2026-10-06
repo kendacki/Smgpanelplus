@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { paymentSchema } from "@/lib/validations";
-import { convertToNgn, getCurrency } from "@/lib/currency";
+import { MIN_TOPUP_USDT, PANEL_CURRENCY } from "@/lib/currency";
 import { generateReference } from "@/lib/utils";
 import { PAYMENT_METHODS } from "@/lib/constants";
 
@@ -20,7 +20,7 @@ export async function GET() {
 
   return NextResponse.json({
     balance: user.balance,
-    currency: user.currency,
+    currency: PANEL_CURRENCY,
     payments,
   });
 }
@@ -44,16 +44,10 @@ export async function POST(request: Request) {
   if (!method) {
     return NextResponse.json({ error: "Unknown payment method" }, { status: 400 });
   }
-  if (!method.currencies.includes(parsed.data.currency)) {
-    return NextResponse.json(
-      { error: `${method.name} does not support ${parsed.data.currency}` },
-      { status: 400 },
-    );
-  }
 
-  const amountNgn = convertToNgn(parsed.data.amount, getCurrency(parsed.data.currency));
-  if (amountNgn < 500) {
-    return NextResponse.json({ error: "Minimum top-up is ₦500 equivalent" }, { status: 400 });
+  const amount = Number(parsed.data.amount.toFixed(6));
+  if (amount < MIN_TOPUP_USDT) {
+    return NextResponse.json({ error: `Minimum top-up is ${MIN_TOPUP_USDT} USDT` }, { status: 400 });
   }
 
   const instant = method.instant;
@@ -61,8 +55,8 @@ export async function POST(request: Request) {
     const record = await tx.payment.create({
       data: {
         userId: user.id,
-        amount: amountNgn,
-        currency: parsed.data.currency,
+        amount,
+        currency: PANEL_CURRENCY,
         method: method.id,
         status: instant ? "COMPLETED" : "PENDING",
         reference: generateReference(method.id.toUpperCase()),
@@ -71,7 +65,7 @@ export async function POST(request: Request) {
     if (instant) {
       await tx.user.update({
         where: { id: user.id },
-        data: { balance: { increment: amountNgn } },
+        data: { balance: { increment: amount }, currency: PANEL_CURRENCY },
       });
     }
     return record;
@@ -83,7 +77,7 @@ export async function POST(request: Request) {
     payment,
     balance: fresh?.balance ?? user.balance,
     message: instant
-      ? "Wallet credited instantly."
-      : "Payment submitted. It will be confirmed after verification.",
+      ? "Wallet credited in USDT."
+      : "USDT payment submitted. It will be credited after confirmation.",
   });
 }

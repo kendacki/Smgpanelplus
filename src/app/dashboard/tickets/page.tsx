@@ -7,7 +7,7 @@ type Ticket = {
   id: string;
   subject: string;
   status: string;
-  replies: { id: string; message: string; user: { username: string; role: string } }[];
+  replies: { id: string; message: string; fileUrl?: string | null; user: { username: string; role: string } }[];
 };
 
 export default function TicketsPage() {
@@ -16,6 +16,8 @@ export default function TicketsPage() {
   const [message, setMessage] = useState("");
   const [active, setActive] = useState<string | null>(null);
   const [reply, setReply] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [replyFile, setReplyFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -29,15 +31,26 @@ export default function TicketsPage() {
     load();
   }, []);
 
+  async function uploadFile(selected?: File | null) {
+    if (!selected) return "";
+    const form = new FormData();
+    form.set("file", selected);
+    const res = await fetch("/api/uploads", { method: "POST", body: form });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Upload failed");
+    return data.url as string;
+  }
+
   async function createTicket(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
+      const fileUrl = await uploadFile(file);
       const res = await fetch("/api/tickets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, message }),
+        body: JSON.stringify({ subject, message, fileUrl }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -46,6 +59,7 @@ export default function TicketsPage() {
       }
       setSubject("");
       setMessage("");
+      setFile(null);
       await load();
       setActive(data.ticket.id);
     } finally {
@@ -54,12 +68,14 @@ export default function TicketsPage() {
   }
 
   async function sendReply(id: string) {
+    const fileUrl = await uploadFile(replyFile);
     await fetch(`/api/tickets/${id}/replies`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: reply }),
+      body: JSON.stringify({ message: reply, fileUrl }),
     });
     setReply("");
+    setReplyFile(null);
     await load();
   }
 
@@ -74,6 +90,7 @@ export default function TicketsPage() {
             {error ? <Alert>{error}</Alert> : null}
             <Input placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
             <Textarea rows={5} placeholder="Describe the issue" value={message} onChange={(e) => setMessage(e.target.value)} />
+            <input type="file" className="text-sm text-white/70" onChange={(e) => setFile(e.target.files?.[0] || null)} />
             <Button type="submit" disabled={loading}>
               {loading ? <Spinner /> : null} Open ticket
             </Button>
@@ -107,14 +124,22 @@ export default function TicketsPage() {
                     {r.user.username} · {r.user.role}
                   </p>
                   <p className="mt-1">{r.message}</p>
+                  {r.fileUrl ? (
+                    <a href={r.fileUrl} className="mt-2 inline-block text-xs text-smg" target="_blank" rel="noreferrer">
+                      Attachment
+                    </a>
+                  ) : null}
                 </div>
               ))}
             </div>
-            <div className="mt-4 flex gap-2">
-              <Input value={reply} onChange={(e) => setReply(e.target.value)} placeholder="Reply" />
-              <Button type="button" onClick={() => sendReply(current.id)}>
-                Send
-              </Button>
+            <div className="mt-4 space-y-2">
+              <div className="flex gap-2">
+                <Input value={reply} onChange={(e) => setReply(e.target.value)} placeholder="Reply" />
+                <Button type="button" onClick={() => sendReply(current.id)}>
+                  Send
+                </Button>
+              </div>
+              <input type="file" className="text-sm text-white/70" onChange={(e) => setReplyFile(e.target.files?.[0] || null)} />
             </div>
           </div>
         ) : (

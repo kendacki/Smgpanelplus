@@ -11,6 +11,9 @@
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:reset": "prisma db push --force-reset && npx tsx prisma/seed.ts",
+    "db:sync": "npx tsx scripts/sync-provider.ts",
+    "supabase:setup": "node scripts/setup-supabase.mjs",
+    "supabase:cloud": "node scripts/connect-supabase-cloud.mjs",
     "postinstall": "prisma generate"
   },
   "prisma": {
@@ -18,6 +21,8 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.2",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "jose": "^6.2.12",
@@ -39,6 +44,7 @@
     "eslint-config-next": "^16.3.5",
     "postcss": "^8.5.28",
     "prisma": "^6.19.3",
+    "supabase": "^2.119.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3"

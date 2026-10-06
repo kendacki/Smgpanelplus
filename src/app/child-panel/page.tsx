@@ -28,8 +28,8 @@ export default function ChildPanelPage() {
             },
             {
               kind: "money" as const,
-              title: "Local money",
-              body: "Your users pay in NGN, GHS or KES.",
+              title: "USDT wallet",
+              body: "Your users pay in USDT. You keep the margin.",
             },
           ].map((item) => (
             <Card key={item.title} className="lift">

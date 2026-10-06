@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useApp } from "@/components/providers";
 import { formatMoney } from "@/lib/currency";
 
 type Category = {
@@ -17,7 +16,6 @@ type Category = {
 };
 
 export default function DashboardServicesPage() {
-  const { currency } = useApp();
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -49,7 +47,7 @@ export default function DashboardServicesPage() {
                     <tr key={s.id} className="border-t border-white/8">
                       <td className="px-4 py-3 font-mono text-xs">{s.id}</td>
                       <td className="px-4 py-3">{s.name}</td>
-                      <td className="px-4 py-3">{formatMoney(s.rate, currency)}/1K</td>
+                      <td className="px-4 py-3">{formatMoney(s.rate)}/1K</td>
                       <td className="px-4 py-3">
                         {s.min} - {s.max.toLocaleString()}
                       </td>
