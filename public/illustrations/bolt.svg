@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="11 0 29 50">
+  <!-- Public domain: Wikimedia Commons Angular lightningbolt.svg -->
+  <path fill="#c2410c" d="M15 28h9l-4 17 15-23h-9l4-17"/>
+  <path fill="#ff6a00" d="M13 29h10l-5 19 19-27h-10l5-20"/>
+  <path fill="#ffc46b" d="M30 5 15 28l5-3"/>
+</svg>
