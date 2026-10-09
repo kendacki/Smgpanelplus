@@ -71,25 +71,39 @@ async function handle(request: Request) {
 
   if (action === "add") {
     const service = await prisma.service.findUnique({ where: { id: payload.service } });
-    const quantity = Number(payload.quantity);
-    const link = payload.link;
-    const runs = payload.runs ? Number(payload.runs) : undefined;
-    const interval = payload.interval ? Number(payload.interval) : undefined;
-    if (!service || service.status !== "active" || !link || !Number.isFinite(quantity)) {
+    if (!service || service.status !== "active") {
       return NextResponse.json({ error: "Incorrect request" });
     }
-    if (quantity < service.min || quantity > service.max) {
-      return NextResponse.json({ error: "Incorrect quantity" });
-    }
+    const quantity = payload.quantity ? Number(payload.quantity) : undefined;
+    const asNumber = (value?: string) => {
+      if (!value) return undefined;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : undefined;
+    };
     try {
       const order = await placePanelOrder({
         userId: user.id,
         balance: user.balance,
         service,
-        link,
-        quantity,
-        runs: Number.isFinite(runs) ? runs : undefined,
-        interval: Number.isFinite(interval) ? interval : undefined,
+        link: payload.link || "",
+        quantity: Number.isFinite(quantity) ? quantity : undefined,
+        extras: {
+          comments: payload.comments,
+          usernames: payload.usernames,
+          keywords: payload.keywords,
+          hashtag: payload.hashtag,
+          username: payload.username,
+          groups: payload.groups,
+          answer_number: payload.answer_number,
+          runs: asNumber(payload.runs),
+          interval: asNumber(payload.interval),
+          min: asNumber(payload.min),
+          max: asNumber(payload.max),
+          posts: asNumber(payload.posts),
+          old_posts: asNumber(payload.old_posts),
+          delay: asNumber(payload.delay),
+          expiry: payload.expiry,
+        },
       });
       return NextResponse.json({ order: order.id });
     } catch (error) {

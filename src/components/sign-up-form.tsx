@@ -51,7 +51,7 @@ export function SignUpForm() {
       setSession(data.user);
       setCreated({
         next: "/dashboard",
-        notice: "Your USDT wallet is ready. Opening the dashboard…",
+        notice: "Your wallet is ready. Opening the dashboard…",
       });
     } catch {
       setError("Network error. Try again.");

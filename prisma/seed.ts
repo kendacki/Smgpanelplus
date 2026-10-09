@@ -430,7 +430,7 @@ If you use growth services, use them on authentic posts. Buying comments that cl
       {
         question: "What payment methods do you support?",
         answer:
-          "USDT on TRC20. Demo credit is available for testing. Wallet, rates, and API balances are USDT only.",
+          "Pay on SMG with NGN (Paystack, bank transfer), GHS (Flutterwave, MTN MoMo), KES (Flutterwave, M-Pesa), or USDT on TRC20. Orders and API balances stay in USDT. Demo credit is available for testing.",
         sortOrder: 3,
       },
       {

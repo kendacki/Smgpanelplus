@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui";
-import { formatMoney } from "@/lib/currency";
+import { formatMoney, formatPay } from "@/lib/currency";
+import { paymentMethodName } from "@/lib/payments";
 
 type Payment = {
   id: string;
   amount: number;
+  paidAmount: number;
+  currency: string;
   method: string;
   status: string;
   reference: string;
+  note: string | null;
   user: { username: string };
 };
 
@@ -38,22 +42,31 @@ export default function AdminPaymentsPage() {
   return (
     <div>
       <h1 className="font-display text-3xl">Payments</h1>
+      <p className="mt-1 text-sm text-white/50">
+        Approve local transfers and USDT deposits. Paystack and Flutterwave credit themselves.
+      </p>
       <div className="mt-6 overflow-x-auto rounded-3xl border border-white/10">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-white/5 text-white/50">
             <tr>
               <th className="px-3 py-3">User</th>
               <th className="px-3 py-3">Method</th>
-              <th className="px-3 py-3">Amount</th>
+              <th className="px-3 py-3">Paid</th>
+              <th className="px-3 py-3">Credit</th>
               <th className="px-3 py-3">Status</th>
               <th className="px-3 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {payments.map((p) => (
-              <tr key={p.id} className="border-t border-white/8">
+              <tr key={p.id} className="border-t border-white/8 align-top">
                 <td className="px-3 py-3">{p.user.username}</td>
-                <td className="px-3 py-3">{p.method}</td>
+                <td className="px-3 py-3">
+                  <p>{paymentMethodName(p.method)}</p>
+                  <p className="font-mono text-xs text-white/40">{p.reference}</p>
+                  {p.note ? <p className="mt-1 text-xs text-white/55">{p.note}</p> : null}
+                </td>
+                <td className="px-3 py-3">{formatPay(p.paidAmount || p.amount, p.currency)}</td>
                 <td className="px-3 py-3">{formatMoney(p.amount)}</td>
                 <td className="px-3 py-3">{p.status}</td>
                 <td className="px-3 py-3">

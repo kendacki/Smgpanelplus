@@ -78,7 +78,9 @@ export default function SettingsPage() {
             }}
           />
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <p className="text-sm text-white/50">Wallet currency is USDT only.</p>
+          <p className="text-sm text-white/50">
+            Orders are priced in USDT. You can fund in NGN, GHS, KES or USDT.
+          </p>
           <Input
             type="password"
             placeholder="Current password (only if changing)"

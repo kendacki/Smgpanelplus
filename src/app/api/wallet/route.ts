@@ -2,9 +2,16 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { paymentSchema } from "@/lib/validations";
-import { MIN_TOPUP_USDT, PANEL_CURRENCY } from "@/lib/currency";
+import {
+  localToUsdt,
+  MIN_TOPUP_USDT,
+  PANEL_CURRENCY,
+  publicFxRates,
+  type PayCurrency,
+} from "@/lib/currency";
 import { generateReference } from "@/lib/utils";
-import { PAYMENT_METHODS } from "@/lib/constants";
+import { findPaymentMethod, publicPaymentMethods } from "@/lib/payments";
+import { startFlutterwaveCheckout, startPaystackCheckout } from "@/lib/gateways";
 
 export async function GET() {
   const user = await requireUser();
@@ -21,6 +28,8 @@ export async function GET() {
   return NextResponse.json({
     balance: user.balance,
     currency: PANEL_CURRENCY,
+    rates: publicFxRates(),
+    methods: publicPaymentMethods(),
     payments,
   });
 }
@@ -40,44 +49,99 @@ export async function POST(request: Request) {
     );
   }
 
-  const method = PAYMENT_METHODS.find((m) => m.id === parsed.data.method);
+  const method = findPaymentMethod(parsed.data.method);
   if (!method) {
     return NextResponse.json({ error: "Unknown payment method" }, { status: 400 });
   }
 
-  const amount = Number(parsed.data.amount.toFixed(6));
-  if (amount < MIN_TOPUP_USDT) {
-    return NextResponse.json({ error: `Minimum top-up is ${MIN_TOPUP_USDT} USDT` }, { status: 400 });
+  const currency = parsed.data.currency as PayCurrency;
+  if (!method.currencies.includes(currency)) {
+    return NextResponse.json({ error: `This method does not accept ${currency}` }, { status: 400 });
   }
 
+  const paidAmount = Number(parsed.data.amount.toFixed(currency === "USDT" ? 6 : 2));
+  const credit = localToUsdt(paidAmount, currency);
+  if (credit < MIN_TOPUP_USDT) {
+    return NextResponse.json(
+      { error: `Minimum top-up is ${MIN_TOPUP_USDT} USDT` },
+      { status: 400 },
+    );
+  }
+
+  const note = parsed.data.note?.trim() || null;
+  const reference = generateReference(method.id.replaceAll("_", "").toUpperCase().slice(0, 8));
   const instant = method.instant;
+  const metadata: Record<string, string> = {};
+
+  if (method.kind === "gateway" && !method.live) {
+    return NextResponse.json(
+      { error: `${method.name} is not connected yet. Use a local transfer or USDT.` },
+      { status: 400 },
+    );
+  }
+
+  if (method.id === "paystack") {
+    const checkout = await startPaystackCheckout({
+      email: user.email,
+      amountNgn: paidAmount,
+      reference,
+    });
+    if ("error" in checkout) {
+      return NextResponse.json({ error: checkout.error }, { status: 502 });
+    }
+    metadata.checkoutUrl = checkout.url;
+    metadata.gateway = "paystack";
+  }
+
+  if (method.id === "flutterwave") {
+    const checkout = await startFlutterwaveCheckout({
+      email: user.email,
+      name: user.username,
+      amount: paidAmount,
+      currency: currency as "NGN" | "GHS" | "KES",
+      reference,
+    });
+    if ("error" in checkout) {
+      return NextResponse.json({ error: checkout.error }, { status: 502 });
+    }
+    metadata.checkoutUrl = checkout.url;
+    metadata.gateway = "flutterwave";
+  }
+
   const payment = await prisma.$transaction(async (tx) => {
     const record = await tx.payment.create({
       data: {
         userId: user.id,
-        amount,
-        currency: PANEL_CURRENCY,
+        amount: credit,
+        paidAmount,
+        currency,
         method: method.id,
         status: instant ? "COMPLETED" : "PENDING",
-        reference: generateReference(method.id.toUpperCase()),
+        reference,
+        note,
+        metadata: Object.keys(metadata).length ? JSON.stringify(metadata) : null,
       },
     });
     if (instant) {
       await tx.user.update({
         where: { id: user.id },
-        data: { balance: { increment: amount }, currency: PANEL_CURRENCY },
+        data: { balance: { increment: credit }, currency: PANEL_CURRENCY },
       });
     }
     return record;
   });
 
   const fresh = await prisma.user.findUnique({ where: { id: user.id } });
+  const checkoutUrl = metadata.checkoutUrl;
 
   return NextResponse.json({
     payment,
     balance: fresh?.balance ?? user.balance,
+    checkoutUrl: checkoutUrl || null,
     message: instant
       ? "Wallet credited in USDT."
-      : "USDT payment submitted. It will be credited after confirmation.",
+      : checkoutUrl
+        ? `Redirecting to ${method.name}…`
+        : `Payment ${payment.reference} submitted. Your wallet will be credited after confirmation.`,
   });
 }

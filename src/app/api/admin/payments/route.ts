@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { completePaymentByReference } from "@/lib/credit-payment";
 
 export async function GET() {
   const admin = await requireAdmin();
@@ -31,15 +32,18 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Payment not found" }, { status: 404 });
   }
 
-  const payment = await prisma.$transaction(async (tx) => {
-    if (status === "COMPLETED" && existing.status !== "COMPLETED") {
-      await tx.user.update({
-        where: { id: existing.userId },
-        data: { balance: { increment: existing.amount } },
-      });
+  if (status === "COMPLETED") {
+    const result = await completePaymentByReference(existing.reference);
+    if (!result.ok) {
+      return NextResponse.json({ error: "Could not approve this payment" }, { status: 400 });
     }
-    return tx.payment.update({ where: { id }, data: { status } });
-  });
+    return NextResponse.json({ payment: result.payment });
+  }
 
+  if (existing.status === "COMPLETED") {
+    return NextResponse.json({ error: "Completed payments cannot change" }, { status: 400 });
+  }
+
+  const payment = await prisma.payment.update({ where: { id }, data: { status } });
   return NextResponse.json({ payment });
 }

@@ -31,7 +31,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | User  | `demo`   | `Password123!` |
 | Admin | `admin`  | `Admin123!`    |
 
-The demo user starts with 50 USDT. Use **Add Funds → Demo Credit** for instant wallet top-ups.
+The demo user starts with 50 USDT. Use **Add Funds → Demo credit** for instant wallet top-ups.
 
 ## Features
 
@@ -39,8 +39,8 @@ The demo user starts with 50 USDT. Use **Add Funds → Demo Credit** for instant
 - Auth: Supabase email/password sign in, sign up, and password reset
 - User dashboard: new order, mass order, order history, wallet, tickets, API key, settings
 - File uploads (avatars and ticket attachments) on Supabase Storage
-- Payments: USDT (TRC20) deposits, plus demo credit for testing
-- Currency: USDT only (matches the SMMTurk provider)
+- Payments: NGN, GHS, KES and USDT on this site (independent of SMMTurk)
+- Wallet / catalog / API balances stay in USDT so order rates match fulfillment
 - Admin: users, orders, payments, refunds
 - Public reseller API at `POST /api/v2`
 
@@ -63,6 +63,15 @@ npm run db:sync
 ```
 
 Or sign in as admin and use **Provider → Sync service list**. Orders from the dashboard and `POST /api/v2` are sent to SMMTurk.
+
+Customer payments are independent of SMMTurk. Add funds supports USDT (TRC20), Naira bank transfer, M-Pesa, MTN MoMo, plus Paystack and Flutterwave when those keys are set. Local amounts convert into the USDT wallet at `USDT_NGN` / `USDT_GHS` / `USDT_KES`. Put account details in `PAY_BANK_NGN`, `PAY_MPESA_KES`, and `PAY_MOMO_GHS`. Webhooks:
+
+```
+https://smgpanelplus.com/api/webhooks/paystack
+https://smgpanelplus.com/api/webhooks/flutterwave
+```
+
+Set `ALLOW_DEMO_CREDIT=0` in production if you do not want instant test credit.
 
 Production site: [https://smgpanelplus.com](https://smgpanelplus.com)
 

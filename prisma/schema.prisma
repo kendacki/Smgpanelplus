@@ -72,21 +72,25 @@ model Order {
   providerRefillId String?
   runs            Int?
   interval        Int?
+  extras          Json?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
 
 model Payment {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  amount    Float
-  currency  String
-  method    String
-  status    String   @default("PENDING")
-  reference String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  amount     Float
+  paidAmount Float    @default(0)
+  currency   String
+  method     String
+  status     String   @default("PENDING")
+  reference  String   @unique
+  note       String?
+  metadata   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Ticket {

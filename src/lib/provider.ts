@@ -1,7 +1,13 @@
+/**
+ * SMMTurk v2 client — TypeScript port of the official PHP sample.
+ * POST application/x-www-form-urlencoded to https://smmturk.org/api/v2
+ */
 export const PROVIDER_API_URL =
   process.env.SMM_API_URL ||
   process.env.AMAZINGSMM_API_URL ||
   "https://smmturk.org/api/v2";
+
+const PROVIDER_USER_AGENT = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 
 export function getProviderApiKey() {
   return (process.env.SMM_API_KEY || process.env.AMAZINGSMM_API_KEY || "")
@@ -32,11 +38,34 @@ export type ProviderService = {
   max: string | number;
   refill?: boolean;
   cancel?: boolean;
+  dripfeed?: boolean;
+};
+
+export type ProviderOrderInput = {
+  service: number | string;
+  link?: string;
+  quantity?: number;
+  runs?: number;
+  interval?: number;
+  comments?: string;
+  usernames?: string;
+  keywords?: string;
+  hashtag?: string;
+  username?: string;
+  groups?: string;
+  answer_number?: string | number;
+  min?: number;
+  max?: number;
+  posts?: number;
+  old_posts?: number;
+  delay?: number;
+  expiry?: string;
 };
 
 type ProviderError = { error: string };
 
-async function providerRequest<T>(params: Record<string, string | number | undefined>) {
+/** Same wire format as the PHP `connect()` helper: form POST, urlencoded fields. */
+async function connect(post: Record<string, string | number | undefined>) {
   const key = getProviderApiKey();
   if (!key) {
     throw new Error("Provider API key is not configured");
@@ -44,7 +73,7 @@ async function providerRequest<T>(params: Record<string, string | number | undef
 
   const body = new URLSearchParams();
   body.set("key", key);
-  for (const [name, value] of Object.entries(params)) {
+  for (const [name, value] of Object.entries(post)) {
     if (value === undefined || value === "") continue;
     body.set(name, String(value));
   }
@@ -55,9 +84,13 @@ async function providerRequest<T>(params: Record<string, string | number | undef
   try {
     response = await fetch(PROVIDER_API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": PROVIDER_USER_AGENT,
+      },
       body,
       cache: "no-store",
+      redirect: "follow",
       signal: controller.signal,
     });
   } finally {
@@ -65,6 +98,10 @@ async function providerRequest<T>(params: Record<string, string | number | undef
   }
 
   const text = await response.text();
+  if (!text) {
+    throw new Error("Provider returned an empty response");
+  }
+
   let data: unknown;
   try {
     data = JSON.parse(text) as unknown;
@@ -76,7 +113,7 @@ async function providerRequest<T>(params: Record<string, string | number | undef
     throw new Error(providerErrorMessage(data, `HTTP ${response.status}`));
   }
 
-  return data as T;
+  return data;
 }
 
 export function providerErrorMessage(data: unknown, fallback = "Provider request failed") {
@@ -88,89 +125,96 @@ export function providerErrorMessage(data: unknown, fallback = "Provider request
 }
 
 export async function providerServices() {
-  const data = await providerRequest<ProviderService[] | ProviderError>({ action: "services" });
+  const data = await connect({ action: "services" });
   if (!Array.isArray(data)) {
     throw new Error(providerErrorMessage(data, "Could not load provider services"));
   }
-  return data;
+  return data as ProviderService[];
 }
 
 export async function providerBalance() {
-  return providerRequest<{ balance: string; currency: string } | ProviderError>({ action: "balance" });
+  return connect({ action: "balance" }) as Promise<{ balance: string; currency: string } | ProviderError>;
 }
 
-export async function providerAddOrder(input: {
-  service: number | string;
-  link: string;
-  quantity: number;
-  runs?: number;
-  interval?: number;
-}) {
-  return providerRequest<{ order: number | string } | ProviderError>({
+export async function providerAddOrder(input: ProviderOrderInput) {
+  return connect({
     action: "add",
     service: input.service,
     link: input.link,
     quantity: input.quantity,
     runs: input.runs,
     interval: input.interval,
-  });
+    comments: input.comments,
+    usernames: input.usernames,
+    keywords: input.keywords,
+    hashtag: input.hashtag,
+    username: input.username,
+    groups: input.groups,
+    answer_number: input.answer_number,
+    min: input.min,
+    max: input.max,
+    posts: input.posts,
+    old_posts: input.old_posts,
+    delay: input.delay,
+    expiry: input.expiry,
+  }) as Promise<{ order: number | string } | ProviderError>;
 }
 
 export async function providerOrderStatuses(orderIds: Array<string | number>) {
   const ids = orderIds.map(String).filter(Boolean);
   if (ids.length === 0) return {} as Record<string, unknown>;
   if (ids.length === 1) {
-    const data = await providerRequest<Record<string, unknown>>({
+    const data = (await connect({
       action: "status",
       order: ids[0],
-    });
-    return { [ids[0]]: data } as Record<string, unknown>;
+    })) as Record<string, unknown>;
+    return { [ids[0]]: data };
   }
-  return providerRequest<Record<string, unknown>>({
+  return connect({
     action: "status",
     orders: ids.join(","),
-  });
+  }) as Promise<Record<string, unknown>>;
 }
 
 export async function providerRefill(orderId: string | number) {
-  return providerRequest<{ refill: string | number } | ProviderError>({
+  return connect({
     action: "refill",
     order: orderId,
-  });
+  }) as Promise<{ refill: string | number } | ProviderError>;
 }
 
 export async function providerRefills(orderIds: Array<string | number>) {
-  return providerRequest<
-    Array<{ order: number | string; refill: number | string | { error: string } }> | ProviderError
-  >({
+  return connect({
     action: "refill",
     orders: orderIds.map(String).join(","),
-  });
+  }) as Promise<
+    Array<{ order: number | string; refill: number | string | { error: string } }> | ProviderError
+  >;
 }
 
 export async function providerRefillStatus(refillId: string | number) {
-  return providerRequest<{ status: string } | ProviderError>({
+  return connect({
     action: "refill_status",
     refill: refillId,
-  });
+  }) as Promise<{ status: string } | ProviderError>;
 }
 
 export async function providerRefillStatuses(refillIds: Array<string | number>) {
-  return providerRequest<
-    Array<{ refill: number | string; status: string | { error: string } }> | ProviderError
-  >({
+  return connect({
     action: "refill_status",
     refills: refillIds.map(String).join(","),
-  });
+  }) as Promise<
+    Array<{ refill: number | string; status: string | { error: string } }> | ProviderError
+  >;
 }
 
 export async function providerCancel(orderIds: Array<string | number>) {
-  return providerRequest<
-    Array<{ order: number | string; cancel: number | string | { error: string } }> | ProviderError
-  >({
+  return connect({
     action: "cancel",
     orders: orderIds.map(String).join(","),
-  });
+  }) as Promise<
+    Array<{ order: number | string; cancel: number | string | { error: string } }> | ProviderError
+  >;
 }
 
 export function mapProviderStatus(status: string) {

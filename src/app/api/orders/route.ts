@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { orderSchema } from "@/lib/validations";
 import { placePanelOrder, refreshOrdersFromProvider } from "@/lib/fulfill";
+import type { OrderExtras } from "@/lib/service-types";
 
 export async function GET() {
   const user = await requireUser();
@@ -48,22 +49,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Service is unavailable" }, { status: 404 });
   }
 
-  if (parsed.data.quantity < service.min || parsed.data.quantity > service.max) {
-    return NextResponse.json(
-      { error: `Quantity must be between ${service.min} and ${service.max}` },
-      { status: 400 },
-    );
-  }
+  const extras: OrderExtras = {
+    comments: parsed.data.comments,
+    usernames: parsed.data.usernames,
+    keywords: parsed.data.keywords,
+    hashtag: parsed.data.hashtag,
+    username: parsed.data.username,
+    groups: parsed.data.groups,
+    answer_number: parsed.data.answer_number,
+    runs: parsed.data.runs,
+    interval: parsed.data.interval,
+    min: parsed.data.min,
+    max: parsed.data.max,
+    posts: parsed.data.posts,
+    old_posts: parsed.data.old_posts,
+    delay: parsed.data.delay,
+    expiry: parsed.data.expiry,
+  };
 
   try {
     const order = await placePanelOrder({
       userId: user.id,
       balance: user.balance,
       service,
-      link: parsed.data.link,
+      link: parsed.data.link || "",
       quantity: parsed.data.quantity,
-      runs: parsed.data.runs,
-      interval: parsed.data.interval,
+      extras,
     });
     return NextResponse.json({ order });
   } catch (error) {

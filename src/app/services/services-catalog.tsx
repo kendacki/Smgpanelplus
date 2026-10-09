@@ -45,7 +45,8 @@ export function ServicesCatalog() {
   return (
     <>
       <p className="mt-2 max-w-2xl text-white/60">
-        Prices shown in USDT. Rates are per 1,000. Sign in to place an order.
+        Prices shown in USDT. Fund in NGN, GHS, KES or USDT. Rates are per 1,000. Sign in to place an
+        order.
       </p>
       <div className="mt-8 flex flex-wrap gap-2">
         <Link

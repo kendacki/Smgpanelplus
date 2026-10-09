@@ -16,12 +16,27 @@ export const loginSchema = z.object({
   remember: z.boolean().optional(),
 });
 
+const optionalText = z.string().trim().optional();
+
 export const orderSchema = z.object({
   serviceId: z.string().min(1, "Select a service"),
-  link: z.string().url("Enter a valid URL"),
-  quantity: z.coerce.number().int().positive("Quantity must be greater than 0"),
+  link: optionalText,
+  quantity: z.coerce.number().int().positive().optional(),
   runs: z.coerce.number().int().positive().optional(),
   interval: z.coerce.number().int().positive().optional(),
+  comments: optionalText,
+  usernames: optionalText,
+  keywords: optionalText,
+  hashtag: optionalText,
+  username: optionalText,
+  groups: optionalText,
+  answer_number: optionalText,
+  min: z.coerce.number().int().positive().optional(),
+  max: z.coerce.number().int().positive().optional(),
+  posts: z.coerce.number().int().nonnegative().optional(),
+  old_posts: z.coerce.number().int().nonnegative().optional(),
+  delay: z.coerce.number().int().nonnegative().optional(),
+  expiry: optionalText,
 });
 
 export const massOrderSchema = z.object({
@@ -31,7 +46,8 @@ export const massOrderSchema = z.object({
 export const paymentSchema = z.object({
   amount: z.coerce.number().positive("Enter a valid amount"),
   method: z.string().min(1),
-  currency: z.literal("USDT").default("USDT"),
+  currency: z.enum(["USDT", "NGN", "GHS", "KES"]).default("USDT"),
+  note: z.string().max(240).optional(),
 });
 
 export const ticketSchema = z.object({

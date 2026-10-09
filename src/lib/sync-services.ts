@@ -94,6 +94,7 @@ async function runSync() {
     min: number;
     max: number;
     refill: boolean;
+    dripfeed: boolean;
     cancel: boolean;
     providerRate: number;
     providerServiceId: number;
@@ -119,6 +120,7 @@ async function runSync() {
       min,
       max: Math.max(asInt(item.max, min), min),
       refill: Boolean(item.refill),
+      dripfeed: Boolean(item.dripfeed),
       cancel: Boolean(item.cancel),
       providerRate,
       providerServiceId: providerId,
