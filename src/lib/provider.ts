@@ -1,8 +1,12 @@
 export const PROVIDER_API_URL =
-  process.env.AMAZINGSMM_API_URL || "https://amazingsmm.com/api/v2";
+  process.env.SMM_API_URL ||
+  process.env.AMAZINGSMM_API_URL ||
+  "https://smmturk.org/api/v2";
 
 export function getProviderApiKey() {
-  return process.env.AMAZINGSMM_API_KEY?.trim() || "";
+  return (process.env.SMM_API_KEY || process.env.AMAZINGSMM_API_KEY || "")
+    .trim()
+    .replace(/^["']+|["']+$/g, "");
 }
 
 export function isProviderConfigured() {
@@ -35,7 +39,7 @@ type ProviderError = { error: string };
 async function providerRequest<T>(params: Record<string, string | number | undefined>) {
   const key = getProviderApiKey();
   if (!key) {
-    throw new Error("AmazingSMM API key is not configured");
+    throw new Error("Provider API key is not configured");
   }
 
   const body = new URLSearchParams();
@@ -45,19 +49,27 @@ async function providerRequest<T>(params: Record<string, string | number | undef
     body.set(name, String(value));
   }
 
-  const response = await fetch(PROVIDER_API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
-    cache: "no-store",
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 180000);
+  let response: Response;
+  try {
+    response = await fetch(PROVIDER_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 
   const text = await response.text();
   let data: unknown;
   try {
     data = JSON.parse(text) as unknown;
   } catch {
-    throw new Error(text.slice(0, 180) || "AmazingSMM returned a non-JSON response");
+    throw new Error(text.slice(0, 180) || "Provider returned a non-JSON response");
   }
 
   if (!response.ok) {

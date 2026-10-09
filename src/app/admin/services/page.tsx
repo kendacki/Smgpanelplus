@@ -43,7 +43,7 @@ export default function AdminServicesPage() {
         setError(data.error || "Sync failed");
         return;
       }
-      setMessage(`Imported ${data.imported} AmazingSMM services.`);
+      setMessage(`Imported ${data.imported} provider services.`);
       await load();
     } catch {
       setError("Network error");
@@ -56,8 +56,8 @@ export default function AdminServicesPage() {
     <div>
       <h1 className="font-display text-3xl">Provider</h1>
       <p className="mt-2 text-sm text-white/50">
-        SMG Panel sells through AmazingSMM. Users order here; we fulfill on{" "}
-        <code>amazingsmm.com/api/v2</code>.
+        SMG Panel sells through SMMTurk. Users order here; we fulfill on{" "}
+        <code>smmturk.org/api/v2</code>.
       </p>
       {error ? (
         <div className="mt-4">

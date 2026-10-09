@@ -55,6 +55,7 @@ async function runSync() {
   }
 
   const remote = await providerServices();
+  console.log(`Provider returned ${remote.length} services`);
   const categoryRecords = await prisma.category.findMany();
   const categories = new Map(categoryRecords.map((row) => [row.slug, row]));
   let sortOrder = categoryRecords.reduce((max, item) => Math.max(max, item.sortOrder), 0);

@@ -40,7 +40,7 @@ The demo user starts with 50 USDT. Use **Add Funds → Demo Credit** for instant
 - User dashboard: new order, mass order, order history, wallet, tickets, API key, settings
 - File uploads (avatars and ticket attachments) on Supabase Storage
 - Payments: USDT (TRC20) deposits, plus demo credit for testing
-- Currency: USDT only (matches AmazingSMM)
+- Currency: USDT only (matches the SMMTurk provider)
 - Admin: users, orders, payments, refunds
 - Public reseller API at `POST /api/v2`
 
@@ -48,11 +48,11 @@ The demo user starts with 50 USDT. Use **Add Funds → Demo Credit** for instant
 
 Copy `.env.example` and set a long `AUTH_SECRET` before production.
 
-Add your AmazingSMM key so the panel can import services and fulfill orders:
+Add your SMMTurk key so the panel can import services and fulfill orders:
 
 ```
-AMAZINGSMM_API_URL="https://amazingsmm.com/api/v2"
-AMAZINGSMM_API_KEY="your-amazingsmm-api-key"
+AMAZINGSMM_API_URL="https://smmturk.org/api/v2"
+AMAZINGSMM_API_KEY="your-smmturk-api-key"
 PROVIDER_MARKUP="1.35"
 ```
 
@@ -62,7 +62,7 @@ Then sync the catalog:
 npm run db:sync
 ```
 
-Or sign in as admin and use **Provider → Sync service list**. Orders from the dashboard and `POST /api/v2` are sent to AmazingSMM.
+Or sign in as admin and use **Provider → Sync service list**. Orders from the dashboard and `POST /api/v2` are sent to SMMTurk.
 
 Production site: [https://smgpanelplus.com](https://smgpanelplus.com)
 

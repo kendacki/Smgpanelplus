@@ -13,7 +13,7 @@ export async function GET() {
   try {
     await refreshOrdersFromProvider(undefined, user.id);
   } catch {
-    // Keep local status if AmazingSMM is unreachable.
+    // Keep local status if the provider is unreachable.
   }
 
   const orders = await prisma.order.findMany({

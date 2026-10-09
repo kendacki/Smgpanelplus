@@ -28,7 +28,7 @@ export default function ApiPage() {
     <div className="max-w-3xl">
       <h1 className="font-display text-3xl">API</h1>
       <p className="mt-2 text-sm text-white/50">
-        Standard SMM v2 endpoint: <code>/api/v2</code>. Orders are fulfilled by AmazingSMM.
+        Standard SMM v2 endpoint: <code>/api/v2</code>. Orders are fulfilled by SMMTurk.
       </p>
       <Card className="mt-6 space-y-4">
         {message ? <Alert tone="success">{message}</Alert> : null}
