@@ -1,7 +1,7 @@
 export function Flag3D({ country }: { country: "Nigeria" | "Ghana" | "Kenya" }) {
   const id = country.toLowerCase();
   return (
-    <svg viewBox="0 0 140 110" className="h-20 w-24 shrink-0 flag-3d" fill="none">
+    <svg viewBox="0 0 140 110" className="h-14 w-16 shrink-0 flag-3d sm:h-20 sm:w-24" fill="none">
       <defs>
         <filter id={`flag-shadow-${id}`} x="-20%" y="-10%" width="140%" height="140%">
           <feDropShadow dx="0" dy="8" stdDeviation="5" floodColor="#000" floodOpacity="0.55" />
@@ -60,7 +60,7 @@ export function Flag3D({ country }: { country: "Nigeria" | "Ghana" | "Kenya" }) 
 
 export function ProductArt({ kind }: { kind: "single" | "mass" | "panel" }) {
   return (
-    <svg viewBox="0 0 220 140" className="mb-2 h-28 w-full tilt-3d" fill="none">
+    <svg viewBox="0 0 220 140" className="mb-2 h-20 w-full tilt-3d sm:h-28" fill="none">
       <defs>
         <linearGradient id={`pa-${kind}`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#ffc46b" />
@@ -184,7 +184,7 @@ export function PlatformMark({
 
 export function GlobeArt() {
   return (
-    <svg viewBox="0 0 280 220" className="h-52 w-full max-w-sm tilt-3d" fill="none">
+    <svg viewBox="0 0 280 220" className="mx-auto h-40 w-full max-w-[16rem] tilt-3d sm:h-52 sm:max-w-sm" fill="none">
       <defs>
         <linearGradient id="globe" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#ffb347" />
@@ -307,7 +307,7 @@ export function VisibilityArt() {
 
 export function FeatureArt({ kind }: { kind: "fast" | "private" | "checkout" }) {
   return (
-    <svg viewBox="0 0 240 150" className="mb-1 h-32 w-full tilt-3d" fill="none">
+    <svg viewBox="0 0 240 150" className="mb-1 h-20 w-full tilt-3d sm:h-32" fill="none">
       <defs>
         <linearGradient id={`fa-${kind}`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#ffc46b" />

@@ -7,9 +7,9 @@ export const metadata = { title: "Child Panel" };
 export default function ChildPanelPage() {
   return (
     <SiteShell>
-      <div className="mx-auto max-w-5xl px-4 py-16 md:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16 md:px-6">
         <p className="text-smg">Resellers</p>
-        <h1 className="mt-2 font-display text-4xl">Sell SMG under your brand</h1>
+        <h1 className="mt-2 font-display text-3xl sm:text-4xl">Sell SMG under your brand</h1>
         <p className="mt-4 max-w-2xl text-white/65">
           Child panel resale: your domain, your rates, our fulfillment. Keep the margin.
         </p>

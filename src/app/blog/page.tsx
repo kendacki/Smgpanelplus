@@ -13,15 +13,15 @@ export default async function BlogPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-5xl px-4 py-16 md:px-6">
-        <p className="text-smg">Insights</p>
-        <h1 className="mt-2 font-display text-4xl">Our blog</h1>
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16 md:px-6">
+        <p className="text-sm text-smg">Insights</p>
+        <h1 className="mt-2 font-display text-3xl sm:text-4xl">Our blog</h1>
         <div className="mt-10 grid gap-6">
           {posts.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`}>
               <Card className="hover:orange-ring">
                 <p className="text-xs text-white/40">{post.createdAt.toDateString()}</p>
-                <h2 className="mt-2 text-2xl font-semibold">{post.title}</h2>
+                <h2 className="mt-2 text-xl font-semibold sm:text-2xl">{post.title}</h2>
                 <p className="mt-2 text-white/60">{post.excerpt}</p>
               </Card>
             </Link>

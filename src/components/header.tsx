@@ -83,10 +83,15 @@ export function Header() {
       </div>
       {open ? (
         <div className="space-y-3 border-t border-white/8 px-4 py-4 lg:hidden">
-          <Link href="/services" onClick={() => setOpen(false)} className="block">
+          <Link href="/services" onClick={() => setOpen(false)} className="block py-1 text-sm">
             Services
           </Link>
-          <Link href="/blog" onClick={() => setOpen(false)} className="block">
+          {trending.map((item) => (
+            <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="block py-1 pl-3 text-sm text-white/60">
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/blog" onClick={() => setOpen(false)} className="block py-1 text-sm">
             Blog
           </Link>
           <Link href="/faq" onClick={() => setOpen(false)} className="block">
@@ -98,13 +103,21 @@ export function Header() {
           <Link href="/api-docs" onClick={() => setOpen(false)} className="block">
             API
           </Link>
-          <div className="flex gap-2">
-            <Button href="/login" variant="outline" className="w-full flex-1" onClick={() => setOpen(false)}>
-              Sign In
-            </Button>
-            <Button href="/register" className="w-full flex-1" onClick={() => setOpen(false)}>
-              Sign Up
-            </Button>
+          <div className="flex gap-2 pt-2">
+            {session ? (
+              <Button href="/dashboard" className="w-full" onClick={() => setOpen(false)}>
+                Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button href="/login" variant="outline" className="w-full flex-1" onClick={() => setOpen(false)}>
+                  Sign In
+                </Button>
+                <Button href="/register" className="w-full flex-1" onClick={() => setOpen(false)}>
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
         </div>
       ) : null}

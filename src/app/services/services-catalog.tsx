@@ -74,7 +74,7 @@ export function ServicesCatalog() {
       <p className="mt-2 max-w-2xl text-white/60">
         Choose a platform. Prices are in USDT per 1,000. Sign in to place an order.
       </p>
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-9">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:grid-cols-3 sm:gap-3 lg:grid-cols-9">
         {PUBLIC_PLATFORMS.map((item) => {
           const active = item.id === platform;
           return (
@@ -82,7 +82,7 @@ export function ServicesCatalog() {
               key={item.id}
               type="button"
               onClick={() => openPlatform(item.id)}
-              className={`rounded-2xl border px-3 py-4 text-sm font-medium transition ${
+              className={`rounded-xl border px-2 py-3 text-xs font-medium transition sm:rounded-2xl sm:px-3 sm:py-4 sm:text-sm ${
                 active
                   ? "border-smg bg-smg text-black"
                   : "border-white/10 bg-white/5 text-white hover:border-smg/60"
@@ -140,7 +140,24 @@ export function ServicesCatalog() {
               <EmptyState title="No services" body="Nothing matched this platform." />
             </div>
           ) : (
-            <div className="mt-6 overflow-x-auto rounded-3xl border border-white/10">
+            <div className="mt-6 space-y-3 md:hidden">
+              {shown.map((service) => (
+                <div key={service.id} className="rounded-2xl border border-white/10 bg-black/30 p-3">
+                  <p className="text-sm font-medium leading-snug">{service.name}</p>
+                  <p className="mt-1 text-xs text-white/45">{service.category}</p>
+                  <div className="mt-3 flex items-center justify-between gap-2 text-xs">
+                    <span className="text-smg">{formatMoney(service.rate)}/1K</span>
+                    <span className="text-white/55">
+                      {service.min.toLocaleString()} / {service.max.toLocaleString()}
+                    </span>
+                    <Link href={session ? "/dashboard" : "/register"} className="text-sm text-smg">
+                      Order
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 hidden overflow-x-auto rounded-3xl border border-white/10 md:block">
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-white/5 text-white/60">
                   <tr>

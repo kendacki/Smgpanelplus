@@ -44,20 +44,20 @@ export default async function HomePage() {
   return (
     <SiteShell>
       <section className="relative overflow-hidden bg-black">
-        <div className="mx-auto grid max-w-7xl items-end gap-6 lg:grid-cols-2">
-          <div className="px-4 pb-12 pt-16 md:px-6 lg:pb-20 lg:pt-24">
-            <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
+        <div className="mx-auto grid max-w-7xl items-end gap-2 sm:gap-6 lg:grid-cols-2">
+          <div className="px-4 pb-6 pt-8 sm:pb-12 sm:pt-16 md:px-6 lg:pb-20 lg:pt-24">
+            <h1 className="font-display text-3xl font-semibold leading-[1.08] sm:text-4xl md:text-6xl">
               Grow your audience across the <span className="gradient-text">World</span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-white/65">
+            <p className="mt-3 max-w-xl text-sm text-white/65 sm:mt-5 sm:text-lg">
               Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in Naira,
               cedis, shillings or USDT, then track every order in one dashboard.
             </p>
-            <div className="relative z-10 mt-8 flex flex-wrap items-center gap-3">
-              <Button href="/register" className="px-8 py-3 text-base">
+            <div className="relative z-10 mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button href="/register" className="w-full px-6 py-3 text-sm sm:w-auto sm:px-8 sm:text-base">
                 Start growing
               </Button>
-              <Button href="/services" variant="outline">
+              <Button href="/services" variant="outline" className="w-full sm:w-auto">
                 Browse services
               </Button>
             </div>
@@ -69,36 +69,36 @@ export default async function HomePage() {
               width={742}
               height={880}
               priority
-              className="h-auto w-full max-w-[340px] object-contain object-bottom sm:max-w-[420px] lg:max-w-[460px] [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
+              className="h-auto w-full max-w-[200px] object-contain object-bottom sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
             />
           </div>
         </div>
       </section>
 
       <section className="border-y border-white/8 bg-panel/80">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-3 md:px-6">
+        <div className="mx-auto grid max-w-7xl gap-3 px-4 py-6 sm:gap-6 sm:py-10 md:grid-cols-3 md:px-6">
           {[
             { title: "Nigeria" as const, body: "Creators and shops across Nigeria. Pay in Naira or USDT." },
             { title: "Ghana" as const, body: "Ghanaian pages and brands. Pay in cedis or USDT." },
             { title: "Kenya" as const, body: "Kenyan creators and resellers. Pay in shillings or USDT." },
           ].map((item) => (
-            <div key={item.title} className="perspective-scene flex items-center gap-4 rounded-3xl border border-white/8 bg-black/30 p-5">
+            <div key={item.title} className="perspective-scene flex items-center gap-3 rounded-2xl border border-white/8 bg-black/30 p-3 sm:gap-4 sm:rounded-3xl sm:p-5">
               <Flag3D country={item.title} />
               <div>
-                <h3 className="font-display text-xl">{item.title}</h3>
-                <p className="mt-1 text-sm text-white/55">{item.body}</p>
+                <h3 className="font-display text-lg sm:text-xl">{item.title}</h3>
+                <p className="mt-1 text-xs text-white/55 sm:text-sm">{item.body}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <p className="text-center text-xs tracking-[0.28em] text-smg">WHAT YOU CAN RUN</p>
-        <h2 className="mx-auto mt-3 max-w-2xl text-center font-display text-3xl font-semibold md:text-5xl">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:py-20 md:px-6">
+        <p className="text-center text-[11px] tracking-[0.22em] text-smg sm:text-xs sm:tracking-[0.28em]">WHAT YOU CAN RUN</p>
+        <h2 className="mx-auto mt-3 max-w-2xl text-center font-display text-2xl font-semibold sm:text-3xl md:text-5xl">
           One panel for orders, bulk work and resale
         </h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
           {[
             {
               title: "Single order",
@@ -122,7 +122,7 @@ export default async function HomePage() {
             <Link key={item.title} href={item.href}>
               <Card className="lift h-full">
                 <ProductArt kind={item.kind} />
-                <h3 className="mt-2 font-display text-2xl">{item.title}</h3>
+                <h3 className="mt-2 font-display text-xl sm:text-2xl">{item.title}</h3>
                 <p className="mt-2 text-sm text-white/60">{item.body}</p>
                 <p className="mt-5 text-sm font-medium text-smg">Open →</p>
               </Card>
@@ -132,9 +132,9 @@ export default async function HomePage() {
       </section>
 
       <section className="bg-gradient-to-br from-[#1a0e04] via-black to-[#0b0b10]">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 md:px-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-12 sm:gap-12 sm:py-20 md:px-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <h2 className="max-w-xl font-display text-4xl font-semibold md:text-5xl">
+            <h2 className="max-w-xl font-display text-3xl font-semibold sm:text-4xl md:text-5xl">
               Visibility without the guesswork
             </h2>
             <p className="mt-4 max-w-xl text-white/65">
@@ -147,7 +147,7 @@ export default async function HomePage() {
                 "Instagram, TikTok, YouTube, Facebook, Telegram and Spotify",
                 "We never ask for your social password",
               ].map((line) => (
-                <li key={line} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white/85">
+                <li key={line} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm text-white/85 sm:px-4 sm:py-3 sm:text-base">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-smg text-black shadow-[0_0_16px_rgba(255,106,0,0.45)]">
                     <Check className="h-4 w-4" strokeWidth={3} />
                   </span>
@@ -162,30 +162,30 @@ export default async function HomePage() {
               alt="Audience reach chart"
               width={560}
               height={560}
-              className="h-auto w-full max-w-[340px] sm:max-w-[440px]"
+              className="h-auto w-full max-w-[220px] sm:max-w-[340px] lg:max-w-[440px]"
             />
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <div className="grid gap-4 rounded-3xl border border-smg/25 bg-smg/10 p-8 text-center md:grid-cols-3">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:py-20 md:px-6">
+        <div className="grid gap-4 rounded-3xl border border-smg/25 bg-smg/10 p-5 text-center sm:p-8 md:grid-cols-3">
           <div>
-            <p className="font-display text-4xl font-semibold text-smg">
+            <p className="font-display text-2xl font-semibold text-smg sm:text-4xl">
               {cheapest ? formatMoney(cheapest.rate) : "0.03 USDT"}/1K
             </p>
             <p className="text-sm text-white/60">From</p>
           </div>
           <div>
-            <p className="font-display text-4xl font-semibold">{(12000 + orderCount).toLocaleString()}+</p>
+            <p className="font-display text-2xl font-semibold sm:text-4xl">{(12000 + orderCount).toLocaleString()}+</p>
             <p className="text-sm text-white/60">Orders processed</p>
           </div>
           <div>
-            <p className="font-display text-4xl font-semibold">{(1800 + userCount).toLocaleString()}+</p>
+            <p className="font-display text-2xl font-semibold sm:text-4xl">{(1800 + userCount).toLocaleString()}+</p>
             <p className="text-sm text-white/60">Active users</p>
           </div>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 md:grid-cols-3">
           {[
             { kind: "fast" as const, title: "Fast start", body: "Most view and like services begin within minutes." },
             { kind: "private" as const, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
@@ -200,13 +200,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-panel py-20">
+      <section className="bg-panel py-12 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <p className="text-center text-xs tracking-[0.28em] text-smg">HOW IT WORKS</p>
-          <h2 className="mt-3 text-center font-display text-4xl">Four steps. Then we deliver.</h2>
-          <div className="mt-12 grid gap-4 md:grid-cols-4">
+          <p className="text-center text-[11px] tracking-[0.22em] text-smg sm:text-xs sm:tracking-[0.28em]">HOW IT WORKS</p>
+          <h2 className="mt-3 text-center font-display text-2xl sm:text-4xl">Four steps. Then we deliver.</h2>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 md:grid-cols-4">
             {steps.map((step) => (
-              <div key={step.n} className="rounded-3xl border border-white/10 bg-black/20 p-5">
+              <div key={step.n} className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:rounded-3xl sm:p-5">
                 <div className="smg-gradient mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full font-bold text-black">
                   {step.n}
                 </div>
@@ -218,9 +218,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <h2 className="text-center font-display text-4xl">Popular services</h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:py-20 md:px-6">
+        <h2 className="text-center font-display text-2xl sm:text-4xl">Popular services</h2>
+        <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
           {[
             { kind: "instagram" as const, title: "Instagram followers", href: "/services?cat=instagram" },
             { kind: "tiktok" as const, title: "TikTok likes", href: "/services?cat=tiktok" },
@@ -228,7 +228,7 @@ export default async function HomePage() {
           ].map((item) => (
             <Card key={item.title} className="lift flex flex-col items-start">
               <PlatformMark kind={item.kind} />
-              <h3 className="mt-4 font-display text-2xl">{item.title}</h3>
+              <h3 className="mt-3 font-display text-xl sm:mt-4 sm:text-2xl">{item.title}</h3>
               <Button href={item.href} variant="outline" className="mt-5">
                 View rates
               </Button>
@@ -238,8 +238,8 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-8 md:px-6">
-        <h2 className="text-center font-display text-4xl">What customers say</h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <h2 className="text-center font-display text-2xl sm:text-4xl">What customers say</h2>
+        <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
           {reviews.map((review) => (
             <Card key={review.name}>
               <p className="text-white/75">&ldquo;{review.quote}&rdquo;</p>
@@ -257,22 +257,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-16 md:px-6">
+      <section className="mx-auto max-w-3xl px-4 py-12 sm:py-16 md:px-6">
         <p className="text-center text-xs tracking-[0.22em] text-smg">FAQ</p>
-        <h2 className="mt-3 text-center font-display text-4xl">Questions, answered</h2>
+        <h2 className="mt-3 text-center font-display text-2xl sm:text-4xl">Questions, answered</h2>
         <div className="mt-8">
           <FaqList faqs={faqs} />
         </div>
       </section>
 
-      <section className="px-4 pb-20 md:px-6">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] smg-gradient p-[1px]">
-          <div className="rounded-[2rem] bg-ink px-8 py-14 text-center">
-            <h2 className="font-display text-4xl md:text-5xl">Ready when your content is.</h2>
-            <p className="mt-3 text-white/60">Create an account, fund the wallet, place the order.</p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Button href="/register">Create account</Button>
-              <Button href="/services" variant="outline">
+      <section className="px-4 pb-16 sm:pb-20 md:px-6">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] smg-gradient p-[1px] sm:rounded-[2rem]">
+          <div className="rounded-[1.5rem] bg-ink px-5 py-10 text-center sm:rounded-[2rem] sm:px-8 sm:py-14">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl">Ready when your content is.</h2>
+            <p className="mt-3 text-sm text-white/60 sm:text-base">Create an account, fund the wallet, place the order.</p>
+            <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
+              <Button href="/register" className="w-full sm:w-auto">Create account</Button>
+              <Button href="/services" variant="outline" className="w-full sm:w-auto">
                 See prices
               </Button>
             </div>

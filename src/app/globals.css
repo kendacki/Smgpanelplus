@@ -29,6 +29,7 @@ body {
   background: #07070b;
   color: #f4f1ec;
   min-height: 100%;
+  overflow-x: clip;
 }
 
 body {

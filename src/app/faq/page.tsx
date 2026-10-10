@@ -13,9 +13,9 @@ export default async function FaqPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-3xl px-4 py-16 md:px-6">
-        <p className="text-sm tracking-[0.22em] text-smg">HELP</p>
-        <h1 className="mt-3 font-display text-4xl md:text-5xl">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:py-16 md:px-6">
+        <p className="text-xs tracking-[0.22em] text-smg sm:text-sm">HELP</p>
+        <h1 className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl">
           Questions, <span className="gradient-text">answered</span>
         </h1>
         <p className="mt-4 max-w-xl text-white/60">

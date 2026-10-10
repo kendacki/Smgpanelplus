@@ -121,20 +121,49 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </button>
       </aside>
 
-      <div className="lg:pl-72">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/8 bg-black/80 px-4 py-3 backdrop-blur-xl md:px-6">
-          <button className="lg:hidden" onClick={() => setOpen(true)}>
-            <Menu />
+      <div className="pb-20 lg:pb-0 lg:pl-72">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-white/8 bg-black/80 px-3 py-2.5 backdrop-blur-xl sm:px-4 sm:py-3 md:px-6">
+          <button className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
+            <Menu className="h-5 w-5" />
           </button>
-          <div className="ml-auto flex items-center gap-3">
-            <div className="rounded-full border border-smg/30 bg-smg/10 px-4 py-2 text-sm">
-              <CreditCard className="mr-2 inline h-4 w-4 text-smg" />
+          <div className="ml-auto flex min-w-0 items-center gap-2">
+            <div className="truncate rounded-full border border-smg/30 bg-smg/10 px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm">
+              <CreditCard className="mr-1.5 inline h-3.5 w-3.5 text-smg sm:mr-2 sm:h-4 sm:w-4" />
               {me ? formatMoney(me.balance) : "..."}
             </div>
-            <div className="rounded-full bg-white/5 px-4 py-2 text-sm">{me?.username ?? "…"}</div>
+            <div className="hidden max-w-[8rem] truncate rounded-full bg-white/5 px-3 py-1.5 text-xs sm:block sm:px-4 sm:py-2 sm:text-sm">
+              {me?.username ?? "…"}
+            </div>
           </div>
         </header>
-        <div className="px-4 py-8 md:px-8">
+        <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-white/10 bg-black lg:hidden">
+          {[
+            { href: "/dashboard", label: "Order", icon: ShoppingCart },
+            { href: "/dashboard/orders", label: "Orders", icon: ListOrdered },
+            { href: "/dashboard/add-funds", label: "Funds", icon: Wallet },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "flex flex-col items-center gap-1 py-2 text-[11px] text-white/55",
+                pathname === link.href && "text-smg",
+              )}
+            >
+              <link.icon className="h-4 w-4" />
+              {link.label}
+            </Link>
+          ))}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="flex flex-col items-center gap-1 py-2 text-[11px] text-white/55"
+          >
+            <Menu className="h-4 w-4" />
+            Menu
+          </button>
+        </nav>
+        <div className="px-3 py-5 sm:px-4 sm:py-8 md:px-8">
           {error ? <p className="mb-4 text-sm text-red-300">{error}</p> : null}
           {children}
         </div>

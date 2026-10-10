@@ -235,7 +235,7 @@ export function AddFundsClient() {
   return (
     <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
       <div>
-        <h1 className="font-display text-3xl">Add funds</h1>
+        <h1 className="font-display text-2xl sm:text-3xl">Add funds</h1>
         <p className="mt-1 text-sm text-white/50">
           Pay in NGN, GHS, KES or USDT. Orders still spend from your{" "}
           <span className="text-smg">{formatMoney(balance)}</span> wallet.

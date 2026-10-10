@@ -134,7 +134,7 @@ export default function NewOrderPage() {
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
       <div>
-        <h1 className="font-display text-3xl">New order</h1>
+        <h1 className="font-display text-2xl sm:text-3xl">New order</h1>
         <p className="mt-1 text-sm text-white/50">
           Pick a platform, then a service. Prices are the current USDT rates.
         </p>
@@ -144,7 +144,7 @@ export default function NewOrderPage() {
             {message ? <Alert tone="success">{message}</Alert> : null}
             <div>
               <p className="mb-2 text-xs text-white/50">Platform</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {PUBLIC_PLATFORMS.map((item) => (
                   <button
                     key={item.id}

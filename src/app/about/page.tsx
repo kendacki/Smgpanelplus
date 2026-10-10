@@ -6,10 +6,10 @@ export const metadata = { title: "About" };
 export default function AboutPage() {
   return (
     <SiteShell>
-      <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:px-6">
+      <div className="mx-auto grid max-w-5xl items-center gap-8 px-4 py-10 sm:gap-10 sm:py-16 md:grid-cols-2 md:px-6">
         <div>
           <p className="text-smg">Company</p>
-          <h1 className="mt-2 font-display text-4xl">Built for African growth</h1>
+          <h1 className="mt-2 font-display text-3xl sm:text-4xl">Built for African growth</h1>
           <p className="mt-6 text-white/70">
             SMG Panel helps creators, shops and resellers get seen on Instagram, TikTok, YouTube and
             more, with local checkout, a USDT wallet for orders, and rates from the fulfillment API.

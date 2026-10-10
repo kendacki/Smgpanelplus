@@ -59,7 +59,7 @@ function Params({ rows }: { rows: Array<[string, string, string]> }) {
 export default function ApiDocsPage() {
   return (
     <SiteShell>
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:px-6 lg:grid-cols-[180px_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:gap-10 sm:py-16 md:px-6 lg:grid-cols-[180px_1fr]">
         <nav className="hidden lg:block">
           <div className="sticky top-24 space-y-2 text-sm text-white/55">
             {sections.map((item) => (
@@ -72,7 +72,7 @@ export default function ApiDocsPage() {
 
         <div className="min-w-0">
           <p className="text-smg">Resellers</p>
-          <h1 className="mt-2 font-display text-4xl">Reseller API</h1>
+          <h1 className="mt-2 font-display text-3xl sm:text-4xl">Reseller API</h1>
           <p className="mt-3 max-w-2xl text-white/60">
             Standard SMM panel v2. Your script sends orders to SMG. We charge your USDT wallet and
             fulfill the order. Rates in <code className="text-smg">services</code> are the prices
