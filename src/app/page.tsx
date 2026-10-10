@@ -43,8 +43,7 @@ export default async function HomePage() {
 
   return (
     <SiteShell>
-      <section className="relative overflow-hidden">
-        <div className="mesh absolute inset-0 opacity-30" />
+      <section className="relative overflow-hidden bg-black">
         <div className="mx-auto grid max-w-7xl items-end gap-6 lg:grid-cols-2">
           <div className="px-4 pb-12 pt-16 md:px-6 lg:pb-20 lg:pt-24">
             <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
