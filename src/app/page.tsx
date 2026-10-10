@@ -53,16 +53,16 @@ export default async function HomePage() {
               Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in Naira,
               cedis, shillings or USDT — then track every order in one dashboard.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/register">
-                <Button className="px-8 py-3 text-base">Start growing</Button>
-              </Link>
-              <Link href="/services">
-                <Button variant="outline">Browse services</Button>
-              </Link>
+            <div className="relative z-10 mt-8 flex flex-wrap items-center gap-3">
+              <Button href="/register" className="px-8 py-3 text-base">
+                Start growing
+              </Button>
+              <Button href="/services" variant="outline">
+                Browse services
+              </Button>
             </div>
           </div>
-          <div className="relative mx-auto h-[460px] w-full max-w-md overflow-hidden sm:h-[560px] lg:h-[700px] lg:max-w-none">
+          <div className="pointer-events-none relative mx-auto h-[460px] w-full max-w-md overflow-hidden sm:h-[560px] lg:h-[700px] lg:max-w-none">
             <Image
               src="/hero-portrait.png"
               alt="SMG Panel"
@@ -219,9 +219,9 @@ export default async function HomePage() {
             <Card key={item.title} className="lift flex flex-col items-start">
               <PlatformMark kind={item.kind} />
               <h3 className="mt-4 font-display text-2xl">{item.title}</h3>
-              <Link href={item.href} className="mt-5">
-                <Button variant="outline">View rates</Button>
-              </Link>
+              <Button href={item.href} variant="outline" className="mt-5">
+                View rates
+              </Button>
             </Card>
           ))}
         </div>
@@ -265,12 +265,10 @@ export default async function HomePage() {
             <h2 className="font-display text-4xl md:text-5xl">Ready when your content is.</h2>
             <p className="mt-3 text-white/60">Create an account, fund the wallet, place the order.</p>
             <div className="mt-8 flex justify-center gap-4">
-              <Link href="/register">
-                <Button>Create account</Button>
-              </Link>
-              <Link href="/services">
-                <Button variant="outline">See prices</Button>
-              </Link>
+              <Button href="/register">Create account</Button>
+              <Button href="/services" variant="outline">
+                See prices
+              </Button>
             </div>
           </div>
         </div>

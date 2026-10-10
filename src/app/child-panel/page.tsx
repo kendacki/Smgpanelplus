@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
 import { Button, Card } from "@/components/ui";
 import { ResellerArt } from "@/components/illustrations";
@@ -39,9 +38,9 @@ export default function ChildPanelPage() {
             </Card>
           ))}
         </div>
-        <Link href="/register" className="mt-10 inline-block">
-          <Button>Become a reseller</Button>
-        </Link>
+        <Button href="/register" className="mt-10">
+          Become a reseller
+        </Button>
       </div>
     </SiteShell>
   );

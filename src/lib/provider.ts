@@ -24,8 +24,11 @@ export function getProviderMarkup() {
   return Number.isFinite(raw) && raw >= 1 ? raw : 1.35;
 }
 
+/** Flat USDT added to every sell rate (per 1,000, or the package price). */
+export const PRICE_EXTRA_USDT = 1.04;
+
 export function sellRateFromUsdt(usdtPerThousand: number) {
-  return Number((usdtPerThousand * getProviderMarkup()).toFixed(6));
+  return Number((usdtPerThousand * getProviderMarkup() + PRICE_EXTRA_USDT).toFixed(6));
 }
 
 export type ProviderService = {

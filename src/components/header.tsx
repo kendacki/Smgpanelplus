@@ -62,9 +62,11 @@ export function Header() {
           </Link>
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
-          <span className="rounded-full border border-white/10 bg-black px-3 py-2 text-xs text-white/80">
-            NGN · GHS · KES · USDT
-          </span>
+          {session ? (
+            <span className="rounded-full border border-white/10 bg-black px-3 py-2 text-xs text-white/80">
+              NGN · GHS · KES · USDT
+            </span>
+          ) : null}
           {session ? (
             <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
           ) : (
@@ -72,9 +74,7 @@ export function Header() {
               <Link href="/login" className="text-sm text-white/80 hover:text-white">
                 Sign In
               </Link>
-              <Link href="/register">
-                <Button>Sign Up</Button>
-              </Link>
+              <Button href="/register">Sign Up</Button>
             </>
           )}
         </div>
@@ -100,14 +100,12 @@ export function Header() {
             API
           </Link>
           <div className="flex gap-2">
-            <Link href="/login" className="flex-1">
-              <Button variant="outline" className="w-full">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/register" className="flex-1">
-              <Button className="w-full">Sign Up</Button>
-            </Link>
+            <Button href="/login" variant="outline" className="w-full flex-1" onClick={() => setOpen(false)}>
+              Sign In
+            </Button>
+            <Button href="/register" className="w-full flex-1" onClick={() => setOpen(false)}>
+              Sign Up
+            </Button>
           </div>
         </div>
       ) : null}
