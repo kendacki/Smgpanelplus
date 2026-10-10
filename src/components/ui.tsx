@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import type {
   ButtonHTMLAttributes,
   InputHTMLAttributes,
+  MouseEvent,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
@@ -12,10 +13,12 @@ export function Button({
   variant = "primary",
   href,
   children,
+  onClick,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
+}: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> & {
   variant?: "primary" | "ghost" | "outline" | "dark";
   href?: string;
+  onClick?: (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
 }) {
   const styles = {
     primary:
@@ -33,14 +36,14 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes} onClick={props.onClick}>
+      <Link href={href} className={classes} onClick={onClick}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={classes} {...props}>
+    <button className={classes} onClick={onClick} {...props}>
       {children}
     </button>
   );
