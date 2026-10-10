@@ -63,11 +63,6 @@ export function Header() {
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
           {session ? (
-            <span className="rounded-full border border-white/10 bg-black px-3 py-2 text-xs text-white/80">
-              NGN · GHS · KES · USDT
-            </span>
-          ) : null}
-          {session ? (
             <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
           ) : (
             <>
