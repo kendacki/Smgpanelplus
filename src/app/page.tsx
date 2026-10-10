@@ -69,7 +69,7 @@ export default async function HomePage() {
               width={742}
               height={880}
               priority
-              className="h-auto w-full max-w-[200px] object-contain object-bottom sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
+              className="h-auto w-full max-w-[180px] object-contain object-bottom sm:max-w-[300px] md:max-w-[380px] lg:max-w-[410px] [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
             />
           </div>
         </div>
