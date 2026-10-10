@@ -121,7 +121,7 @@ export default function NewOrderPage() {
         setError(data.error || "Order failed");
         return;
       }
-      setMessage(`Order ${data.order.id} placed. SMMTurk is fulfilling it.`);
+      setMessage(`Order ${data.order.id} placed. We’ll start it shortly.`);
       setLink("");
       setExtras((current) => ({ ...emptyExtras, min: current.min, max: current.max }));
     } catch {

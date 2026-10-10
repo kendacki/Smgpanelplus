@@ -56,8 +56,7 @@ export default function AdminServicesPage() {
     <div>
       <h1 className="font-display text-3xl">Provider</h1>
       <p className="mt-2 text-sm text-white/50">
-        SMG Panel sells through SMMTurk. Users order here; we fulfill on{" "}
-        <code>smmturk.org/api/v2</code>.
+        Orders placed on SMG Panel are fulfilled automatically. Customers only see SMG prices and status.
       </p>
       {error ? (
         <div className="mt-4">
@@ -73,7 +72,7 @@ export default function AdminServicesPage() {
         <Card>
           <p className="text-xs uppercase tracking-wider text-white/40">Status</p>
           <p className="mt-2 font-display text-2xl">{info?.configured ? "Connected" : "Not configured"}</p>
-          <p className="mt-2 break-all text-xs text-white/45">{info?.url}</p>
+          <p className="mt-2 text-xs text-white/45">Fulfillment API</p>
         </Card>
         <Card>
           <p className="text-xs uppercase tracking-wider text-white/40">Provider balance</p>
@@ -87,7 +86,7 @@ export default function AdminServicesPage() {
           <p className="text-xs uppercase tracking-wider text-white/40">Live services</p>
           <p className="mt-2 font-display text-2xl">{info?.providerServices ?? "…"}</p>
           <p className="mt-2 text-xs text-white/45">
-            SMMTurk rate + {info ? `${info.priceExtra} USDT` : "1.04 USDT"}
+            Listed price includes a {info ? `${info.priceExtra} USDT` : "1.04 USDT"} service fee
           </p>
         </Card>
       </div>
