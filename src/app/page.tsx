@@ -163,10 +163,10 @@ export default async function HomePage() {
           <div className="flex justify-center">
             <img
               src="/illustrations/visibility.png"
-              alt="Person holding a large question mark"
-              width={460}
-              height={722}
-              className="h-auto w-full max-w-[180px] bg-transparent sm:max-w-[260px] lg:max-w-[320px]"
+              alt="Glossy orange looped ribbon"
+              width={469}
+              height={535}
+              className="h-auto w-full max-w-[240px] bg-transparent sm:max-w-[320px] lg:max-w-[400px]"
             />
           </div>
         </div>
