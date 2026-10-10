@@ -134,8 +134,7 @@ export default async function HomePage() {
       <section className="bg-gradient-to-br from-[#1a0e04] via-black to-[#0b0b10]">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 md:px-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <p className="text-sm tracking-[0.18em] text-smg">Built for African creators</p>
-            <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold md:text-5xl">
+            <h2 className="max-w-xl font-display text-4xl font-semibold md:text-5xl">
               Visibility without the guesswork
             </h2>
             <p className="mt-4 max-w-xl text-white/65">
