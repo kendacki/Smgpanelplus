@@ -210,7 +210,7 @@ export default async function HomePage() {
           <h2 className="mt-3 text-center font-display text-2xl sm:text-4xl">Four steps. Then we deliver.</h2>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 md:grid-cols-4">
             {steps.map((step) => (
-              <div key={step.n} className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:rounded-3xl sm:p-5">
+              <div key={step.n} className="rounded-2xl border border-white/10 bg-black/20 p-4 text-center sm:rounded-3xl sm:p-5">
                 <div className="smg-gradient mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full font-bold text-black">
                   {step.n}
                 </div>
