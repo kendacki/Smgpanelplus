@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { FaqList } from "@/components/faq-list";
 import { Button, Card } from "@/components/ui";
-import { VisibilityArt, PlatformMark, Flag3D, ProductArt, FeatureArt } from "@/components/illustrations";
+import { PlatformMark, Flag3D, ProductArt, FeatureArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -133,28 +133,37 @@ export default async function HomePage() {
       </section>
 
       <section className="bg-gradient-to-br from-[#1a0e04] via-black to-[#0b0b10]">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 md:grid-cols-2 md:px-6">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 md:px-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <p className="text-smg">Built for African creators</p>
-            <h2 className="mt-2 font-display text-4xl font-semibold">Visibility without the guesswork</h2>
-            <p className="mt-4 text-white/65">
+            <p className="text-sm tracking-[0.18em] text-smg">Built for African creators</p>
+            <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold md:text-5xl">
+              Visibility without the guesswork
+            </h2>
+            <p className="mt-4 max-w-xl text-white/65">
               Put distribution behind content that already works. SMG is for shops, musicians and
               pages that need reach — not noise.
             </p>
-            <ul className="mt-6 space-y-3 text-white/80">
+            <ul className="mt-8 grid gap-3">
               {[
                 "Packages aimed at Nigerian, Ghanaian and Kenyan audiences",
                 "Instagram, TikTok, YouTube, Facebook, Telegram and Spotify",
                 "We never ask for your social password",
               ].map((line) => (
-                <li key={line} className="flex gap-2">
-                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-smg" /> {line}
+                <li key={line} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white/85">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-smg" />
+                  <span>{line}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="flex justify-center">
-            <VisibilityArt />
+            <Image
+              src="/illustrations/visibility-chart.png"
+              alt="3D chart"
+              width={400}
+              height={400}
+              className="floaty h-auto w-full max-w-[280px] drop-shadow-[0_24px_40px_rgba(255,106,0,0.28)] sm:max-w-[360px]"
+            />
           </div>
         </div>
       </section>
