@@ -17,11 +17,14 @@ export async function GET(request: Request) {
       select: {
         id: true,
         name: true,
+        description: true,
+        type: true,
         rate: true,
         min: true,
         max: true,
         averageTime: true,
         refill: true,
+        dripfeed: true,
         category: { select: { name: true } },
       },
     });
@@ -31,11 +34,14 @@ export async function GET(request: Request) {
       services: services.map((service) => ({
         id: service.id,
         name: service.name,
+        description: service.description,
+        type: service.type,
         rate: service.rate,
         min: service.min,
         max: service.max,
         averageTime: service.averageTime,
         refill: service.refill,
+        dripfeed: service.dripfeed,
         category: service.category.name,
       })),
     });

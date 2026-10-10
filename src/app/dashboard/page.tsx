@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, Input, Select, Spinner, Textarea } from "@/components/ui";
+import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/currency";
+import { PUBLIC_PLATFORMS, type PlatformId } from "@/lib/platforms";
 import { fieldsForService, lineCount, sellCharge, type ServiceField } from "@/lib/service-types";
 
 type Service = {
@@ -16,9 +18,8 @@ type Service = {
   averageTime: string;
   refill: boolean;
   dripfeed: boolean;
+  category: string;
 };
-
-type Category = { id: string; name: string; services: Service[] };
 
 const emptyExtras = {
   comments: "",
@@ -39,9 +40,11 @@ const emptyExtras = {
 };
 
 export default function NewOrderPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryId, setCategoryId] = useState("");
+  const [platform, setPlatform] = useState<PlatformId>("instagram");
+  const [services, setServices] = useState<Service[]>([]);
+  const [serviceQuery, setServiceQuery] = useState("");
   const [serviceId, setServiceId] = useState("");
+  const [loadingServices, setLoadingServices] = useState(true);
   const [link, setLink] = useState("");
   const [quantity, setQuantity] = useState(100);
   const [extras, setExtras] = useState(emptyExtras);
@@ -50,22 +53,26 @@ export default function NewOrderPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/services")
-      .then((r) => r.json())
-      .then((d) => {
-        setCategories(d.categories || []);
-        if (d.categories?.[0]) {
-          setCategoryId(d.categories[0].id);
-          setServiceId(d.categories[0].services[0]?.id || "");
-        }
-      });
-  }, []);
+    setLoadingServices(true);
+    setServiceQuery("");
+    fetch(`/api/services?platform=${platform}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const next = (data.services || []) as Service[];
+        setServices(next);
+        setServiceId(next[0]?.id || "");
+      })
+      .finally(() => setLoadingServices(false));
+  }, [platform]);
 
-  const services = useMemo(
-    () => categories.find((c) => c.id === categoryId)?.services ?? [],
-    [categories, categoryId],
-  );
-  const service = services.find((s) => s.id === serviceId);
+  const filteredServices = useMemo(() => {
+    const needle = serviceQuery.trim().toLowerCase();
+    if (!needle) return services;
+    return services.filter(
+      (item) => item.name.toLowerCase().includes(needle) || item.category.toLowerCase().includes(needle),
+    );
+  }, [services, serviceQuery]);
+  const service = services.find((item) => item.id === serviceId);
   const fields: ServiceField[] = service ? fieldsForService(service.type, service.dripfeed) : ["link", "quantity"];
 
   useEffect(() => {
@@ -129,37 +136,56 @@ export default function NewOrderPage() {
       <div>
         <h1 className="font-display text-3xl">New order</h1>
         <p className="mt-1 text-sm text-white/50">
-          Orders go to SMMTurk through the same v2 API as their PHP sample.
+          Pick a platform, then a service. Prices are the current USDT rates.
         </p>
         <Card className="mt-6">
           <form onSubmit={submit} className="space-y-4">
             {error ? <Alert>{error}</Alert> : null}
             {message ? <Alert tone="success">{message}</Alert> : null}
             <div>
-              <label className="mb-1 block text-xs text-white/50">Category</label>
-              <Select
-                value={categoryId}
-                onChange={(e) => {
-                  setCategoryId(e.target.value);
-                  const next = categories.find((c) => c.id === e.target.value);
-                  setServiceId(next?.services[0]?.id || "");
-                }}
-              >
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
+              <p className="mb-2 text-xs text-white/50">Platform</p>
+              <div className="grid grid-cols-3 gap-2">
+                {PUBLIC_PLATFORMS.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setPlatform(item.id)}
+                    className={cn(
+                      "rounded-xl border px-2 py-2 text-xs font-medium transition",
+                      platform === item.id
+                        ? "border-smg bg-smg text-black"
+                        : "border-white/10 bg-black/30 text-white/80 hover:border-smg/50",
+                    )}
+                  >
+                    {item.label}
+                  </button>
                 ))}
-              </Select>
+              </div>
             </div>
             <div>
-              <label className="mb-1 block text-xs text-white/50">Service</label>
-              <Select value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
-                {services.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name} — {formatMoney(s.rate)}/1K
-                  </option>
-                ))}
+              <label className="mb-1 block text-xs text-white/50">
+                Service {loadingServices ? "" : `(${filteredServices.length.toLocaleString()})`}
+              </label>
+              <Input
+                value={serviceQuery}
+                placeholder="Search services in this platform"
+                onChange={(event) => setServiceQuery(event.target.value)}
+              />
+              <Select
+                className="mt-2"
+                value={filteredServices.some((item) => item.id === serviceId) ? serviceId : ""}
+                onChange={(event) => setServiceId(event.target.value)}
+                disabled={loadingServices || filteredServices.length === 0}
+              >
+                {filteredServices.length === 0 ? (
+                  <option value="">{loadingServices ? "Loading prices…" : "No matching services"}</option>
+                ) : (
+                  filteredServices.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name} — {formatMoney(item.rate)}/1K
+                    </option>
+                  ))
+                )}
               </Select>
             </div>
             {fields.includes("link") ? (
