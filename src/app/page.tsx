@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
+import { FaqList } from "@/components/faq-list";
 import { Button, Card } from "@/components/ui";
 import { VisibilityArt, PlatformMark, Flag3D, ProductArt, FeatureArt } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
@@ -248,14 +249,10 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-3xl px-4 py-16 md:px-6">
-        <h2 className="text-center font-display text-4xl">FAQ</h2>
-        <div className="mt-8 space-y-3">
-          {faqs.map((faq) => (
-            <details key={faq.id} className="glass rounded-2xl px-5 py-4">
-              <summary className="cursor-pointer font-medium">{faq.question}</summary>
-              <p className="mt-2 text-sm text-white/60">{faq.answer}</p>
-            </details>
-          ))}
+        <p className="text-center text-xs tracking-[0.22em] text-smg">FAQ</p>
+        <h2 className="mt-3 text-center font-display text-4xl">Questions, answered</h2>
+        <div className="mt-8">
+          <FaqList faqs={faqs} />
         </div>
       </section>
 
