@@ -148,43 +148,37 @@ export function IsoCube({
   );
 }
 
+const platformLogos = {
+  instagram: { src: "/illustrations/instagram.svg", label: "Instagram" },
+  tiktok: { src: "/illustrations/tiktok.svg", label: "TikTok" },
+  x: { src: "/illustrations/x.svg", label: "X" },
+} as const;
+
 export function PlatformMark({
   kind,
 }: {
   kind: "instagram" | "tiktok" | "x" | "youtube";
 }) {
-  const colors = {
-    instagram: ["#f58529", "#dd2a7b"],
-    tiktok: ["#25f4ee", "#fe2c55"],
-    x: ["#e7e7e7", "#888"],
-    youtube: ["#ff4d4d", "#cc0000"],
-  }[kind];
+  if (kind === "youtube") {
+    return (
+      <svg viewBox="0 0 88 88" className="h-16 w-16" fill="none" aria-hidden>
+        <rect x="6" y="10" width="76" height="68" rx="22" fill="#ff0033" />
+        <path d="M36 34v20l20-10-20-10Z" fill="#fff" />
+      </svg>
+    );
+  }
 
+  const logo = platformLogos[kind];
   return (
-    <svg viewBox="0 0 88 88" className="h-16 w-16 tilt-3d" fill="none">
-      <defs>
-        <linearGradient id={`p-${kind}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={colors[0]} />
-          <stop offset="100%" stopColor={colors[1]} />
-        </linearGradient>
-      </defs>
-      <rect x="6" y="10" width="76" height="68" rx="22" fill="#101018" />
-      <rect x="6" y="10" width="76" height="68" rx="22" fill={`url(#p-${kind})`} opacity="0.95" />
-      {kind === "instagram" && (
-        <>
-          <rect x="28" y="28" width="32" height="32" rx="10" stroke="#fff" strokeWidth="3" />
-          <circle cx="44" cy="44" r="8" stroke="#fff" strokeWidth="3" />
-          <circle cx="56" cy="32" r="3" fill="#fff" />
-        </>
-      )}
-      {kind === "tiktok" && (
-        <path d="M38 30v22a8 8 0 1 0 8-8h-2" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
-      )}
-      {kind === "x" && (
-        <path d="M30 30 58 58M58 30 30 58" stroke="#111" strokeWidth="6" strokeLinecap="round" />
-      )}
-      {kind === "youtube" && <path d="M36 34v20l20-10-20-10Z" fill="#fff" />}
-    </svg>
+    <span
+      className={`flex h-16 w-16 items-center justify-center rounded-[1.15rem] ${
+        kind === "instagram"
+          ? "bg-[linear-gradient(135deg,#f9ce34_0%,#ee2a7b_55%,#6228d7_100%)]"
+          : "border border-white/10 bg-black"
+      }`}
+    >
+      <img src={logo.src} alt={logo.label} width={40} height={40} className="h-9 w-9" />
+    </span>
   );
 }
 
