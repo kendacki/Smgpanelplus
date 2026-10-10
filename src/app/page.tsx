@@ -44,10 +44,10 @@ export default async function HomePage() {
     <SiteShell>
       <section className="relative overflow-hidden">
         <div className="mesh absolute inset-0 opacity-30" />
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 md:px-6 lg:grid-cols-2 lg:py-20">
-          <div>
+        <div className="mx-auto grid max-w-7xl items-end gap-6 lg:grid-cols-2">
+          <div className="px-4 pb-12 pt-16 md:px-6 lg:pb-20 lg:pt-24">
             <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">
-              Grow your audience across <span className="gradient-text">Africa</span>
+              Grow your audience across the <span className="gradient-text">World</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/65">
               Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in Naira,
@@ -62,14 +62,14 @@ export default async function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
+          <div className="flex justify-center lg:justify-end lg:pr-8">
             <Image
               src="/hero-visor.png"
               alt="Person looking upward in a glowing visor"
               width={742}
               height={880}
               priority
-              className="h-auto w-full max-w-[260px] object-contain sm:max-w-[320px]"
+              className="h-auto w-full max-w-[340px] object-contain object-bottom sm:max-w-[420px] lg:max-w-[460px] [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
             />
           </div>
         </div>
