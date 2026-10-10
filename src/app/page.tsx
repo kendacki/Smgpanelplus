@@ -123,7 +123,7 @@ export default async function HomePage() {
             },
           ].map((item) => (
             <Link key={item.title} href={item.href}>
-              <Card className="lift h-full">
+              <Card className="lift h-full text-center">
                 <ProductArt kind={item.kind} />
                 <h3 className="mt-2 font-display text-xl sm:text-2xl">{item.title}</h3>
                 <p className="mt-2 text-sm text-white/60">{item.body}</p>
