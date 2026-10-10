@@ -96,7 +96,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:py-20 md:px-6">
+      <section className="bg-black">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:py-20 md:px-6">
         <h2 className="mx-auto max-w-2xl text-center font-display text-2xl font-semibold sm:text-3xl md:text-5xl">
           One panel for orders, bulk work and resale
         </h2>
@@ -130,6 +131,7 @@ export default async function HomePage() {
               </Card>
             </Link>
           ))}
+        </div>
         </div>
       </section>
 
