@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { FaqList } from "@/components/faq-list";
 import { Button, Card } from "@/components/ui";
-import { PlatformMark, Flag3D, ProductArt, FeatureArt, ReviewPortrait } from "@/components/illustrations";
+import { PlatformMark, Flag3D, ProductArt, ReviewPortrait } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -191,12 +191,12 @@ export default async function HomePage() {
         </div>
         <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 md:grid-cols-3">
           {[
-            { kind: "fast" as const, title: "Fast start", body: "Most view and like services begin within minutes." },
-            { kind: "private" as const, title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
-            { kind: "checkout" as const, title: "Pay your way", body: "NGN, GHS, KES or USDT on SMG. Fulfillment stays separate." },
+            { src: "/illustrations/fast-start.svg", title: "Fast start", body: "Most view and like services begin within minutes." },
+            { src: "/illustrations/private-default.svg", title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
+            { src: "/illustrations/pay-your-way.svg", title: "Pay your way", body: "NGN, GHS, KES or USDT on SMG. Fulfillment stays separate." },
           ].map((item) => (
             <Card key={item.title} className="lift">
-              <FeatureArt kind={item.kind} />
+              <img src={item.src} alt="" width={256} height={256} className="mb-1 h-20 w-20 sm:h-28 sm:w-28" />
               <h3 className="mt-1 text-xl font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm text-white/60">{item.body}</p>
             </Card>
