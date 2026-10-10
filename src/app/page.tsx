@@ -230,7 +230,7 @@ export default async function HomePage() {
             { kind: "tiktok" as const, title: "TikTok likes", href: "/services?cat=tiktok" },
             { kind: "x" as const, title: "X / Twitter followers", href: "/services?cat=twitter" },
           ].map((item) => (
-            <Card key={item.title} className="lift flex flex-col items-start">
+            <Card key={item.title} className="lift flex flex-col items-center text-center">
               <PlatformMark kind={item.kind} />
               <h3 className="mt-3 font-display text-xl sm:mt-4 sm:text-2xl">{item.title}</h3>
               <Button href={item.href} variant="outline" className="mt-5">
