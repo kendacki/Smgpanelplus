@@ -12,7 +12,7 @@ export default function AboutPage() {
           <h1 className="mt-2 font-display text-4xl">Built for African growth</h1>
           <p className="mt-6 text-white/70">
             SMG Panel helps creators, shops and resellers get seen on Instagram, TikTok, YouTube and
-            more — with local checkout, a USDT wallet for orders, and rates from the fulfillment API.
+            more, with local checkout, a USDT wallet for orders, and rates from the fulfillment API.
           </p>
           <p className="mt-4 text-white/70">
             We fulfill the orders. You keep the brand, the content and the customer.

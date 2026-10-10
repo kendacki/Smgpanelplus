@@ -33,7 +33,7 @@ export default function AdminHome() {
           ["Users", stats?.users],
           ["Orders", stats?.orders],
           ["Payments", stats?.payments],
-          ["Revenue", stats ? formatMoney(stats.revenue) : "—"],
+          ["Revenue", stats ? formatMoney(stats.revenue) : "..."],
         ].map(([label, value]) => (
           <Card key={String(label)}>
             <p className="text-xs uppercase tracking-wider text-white/40">{label}</p>

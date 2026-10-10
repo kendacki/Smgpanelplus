@@ -182,7 +182,7 @@ export default function NewOrderPage() {
                 ) : (
                   filteredServices.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.name} — {formatMoney(item.rate)}/1K
+                      {item.name}, {formatMoney(item.rate)}/1K
                     </option>
                   ))
                 )}

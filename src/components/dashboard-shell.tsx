@@ -129,7 +129,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           <div className="ml-auto flex items-center gap-3">
             <div className="rounded-full border border-smg/30 bg-smg/10 px-4 py-2 text-sm">
               <CreditCard className="mr-2 inline h-4 w-4 text-smg" />
-              {me ? formatMoney(me.balance) : "—"}
+              {me ? formatMoney(me.balance) : "..."}
             </div>
             <div className="rounded-full bg-white/5 px-4 py-2 text-sm">{me?.username ?? "…"}</div>
           </div>

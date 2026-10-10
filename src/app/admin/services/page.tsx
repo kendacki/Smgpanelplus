@@ -79,7 +79,7 @@ export default function AdminServicesPage() {
           <p className="mt-2 font-display text-2xl">
             {info?.balance?.balance
               ? `${info.balance.balance} ${info.balance.currency ?? ""}`
-              : info?.balance?.error || "—"}
+              : info?.balance?.error || "..."}
           </p>
         </Card>
         <Card>

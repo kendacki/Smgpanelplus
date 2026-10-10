@@ -51,7 +51,7 @@ export default async function HomePage() {
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/65">
               Followers, likes and views for Instagram, TikTok, YouTube and more. Pay in Naira,
-              cedis, shillings or USDT — then track every order in one dashboard.
+              cedis, shillings or USDT, then track every order in one dashboard.
             </p>
             <div className="relative z-10 mt-8 flex flex-wrap items-center gap-3">
               <Button href="/register" className="px-8 py-3 text-base">
@@ -139,7 +139,7 @@ export default async function HomePage() {
             </h2>
             <p className="mt-4 max-w-xl text-white/65">
               Put distribution behind content that already works. SMG is for shops, musicians and
-              pages that need reach — not noise.
+              pages that need reach, not noise.
             </p>
             <ul className="mt-8 grid gap-3">
               {[

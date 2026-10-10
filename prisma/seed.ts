@@ -113,7 +113,7 @@ async function main() {
   const services = [
     {
       categoryId: bySlug.instagram,
-      name: "Instagram Followers [Nigeria] — High Quality",
+      name: "Instagram Followers [Nigeria], High Quality",
       description: "Nigerian-looking profiles. Refill 30 days. Start 0-1 hour.",
       rate: usdtRate(1800),
       min: 50,
@@ -123,7 +123,7 @@ async function main() {
     },
     {
       categoryId: bySlug.instagram,
-      name: "Instagram Followers [Africa Mix] — Fast",
+      name: "Instagram Followers [Africa Mix], Fast",
       description: "African mix followers with fast start. No refill.",
       rate: usdtRate(950),
       min: 100,
@@ -133,7 +133,7 @@ async function main() {
     },
     {
       categoryId: bySlug.instagram,
-      name: "Instagram Likes [Real] — Instant",
+      name: "Instagram Likes [Real], Instant",
       description: "High quality likes for posts and reels.",
       rate: usdtRate(220),
       min: 20,
@@ -143,7 +143,7 @@ async function main() {
     },
     {
       categoryId: bySlug.instagram,
-      name: "Instagram Reel Views — Recommended",
+      name: "Instagram Reel Views, Recommended",
       description: "Boost reel reach with fast views.",
       rate: usdtRate(45),
       min: 500,
@@ -174,7 +174,7 @@ async function main() {
     },
     {
       categoryId: bySlug.tiktok,
-      name: "TikTok Followers [Real] — HQ",
+      name: "TikTok Followers [Real], HQ",
       description: "High quality TikTok followers. Refill 30 days.",
       rate: usdtRate(2100),
       min: 50,
@@ -184,7 +184,7 @@ async function main() {
     },
     {
       categoryId: bySlug.tiktok,
-      name: "TikTok Likes — Instant",
+      name: "TikTok Likes, Instant",
       description: "Cheap and fast TikTok likes.",
       rate: usdtRate(180),
       min: 50,
@@ -194,7 +194,7 @@ async function main() {
     },
     {
       categoryId: bySlug.tiktok,
-      name: "TikTok Views — For You Page boost",
+      name: "TikTok Views, For You Page boost",
       description: "Views that help content get more distribution.",
       rate: usdtRate(20),
       min: 1000,
@@ -375,11 +375,11 @@ async function main() {
         title: "The Rise of TikTok: What African Creators Need to Know",
         excerpt:
           "TikTok has rewritten entertainment and brand discovery across Nigeria, Ghana and Kenya. Here is how to ride the wave without burning out.",
-        content: `TikTok is now the discovery engine for music, fashion, comedy and commerce across Africa. Creators who treat it like a distribution channel — not just a camera — grow faster.
+        content: `TikTok is now the discovery engine for music, fashion, comedy and commerce across Africa. Creators who treat it like a distribution channel, not just a camera, grow faster.
 
 Start with a tight hook in the first two seconds, post when your city is awake, and pair organic posting with a smart boost when a video already has early traction. SMG Panel is built for that second step: amplifying content that already deserves a bigger stage.
 
-The platforms reward watch time, saves and shares. A boost that only dumps empty views rarely compounds. Choose services that match the outcome you want — followers for social proof, views for reach, comments for conversation.
+The platforms reward watch time, saves and shares. A boost that only dumps empty views rarely compounds. Choose services that match the outcome you want, followers for social proof, views for reach, comments for conversation.
 
 Finally, stay consistent. One viral clip is luck. A weekly system is a business.`,
       },
@@ -387,7 +387,7 @@ Finally, stay consistent. One viral clip is luck. A weekly system is a business.
         slug: "brand-building-on-social-media",
         title: "Brand and Branding Using Social Media",
         excerpt:
-          "Social media changed how African businesses get found. Branding is no longer a logo — it is a repeatable presence.",
+          "Social media changed how African businesses get found. Branding is no longer a logo, it is a repeatable presence.",
         content: `A brand is the feeling people get when they see your page. In Lagos, Accra and Nairobi that feeling is built in public: comments, reviews, live sessions, and proof that other people already trust you.
 
 Use a consistent visual system, reply like a human, and keep your offer obvious. Then use SMG Panel to put distribution behind content that already converts. Followers without a clear offer waste money. Followers with a shop, booking link or WhatsApp line become pipeline.`,
@@ -399,7 +399,7 @@ Use a consistent visual system, reply like a human, and keep your offer obvious.
           "Timelines now set the conversation. Creators and businesses who understand attention can participate without shouting.",
         content: `Public opinion on the continent moves through WhatsApp groups, Twitter spaces, Instagram carousels and TikTok stitches. Visibility is not vanity when your work, music or product needs a crowd.
 
-The ethical line is clear: boost real work, never fake news. SMG Panel exists to help legitimate creators, stores and pages get seen — not to manufacture false events.`,
+The ethical line is clear: boost real work, never fake news. SMG Panel exists to help legitimate creators, stores and pages get seen, not to manufacture false events.`,
       },
       {
         slug: "fake-news-and-better-signals",
