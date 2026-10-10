@@ -195,8 +195,8 @@ export default async function HomePage() {
             { src: "/illustrations/private-default.svg", title: "Private by default", body: "Hashed passwords, SSL and httpOnly sessions." },
             { src: "/illustrations/pay-your-way.svg", title: "Pay your way", body: "NGN, GHS, KES or USDT on SMG. Fulfillment stays separate." },
           ].map((item) => (
-            <Card key={item.title} className="lift">
-              <img src={item.src} alt="" width={256} height={256} className="mb-1 h-20 w-20 sm:h-28 sm:w-28" />
+            <Card key={item.title} className="lift text-center">
+              <img src={item.src} alt="" width={256} height={256} className="mx-auto mb-1 h-20 w-20 sm:h-28 sm:w-28" />
               <h3 className="mt-1 text-xl font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm text-white/60">{item.body}</p>
             </Card>
