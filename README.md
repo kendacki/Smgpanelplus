@@ -53,7 +53,6 @@ Add your SMMTurk key so the panel can import services and fulfill orders:
 ```
 AMAZINGSMM_API_URL="https://smmturk.org/api/v2"
 AMAZINGSMM_API_KEY="your-smmturk-api-key"
-PROVIDER_MARKUP="1.35"
 ```
 
 Then sync the catalog:

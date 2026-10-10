@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import { isProviderConfigured, providerBalance, PROVIDER_API_URL, getProviderMarkup } from "@/lib/provider";
+import { isProviderConfigured, PRICE_EXTRA_USDT, providerBalance, PROVIDER_API_URL } from "@/lib/provider";
 import { syncProviderCatalog } from "@/lib/sync-services";
 
 export async function GET() {
@@ -28,7 +28,7 @@ export async function GET() {
   return NextResponse.json({
     configured: isProviderConfigured(),
     url: PROVIDER_API_URL,
-    markup: getProviderMarkup(),
+    priceExtra: PRICE_EXTRA_USDT,
     services,
     providerServices,
     balance,

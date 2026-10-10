@@ -6,7 +6,7 @@ import { Alert, Button, Card, Spinner } from "@/components/ui";
 type ProviderInfo = {
   configured: boolean;
   url: string;
-  markup: number;
+  priceExtra: number;
   services: number;
   providerServices: number;
   balance: { balance?: string; currency?: string; error?: string } | null;
@@ -86,7 +86,9 @@ export default function AdminServicesPage() {
         <Card>
           <p className="text-xs uppercase tracking-wider text-white/40">Live services</p>
           <p className="mt-2 font-display text-2xl">{info?.providerServices ?? "…"}</p>
-          <p className="mt-2 text-xs text-white/45">Markup {info ? `${Math.round((info.markup - 1) * 100)}%` : "—"}</p>
+          <p className="mt-2 text-xs text-white/45">
+            SMMTurk rate + {info ? `${info.priceExtra} USDT` : "1.04 USDT"}
+          </p>
         </Card>
       </div>
       <div className="mt-6">
