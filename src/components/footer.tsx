@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t border-white/8 bg-black">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-5 md:px-6">
         <div className="md:col-span-2">
-          <Logo />
+          <Logo size="header" />
           <p className="mt-4 max-w-sm text-sm text-white/55">
             African SMM growth for creators, brands and resellers. Local checkout, USDT, fast
             delivery, full API.
