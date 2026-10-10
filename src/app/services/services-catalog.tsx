@@ -140,6 +140,7 @@ export function ServicesCatalog() {
               <EmptyState title="No services" body="Nothing matched this platform." />
             </div>
           ) : (
+            <>
             <div className="mt-6 space-y-3 md:hidden">
               {shown.map((service) => (
                 <div key={service.id} className="rounded-2xl border border-white/10 bg-black/30 p-3">
@@ -188,6 +189,7 @@ export function ServicesCatalog() {
                 </tbody>
               </table>
             </div>
+            </>
           )}
 
           {pages > 1 ? (
