@@ -149,8 +149,10 @@ export default async function HomePage() {
                 "Instagram, TikTok, YouTube, Facebook, Telegram and Spotify",
                 "We never ask for your social password",
               ].map((line) => (
-                <li key={line} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white/85">
-                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-smg" />
+                <li key={line} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white/85">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-smg text-black shadow-[0_0_16px_rgba(255,106,0,0.45)]">
+                    <Check className="h-4 w-4" strokeWidth={3} />
+                  </span>
                   <span>{line}</span>
                 </li>
               ))}
