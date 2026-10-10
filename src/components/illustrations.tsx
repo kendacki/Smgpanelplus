@@ -473,27 +473,29 @@ export function ResellerArt({ kind }: { kind: "brand" | "api" | "money" }) {
 }
 
 export function ReviewPortrait({ person }: { person: "kunle" | "amani" | "akosua" }) {
-  const woman = person !== "kunle";
-  const skin = person === "kunle" ? "#8a5a3b" : person === "amani" ? "#c68642" : "#a56b45";
+  const woman = person === "amani";
+  const skin = person === "kunle" ? "#f0b27a" : person === "amani" ? "#c68642" : "#f6c99a";
+  const shirt = person === "kunle" ? "#ff8a2a" : person === "akosua" ? "#ffb347" : "#ff6a00";
+  const disc = person === "amani" ? "#14110e" : "#3a2e24";
   return (
     <svg viewBox="0 0 80 80" className="h-12 w-12 shrink-0" aria-hidden>
-      <circle cx="40" cy="40" r="40" fill="#14110e" />
-      <ellipse cx="40" cy="78" rx="28" ry="20" fill={woman ? "#ff6a00" : "#2a211c"} />
+      <circle cx="40" cy="40" r="40" fill={disc} />
+      <ellipse cx="40" cy="78" rx="28" ry="20" fill={shirt} />
       <circle cx="40" cy="40" r="16" fill={skin} />
       {person === "kunle" ? (
-        <path d="M24 36c1-14 8-20 16-20s15 6 16 20v4H24v-4Z" fill="#120c09" />
+        <path d="M24 34c1-12 8-18 16-18s15 6 16 18v3H24v-3Z" fill="#4a3022" />
       ) : null}
       {person === "amani" ? (
         <path d="M24 34c2-16 10-22 16-22s14 6 16 22c-6 2-10 2-16 2s-10 0-16-2Z" fill="#1a120c" />
       ) : null}
       {person === "akosua" ? (
-        <path d="M18 40c2-20 12-28 22-28s20 8 22 28c0 10-4 18-8 22-6-8-10-10-14-10s-8 2-14 10c-4-4-8-12-8-22Z" fill="#120c09" />
+        <path d="M27 31c1-9 7-13 13-13s12 4 13 13c-1 1-3 2-13 2s-12-1-13-2Z" fill="#6a432c" />
       ) : null}
-      {person === "kunle" ? <path d="M30 50c3 5 17 5 20 0-1 6-5 9-10 9s-9-3-10-9Z" fill="#3b2416" /> : null}
-      <ellipse cx="34" cy="40" rx="1.6" ry="2" fill="#1a120c" />
-      <ellipse cx="46" cy="40" rx="1.6" ry="2" fill="#1a120c" />
-      <path d="M35 47c2.4 2.4 7.6 2.4 10 0" stroke="#5a3824" strokeWidth="1.3" strokeLinecap="round" fill="none" />
-      {person === "akosua" ? <circle cx="21" cy="46" r="2.1" fill="#ffc46b" /> : null}
+      {person === "kunle" ? <path d="M30 49c2.6 5 17.4 5 20 0-1 7-5 10-10 10s-9-3-10-10Z" fill="#c4844e" /> : null}
+      {person === "akosua" ? <path d="M32 49c2 4.2 14 4.2 16 0-1 5-4 7-8 7s-7-2-8-7Z" fill="#d4925c" /> : null}
+      <ellipse cx="34" cy="40" rx="1.6" ry="2" fill="#3a2418" />
+      <ellipse cx="46" cy="40" rx="1.6" ry="2" fill="#3a2418" />
+      <path d="M35 47c2.4 2.4 7.6 2.4 10 0" stroke={woman ? "#5a3824" : "#8a5434"} strokeWidth="1.3" strokeLinecap="round" fill="none" />
       {person === "amani" ? <circle cx="57" cy="44" r="1.8" fill="#ffc46b" /> : null}
     </svg>
   );
