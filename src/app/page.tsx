@@ -157,12 +157,12 @@ export default async function HomePage() {
             </ul>
           </div>
           <div className="flex justify-center">
-            <Image
-              src="/illustrations/visibility-chart.png"
-              alt="3D chart"
-              width={400}
-              height={400}
-              className="floaty h-auto w-full max-w-[280px] drop-shadow-[0_24px_40px_rgba(255,106,0,0.28)] sm:max-w-[360px]"
+            <img
+              src="/illustrations/visibility.svg"
+              alt="Audience reach chart"
+              width={560}
+              height={560}
+              className="floaty h-auto w-full max-w-[340px] sm:max-w-[440px]"
             />
           </div>
         </div>
