@@ -164,7 +164,7 @@ export default async function HomePage() {
               alt="Audience reach chart"
               width={560}
               height={560}
-              className="floaty h-auto w-full max-w-[340px] sm:max-w-[440px]"
+              className="h-auto w-full max-w-[340px] sm:max-w-[440px]"
             />
           </div>
         </div>
