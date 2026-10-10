@@ -471,3 +471,30 @@ export function ResellerArt({ kind }: { kind: "brand" | "api" | "money" }) {
     </svg>
   );
 }
+
+export function ReviewPortrait({ person }: { person: "kunle" | "amani" | "akosua" }) {
+  const woman = person !== "kunle";
+  const skin = person === "kunle" ? "#8a5a3b" : person === "amani" ? "#c68642" : "#a56b45";
+  return (
+    <svg viewBox="0 0 80 80" className="h-12 w-12 shrink-0" aria-hidden>
+      <circle cx="40" cy="40" r="40" fill="#14110e" />
+      <ellipse cx="40" cy="78" rx="28" ry="20" fill={woman ? "#ff6a00" : "#2a211c"} />
+      <circle cx="40" cy="40" r="16" fill={skin} />
+      {person === "kunle" ? (
+        <path d="M24 36c1-14 8-20 16-20s15 6 16 20v4H24v-4Z" fill="#120c09" />
+      ) : null}
+      {person === "amani" ? (
+        <path d="M24 34c2-16 10-22 16-22s14 6 16 22c-6 2-10 2-16 2s-10 0-16-2Z" fill="#1a120c" />
+      ) : null}
+      {person === "akosua" ? (
+        <path d="M18 40c2-20 12-28 22-28s20 8 22 28c0 10-4 18-8 22-6-8-10-10-14-10s-8 2-14 10c-4-4-8-12-8-22Z" fill="#120c09" />
+      ) : null}
+      {person === "kunle" ? <path d="M30 50c3 5 17 5 20 0-1 6-5 9-10 9s-9-3-10-9Z" fill="#3b2416" /> : null}
+      <ellipse cx="34" cy="40" rx="1.6" ry="2" fill="#1a120c" />
+      <ellipse cx="46" cy="40" rx="1.6" ry="2" fill="#1a120c" />
+      <path d="M35 47c2.4 2.4 7.6 2.4 10 0" stroke="#5a3824" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+      {person === "akosua" ? <circle cx="21" cy="46" r="2.1" fill="#ffc46b" /> : null}
+      {person === "amani" ? <circle cx="57" cy="44" r="1.8" fill="#ffc46b" /> : null}
+    </svg>
+  );
+}

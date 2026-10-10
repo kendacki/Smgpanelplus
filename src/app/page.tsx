@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { SiteShell } from "@/components/site-shell";
 import { FaqList } from "@/components/faq-list";
 import { Button, Card } from "@/components/ui";
-import { PlatformMark, Flag3D, ProductArt, FeatureArt } from "@/components/illustrations";
+import { PlatformMark, Flag3D, ProductArt, FeatureArt, ReviewPortrait } from "@/components/illustrations";
 import { prisma } from "@/lib/prisma";
 import { formatMoney } from "@/lib/currency";
 
@@ -19,16 +19,19 @@ const reviews = [
   {
     name: "Kunle",
     place: "Lagos",
+    person: "kunle" as const,
     quote: "Local comments made my shop page feel alive. Inquiries went up the same week.",
   },
   {
     name: "Amani",
     place: "Nairobi",
+    person: "amani" as const,
     quote: "TikTok lives used to be quiet. SMG comments made the room feel full.",
   },
   {
     name: "Akosua",
     place: "Accra",
+    person: "akosua" as const,
     quote: "My thrift page gained real momentum in two weeks. Pricing was honest.",
   },
 ];
@@ -243,9 +246,7 @@ export default async function HomePage() {
             <Card key={review.name}>
               <p className="text-white/75">&ldquo;{review.quote}&rdquo;</p>
               <div className="mt-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full smg-gradient font-bold text-black">
-                  {review.name[0]}
-                </div>
+                <ReviewPortrait person={review.person} />
                 <div>
                   <p className="font-semibold">{review.name}</p>
                   <p className="text-xs text-white/50">{review.place}</p>
