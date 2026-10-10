@@ -38,8 +38,8 @@ export function listPaymentMethods(): PaymentMethod[] {
   const methods: PaymentMethod[] = [
     {
       id: "crypto",
-      name: "USDT (TRC20)",
-      description: "Send USDT on TRON. Credited after confirmation.",
+      name: "USDT (BEP-20)",
+      description: "Send USDT on BNB Smart Chain. We confirm it on-chain.",
       currencies: ["USDT"],
       instant: false,
       kind: "crypto",
@@ -139,7 +139,7 @@ export function findPaymentMethod(id: string) {
 }
 
 export const PAYMENT_METHOD_LABELS: Record<string, string> = {
-  crypto: "USDT (TRC20)",
+  crypto: "USDT (BEP-20)",
   paystack: "Paystack",
   flutterwave: "Flutterwave",
   bank_ngn: "Bank transfer",
@@ -155,7 +155,7 @@ export function paymentMethodName(id: string) {
 function usdtInstructions() {
   const address = getUsdtDepositAddress();
   if (address) {
-    return `Send USDT on TRC20 to ${address}. Use the payment reference in your ticket if the hash is unclear.`;
+    return `Send the exact USDT amount on BNB Smart Chain (BEP-20) to ${address}. The wallet is credited after the transfer is seen.`;
   }
-  return "Submit this request, then send USDT on TRC20. Ask support for the deposit address if it is not shown.";
+  return "Start a USDT payment to get the exact amount, address and countdown.";
 }

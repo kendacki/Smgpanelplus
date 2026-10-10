@@ -12,6 +12,7 @@ import {
 import { generateReference } from "@/lib/utils";
 import { findPaymentMethod, publicPaymentMethods } from "@/lib/payments";
 import { startFlutterwaveCheckout, startPaystackCheckout } from "@/lib/gateways";
+import { buildUsdtCheckout, parseUsdtCheckout } from "@/lib/usdt-evm";
 
 export async function GET() {
   const user = await requireUser();
@@ -72,6 +73,22 @@ export async function POST(request: Request) {
   const reference = generateReference(method.id.replaceAll("_", "").toUpperCase().slice(0, 8));
   const instant = method.instant;
   const metadata: Record<string, string> = {};
+  let exactPaid = paidAmount;
+
+  if (method.id === "crypto") {
+    const pending = await prisma.payment.findMany({
+      where: { method: "crypto", status: "PENDING" },
+      select: { metadata: true },
+    });
+    const taken = new Set(
+      pending
+        .map((row) => parseUsdtCheckout(row.metadata)?.payUnits)
+        .filter((value): value is string => Boolean(value)),
+    );
+    const checkout = buildUsdtCheckout(credit, taken);
+    exactPaid = Number(checkout.payAmount);
+    Object.assign(metadata, checkout);
+  }
 
   if (method.kind === "gateway" && !method.live) {
     return NextResponse.json(
@@ -113,7 +130,7 @@ export async function POST(request: Request) {
       data: {
         userId: user.id,
         amount: credit,
-        paidAmount,
+        paidAmount: exactPaid,
         currency,
         method: method.id,
         status: instant ? "COMPLETED" : "PENDING",
@@ -138,10 +155,13 @@ export async function POST(request: Request) {
     payment,
     balance: fresh?.balance ?? user.balance,
     checkoutUrl: checkoutUrl || null,
+    crypto: method.id === "crypto" ? metadata : null,
     message: instant
       ? "Wallet credited in USDT."
       : checkoutUrl
         ? `Redirecting to ${method.name}…`
-        : `Payment ${payment.reference} submitted. Your wallet will be credited after confirmation.`,
+        : method.id === "crypto"
+          ? "Send the exact USDT amount before the timer ends."
+          : `Payment ${payment.reference} submitted. Your wallet will be credited after confirmation.`,
   });
 }

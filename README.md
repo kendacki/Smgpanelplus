@@ -63,7 +63,7 @@ npm run db:sync
 
 Or sign in as admin and use **Provider → Sync service list**. Orders from the dashboard and `POST /api/v2` are sent to SMMTurk.
 
-Customer payments are independent of SMMTurk. Add funds supports USDT (TRC20), Naira bank transfer, M-Pesa, MTN MoMo, plus Paystack and Flutterwave when those keys are set. Local amounts convert into the USDT wallet at `USDT_NGN` / `USDT_GHS` / `USDT_KES`. Put account details in `PAY_BANK_NGN`, `PAY_MPESA_KES`, and `PAY_MOMO_GHS`. Webhooks:
+Customer payments are independent of SMMTurk. Add funds supports USDT on BNB Smart Chain (BEP-20), Naira bank transfer, M-Pesa, MTN MoMo, plus Paystack and Flutterwave when those keys are set. Local amounts convert into the USDT wallet at `USDT_NGN` / `USDT_GHS` / `USDT_KES`. Put account details in `PAY_BANK_NGN`, `PAY_MPESA_KES`, and `PAY_MOMO_GHS`. Webhooks:
 
 ```
 https://smgpanelplus.com/api/webhooks/paystack

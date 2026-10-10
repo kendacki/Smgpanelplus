@@ -17,7 +17,16 @@ type Payment = {
   status: string;
   reference: string;
   note: string | null;
+  metadata: string | null;
   createdAt: string;
+};
+
+type CryptoCheckout = {
+  reference: string;
+  address: string;
+  payAmount: string;
+  network: string;
+  expiresAt: string;
 };
 
 const ICONS: Record<string, typeof Coins> = {
@@ -52,6 +61,8 @@ export function AddFundsClient() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [checkout, setCheckout] = useState<CryptoCheckout | null>(null);
+  const [remaining, setRemaining] = useState(0);
 
   const selected = methods.find((item) => item.id === method);
   const credit =
@@ -71,6 +82,20 @@ export function AddFundsClient() {
     if (Array.isArray(data.methods) && data.methods.length) {
       setMethods(data.methods);
     }
+    const pending = (data.payments || []).find(
+      (item: Payment) => item.method === "crypto" && item.status === "PENDING" && item.metadata,
+    ) as Payment | undefined;
+    setCheckout((current) => {
+      if (!pending?.metadata) return current;
+      try {
+        const saved = JSON.parse(pending.metadata) as CryptoCheckout;
+        if (!saved.expiresAt || new Date(saved.expiresAt).getTime() <= Date.now()) return current;
+        if (current) return current;
+        return { ...saved, reference: pending.reference };
+      } catch {
+        return current;
+      }
+    });
   }
 
   useEffect(() => {
@@ -110,6 +135,42 @@ export function AddFundsClient() {
     }
   }, [selected, currency]);
 
+  useEffect(() => {
+    if (!checkout) return;
+    const tick = () => setRemaining(Math.max(0, new Date(checkout.expiresAt).getTime() - Date.now()));
+    tick();
+    const clock = window.setInterval(tick, 1000);
+    return () => window.clearInterval(clock);
+  }, [checkout]);
+
+  useEffect(() => {
+    if (!checkout) return;
+    const reference = checkout.reference;
+    let stopped = false;
+    async function poll() {
+      const res = await fetch(`/api/wallet/verify?reference=${encodeURIComponent(reference)}`);
+      const data = await res.json();
+      if (stopped) return;
+      if (data.expired) {
+        setCheckout(null);
+        setError(data.message || "Payment window expired.");
+        await load();
+        return;
+      }
+      if (data.payment?.status === "COMPLETED") {
+        setCheckout(null);
+        setMessage(data.message || "Wallet credited in USDT.");
+        await load();
+      }
+    }
+    void poll();
+    const timer = window.setInterval(poll, 15000);
+    return () => {
+      stopped = true;
+      window.clearInterval(timer);
+    };
+  }, [checkout]);
+
   function applyPreset(usdt: number) {
     const rate = rates[currency] || 1;
     const digits = currency === "USDT" ? 4 : 2;
@@ -141,7 +202,18 @@ export function AddFundsClient() {
         window.location.href = data.checkoutUrl;
         return;
       }
-      setMessage(`${data.message} Reference: ${data.payment.reference}`);
+      if (data.crypto?.address) {
+        setCheckout({
+          reference: data.payment.reference,
+          address: data.crypto.address,
+          payAmount: data.crypto.payAmount,
+          network: data.crypto.network,
+          expiresAt: data.crypto.expiresAt,
+        });
+        setMessage(data.message);
+      } else {
+        setMessage(`${data.message} Reference: ${data.payment.reference}`);
+      }
       setNote("");
       await load();
     } catch {
@@ -155,7 +227,7 @@ export function AddFundsClient() {
     selected?.kind === "gateway"
       ? `Continue to ${selected.name}`
       : selected?.id === "crypto"
-        ? "Submit USDT deposit"
+        ? "Start USDT payment"
         : selected?.id === "demo"
           ? "Credit wallet"
           : "Submit payment";
@@ -173,6 +245,35 @@ export function AddFundsClient() {
             {error ? <Alert>{error}</Alert> : null}
             {message ? <Alert tone="success">{message}</Alert> : null}
             {checking ? <Alert tone="info">Checking your payment…</Alert> : null}
+            {checkout ? (
+              <UsdtCheckoutPanel
+                checkout={checkout}
+                remaining={remaining}
+                onCheck={async () => {
+                  setChecking(true);
+                  try {
+                    const res = await fetch(
+                      `/api/wallet/verify?reference=${encodeURIComponent(checkout.reference)}`,
+                    );
+                    const data = await res.json();
+                    if (data.expired) {
+                      setCheckout(null);
+                      setError(data.message || "Payment window expired.");
+                    } else if (data.payment?.status === "COMPLETED") {
+                      setCheckout(null);
+                      setMessage(data.message || "Wallet credited in USDT.");
+                    } else if (data.error) {
+                      setError(data.error);
+                    } else {
+                      setMessage(data.message || "Still waiting for the transfer.");
+                    }
+                    await load();
+                  } finally {
+                    setChecking(false);
+                  }
+                }}
+              />
+            ) : null}
 
             <div>
               <p className="mb-2 text-xs text-white/50">Payment method</p>
@@ -268,7 +369,7 @@ export function AddFundsClient() {
               ) : null}
             </div>
 
-            {selected?.kind === "manual" || selected?.kind === "crypto" ? (
+            {selected?.kind === "manual" ? (
               <div>
                 <label className="mb-1 block text-xs text-white/50">
                   Sender name or transaction ID (optional)
@@ -326,6 +427,63 @@ export function AddFundsClient() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function UsdtCheckoutPanel({
+  checkout,
+  remaining,
+  onCheck,
+}: {
+  checkout: CryptoCheckout;
+  remaining: number;
+  onCheck: () => void;
+}) {
+  const minutes = Math.floor(remaining / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+  const clock = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  async function copy(value: string) {
+    await navigator.clipboard.writeText(value);
+  }
+
+  return (
+    <div className="space-y-3 rounded-2xl border border-smg/30 bg-black p-4">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm font-medium">USDT payment</p>
+        <p className="font-mono text-lg text-smg">{clock}</p>
+      </div>
+      <ol className="space-y-3 text-sm">
+        <li>
+          <p className="text-xs text-white/45">1. Send this exact amount</p>
+          <div className="mt-1 flex items-center justify-between gap-2">
+            <span className="font-mono text-base">{checkout.payAmount} USDT</span>
+            <button type="button" className="text-xs text-smg" onClick={() => copy(checkout.payAmount)}>
+              Copy
+            </button>
+          </div>
+        </li>
+        <li>
+          <p className="text-xs text-white/45">2. Network</p>
+          <p className="mt-1">{checkout.network}</p>
+        </li>
+        <li>
+          <p className="text-xs text-white/45">3. Receiving wallet</p>
+          <div className="mt-1 flex items-start justify-between gap-2">
+            <span className="break-all font-mono text-xs">{checkout.address}</span>
+            <button type="button" className="shrink-0 text-xs text-smg" onClick={() => copy(checkout.address)}>
+              Copy
+            </button>
+          </div>
+        </li>
+      </ol>
+      <p className="text-xs text-white/50">
+        We check the transfer automatically. A different amount or network will not credit this payment.
+      </p>
+      <Button type="button" variant="outline" onClick={onCheck}>
+        Check payment now
+      </Button>
     </div>
   );
 }

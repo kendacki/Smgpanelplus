@@ -6,7 +6,7 @@ function amountsMatch(expected: number, received: number) {
 
 export async function completePaymentByReference(
   reference: string,
-  paid?: { amount: number; currency?: string },
+  paid?: { amount: number; currency?: string; metadata?: string },
 ) {
   return prisma.$transaction(async (tx) => {
     const payment = await tx.payment.findUnique({ where: { reference } });
@@ -31,7 +31,10 @@ export async function completePaymentByReference(
     });
     const updated = await tx.payment.update({
       where: { id: payment.id },
-      data: { status: "COMPLETED" },
+      data: {
+        status: "COMPLETED",
+        metadata: paid?.metadata ?? payment.metadata,
+      },
     });
     return { ok: true as const, reason: "credited" as const, payment: updated };
   });

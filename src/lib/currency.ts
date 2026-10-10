@@ -53,7 +53,11 @@ export function usdtToLocal(usdt: number, currency: PayCurrency) {
 }
 
 export function getUsdtDepositAddress() {
-  return process.env.NEXT_PUBLIC_USDT_TRC20_ADDRESS?.trim() || "";
+  return (
+    process.env.USDT_EVM_ADDRESS?.trim() ||
+    process.env.NEXT_PUBLIC_USDT_EVM_ADDRESS?.trim() ||
+    "0x24ed5adac799eff29f619d25d1d2074762fe4220"
+  );
 }
 
 export function formatPay(amount: number, currency: string = PANEL_CURRENCY) {
