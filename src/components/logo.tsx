@@ -22,7 +22,7 @@ export function Logo({
         height={header ? 74 : compact ? 52 : 84}
         className={
           header
-            ? "h-12 w-auto object-contain object-left md:h-14"
+            ? "h-8 w-auto object-contain object-left md:h-9"
             : compact
               ? "h-9 w-auto object-contain md:h-10"
               : "h-16 w-auto object-contain md:h-20"
