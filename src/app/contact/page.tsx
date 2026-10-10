@@ -13,8 +13,7 @@ export default function ContactPage() {
   return (
     <SiteShell>
       <div className="mx-auto max-w-md px-4 py-8 sm:py-12">
-        <p className="text-[11px] tracking-[0.22em] text-smg">SUPPORT</p>
-        <h1 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Contact us</h1>
+        <h1 className="font-display text-2xl font-semibold sm:text-3xl">Contact us</h1>
         <p className="mt-1 text-sm text-white/55">We typically reply within a few hours.</p>
 
         <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/55 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.45)] ring-1 ring-smg/20 backdrop-blur-xl sm:p-5">

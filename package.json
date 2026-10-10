@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "node scripts/build.mjs",
-    "start": "next start",
+    "dev": "node api.js && next dev --turbopack",
+    "build": "node api.js && node scripts/build.mjs",
+    "start": "node api.js && next start",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "npx tsx scripts/db-push.ts",
